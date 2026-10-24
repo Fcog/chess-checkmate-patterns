@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Chess, validateFen } from 'chess.js';
-import { families, mateIn, patterns, type Pattern } from './patterns';
+import { exercises, families, mateIn, patterns, type Exercise, type Pattern } from './patterns';
 
 /**
  * Can the side to move force mate within `moves` of its own moves, starting with `san`?
@@ -104,5 +104,29 @@ describe.each(patterns.map((p): [string, Pattern] => [p.name, p]))('%s', (_name,
   it('has exactly one move that forces the mate', () => {
     // Uniqueness is what lets the app tell the player their move was wrong.
     expect(forcingMoves(pattern.fen, mateIn(pattern))).toEqual([pattern.solution[0]]);
+  });
+});
+
+describe.each(exercises.map((ex): [string, Exercise] => [ex.id, ex]))('exercise %s', (_id, ex) => {
+  it('references a valid patternId', () => {
+    expect(patterns.some((p) => p.id === ex.patternId)).toBe(true);
+  });
+
+  it('has a legal FEN and starts with neither side in check', () => {
+    expect(validateFen(ex.fen).ok).toBe(true);
+    const hero = new Chess(ex.fen).turn();
+    const defender = hero === 'w' ? 'b' : 'w';
+    expect(inCheck(ex.fen, hero)).toBe(false);
+    expect(inCheck(ex.fen, defender)).toBe(false);
+  });
+
+  it('plays out legally and ends in checkmate', () => {
+    expect(ex.solution.length % 2).toBe(1);
+    const chess = new Chess(ex.fen);
+    ex.solution.forEach((san, ply) => {
+      expect(chess.moves(), `ply ${ply} (${san})`).toContain(san);
+      chess.move(san);
+    });
+    expect(chess.isCheckmate()).toBe(true);
   });
 });

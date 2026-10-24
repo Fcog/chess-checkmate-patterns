@@ -16,9 +16,31 @@ export type Pattern = {
   hint: string;
 };
 
+export type Exercise = {
+  id: string;
+  patternId: string;
+  fen: string;
+  solution: string[];
+  hint?: string;
+};
+
+/** Checkmate patterns currently available in the Practice section filter. */
+export const practicePatternIds: string[] = ['back-rank'];
+
+/** Practice exercises. */
+export const exercises: Exercise[] = [
+  {
+    id: 'back-rank-1',
+    patternId: 'back-rank',
+    fen: '4rrk1/ppp2ppp/8/3p2q1/3P2b1/2PB2P1/PP3QP1/4RRK1 w - - 0 1',
+    solution: ['Qxf7+', 'Rxf7', 'Rxe8+', 'Rf8', 'Rexf8#'],
+    hint: 'Eliminate the defenders of the back rank starting with a sacrifice on f7.',
+  },
+];
+
 /** How many moves the player actually has to find. */
-export function mateIn(pattern: Pattern): number {
-  return Math.ceil(pattern.solution.length / 2);
+export function mateIn(puzzle: { solution: string[] }): number {
+  return Math.ceil(puzzle.solution.length / 2);
 }
 
 export const families: Family[] = [
