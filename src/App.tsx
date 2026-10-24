@@ -2,7 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Chess } from 'chess.js';
 import type { Key } from 'chessground/types';
 import { Board } from './Board';
-import { exercises, families, mateIn, patterns, practicePatternIds } from './patterns';
+import { exercises, practicePatternIds } from './exercises';
+import { families, mateIn, patterns } from './patterns';
 
 type Section = 'patterns' | 'practice';
 

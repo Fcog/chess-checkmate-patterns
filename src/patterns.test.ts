@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { Chess, validateFen } from 'chess.js';
-import { exercises, families, mateIn, patterns, type Exercise, type Pattern } from './patterns';
+import { exercises, type Exercise } from './exercises';
+import { families, mateIn, patterns, type Pattern } from './patterns';
 
 /**
  * Can the side to move force mate within `moves` of its own moves, starting with `san`?
