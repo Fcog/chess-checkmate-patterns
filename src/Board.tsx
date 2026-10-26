@@ -35,7 +35,6 @@ export function Board(props: Props) {
       turnColor: initial.turnColor,
       lastMove: initial.lastMove,
       check: initial.check,
-      viewOnly: initial.viewOnly,
       coordinates: true,
       animation: { enabled: true, duration: 200 },
       highlight: { lastMove: true, check: true },
@@ -43,7 +42,7 @@ export function Board(props: Props) {
       movable: {
         free: false,
         showDests: true,
-        color: initial.turnColor,
+        color: initial.viewOnly ? undefined : initial.turnColor,
         dests: initial.dests,
         events: { after: (from, to) => latest.current.onMove(from, to) },
       },
@@ -61,8 +60,14 @@ export function Board(props: Props) {
       turnColor: props.turnColor,
       lastMove: props.lastMove,
       check: props.check,
-      viewOnly: props.viewOnly,
-      movable: { free: false, color: props.turnColor, dests: props.dests },
+      // Lock via movable.color rather than chessground's viewOnly: viewOnly is only read
+      // when the board DOM is (re)built, so flipping orientation while locked would
+      // leave the board without drag listeners for good.
+      movable: {
+        free: false,
+        color: props.viewOnly ? undefined : props.turnColor,
+        dests: props.dests,
+      },
     });
   }, [
     props.fen,
