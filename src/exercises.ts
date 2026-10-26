@@ -7,7 +7,7 @@ export type Exercise = {
 };
 
 /** Checkmate patterns currently available in the Practice section filter. */
-export const practicePatternIds: string[] = ['back-rank'];
+export const practicePatternIds: string[] = ['back-rank', 'anastasia'];
 
 /** Practice exercises. */
 export const exercises: Exercise[] = [
@@ -45,5 +45,40 @@ export const exercises: Exercise[] = [
     fen: '4k3/p3np2/1p2p3/3pP1QP/5P2/P2q4/2r3PR/4R1K1 b - - 0 1',
     solution: ['Qd4+', 'Kh1', 'Qe3', 'Qh4', 'Rc1', 'Rxc1', 'Qxc1+', 'Qe1', 'Qxe1#'],
     hint: 'Force the king into the corner with a check, then attack the e1 rook to invade the first rank.',
+  },
+  {
+    id: 'anastasia-1',
+    patternId: 'anastasia',
+    fen: 'k2r3r/pppN1pp1/3n3q/1P6/Q3R1P1/2P4p/P4P1P/R5K1 w - - 0 1',
+    solution: ['Qxa7+', 'Kxa7', 'Ra4#'],
+    hint: 'Sacrifice the queen on a7 to open the a-file while the knight on d7 controls b8 and b6.',
+  },
+  {
+    id: 'anastasia-2',
+    patternId: 'anastasia',
+    fen: '5r2/1k3p2/p2qp3/1p4Q1/3P1n2/8/5PPP/R4RK1 b - - 0 1',
+    solution: ['Ne2+', 'Kh1', 'Qxh2+', 'Kxh2', 'Rh8+', 'Qh5', 'Rxh5#'],
+    hint: 'Check with the knight to take g1 and g3, then sacrifice the queen to open the h-file.',
+  },
+  {
+    id: 'anastasia-3',
+    patternId: 'anastasia',
+    fen: '2br1r2/5Rbk/1q2P1p1/5P2/P6N/1P6/2P3P1/4K2Q w - - 0 1',
+    solution: ['Nxg6+', 'Kg8', 'Ne7#'],
+    hint: 'The queen already owns the h-file. Use the knight to drive the king off it.',
+  },
+  {
+    id: 'anastasia-4',
+    patternId: 'anastasia',
+    fen: '1k2r2r/p1p2pb1/Bpp2Nb1/4B3/4p2q/6pP/5QP1/R6K w - - 0 1',
+    solution: ['Qxb6+', 'axb6', 'Nd7+', 'Ka7', 'Bc8#'],
+    hint: 'Sacrifice the queen to open the a-file, then let the knight and bishop clear the way for the rook.',
+  },
+  {
+    id: 'anastasia-5',
+    patternId: 'anastasia',
+    fen: '1r3rk1/5ppp/8/q1p2N2/2Bp1N2/1p4P1/PP3PP1/K2RR3 w - - 0 1',
+    solution: ['Ne7+', 'Kh8', 'Nfg6+', 'fxg6', 'Nxg6+', 'hxg6', 'Rh1#'],
+    hint: 'Drive the king into the corner, then give up both knights to rip open the h-file.',
   },
 ];
