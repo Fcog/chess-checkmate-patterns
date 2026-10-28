@@ -7,7 +7,7 @@ export type Exercise = {
 };
 
 /** Checkmate patterns currently available in the Practice section filter. */
-export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'railroad', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens'];
+export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'railroad', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette'];
 
 /** Practice exercises. */
 export const exercises: Exercise[] = [
@@ -262,6 +262,41 @@ export const exercises: Exercise[] = [
     fen: 'r2qk2r/pp1n1ppp/4b3/2B1R3/8/3B4/P4PPP/R2Q2K1 w kq - 0 1',
     solution: ['Rxe6+', 'fxe6', 'Qh5+', 'g6', 'Qxg6+', 'hxg6', 'Bxg6#'],
     hint: 'Your c5 bishop already covers e7 and f8, and your other bishop is aimed at the kingside. Strip away the pawns shielding the king, whatever it costs.',
+  },
+  {
+    id: 'epaulette-1',
+    patternId: 'epaulette',
+    fen: '1k4r1/ppp4p/8/2b1n3/P7/1PN2qP1/2PQ1P1P/2B2RKR b - - 0 1',
+    solution: ['Rxg3+', 'hxg3', 'Qxg3#'],
+    hint: 'White\'s king is boxed in by its own rooks, and your c5 bishop pins the f2 pawn. What is really defending g3?',
+  },
+  {
+    id: 'epaulette-2',
+    patternId: 'epaulette',
+    fen: '1rkr3q/R7/2p5/3bp3/5pp1/1PQ3P1/4PP2/2R3K1 w - - 0 1',
+    solution: ['Qxc6+', 'Bxc6', 'Rxc6#'],
+    hint: 'Black\'s king is flanked by its own rooks, and your a7 rook already owns the seventh rank. Your c1 rook would love an open c-file.',
+  },
+  {
+    id: 'epaulette-3',
+    patternId: 'epaulette',
+    fen: '3rq1k1/3r1pp1/7p/p1p2Q2/P4nPb/4B2P/1PP2P2/R2NKR2 b Q - 0 1',
+    solution: ['Rxd1+', 'Rxd1', 'Qxe3#'],
+    hint: 'Your h4 bishop pins the f2 pawn, and your queen and rooks are lined up on the d- and e-files. White\'s own pieces are crowding the king.',
+  },
+  {
+    id: 'epaulette-4',
+    patternId: 'epaulette',
+    fen: 'R4qkr/7n/Q2r2p1/3p3N/7P/1p3B2/2p2PP1/6K1 w - - 0 1',
+    solution: ['Bxd5+', 'Rxd5', 'Qxg6#'],
+    hint: 'Black\'s king is boxed in by its own queen and rook, and your a8 rook pins that queen. Which black piece is keeping your queen away from the king?',
+  },
+  {
+    id: 'epaulette-5',
+    patternId: 'epaulette',
+    fen: '5rkr/p3R2p/b1p3p1/q7/1p1P4/8/PPP3Q1/2K3R1 w - - 0 1',
+    solution: ['Qxg6+', 'hxg6', 'Rxg6#'],
+    hint: 'Black\'s king is flanked by its own rooks, and your e7 rook already controls the seventh rank. Only one pawn shields the king from your pieces on the g-file.',
   },
   {
     id: 'mayet-1',
