@@ -7,7 +7,7 @@ export type Exercise = {
 };
 
 /** Checkmate patterns currently available in the Practice section filter. */
-export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'railroad', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette'];
+export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'railroad', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio'];
 
 /** Practice exercises. */
 export const exercises: Exercise[] = [
@@ -297,6 +297,41 @@ export const exercises: Exercise[] = [
     fen: '5rkr/p3R2p/b1p3p1/q7/1p1P4/8/PPP3Q1/2K3R1 w - - 0 1',
     solution: ['Qxg6+', 'hxg6', 'Rxg6#'],
     hint: 'Black\'s king is flanked by its own rooks, and your e7 rook already controls the seventh rank. Only one pawn shields the king from your pieces on the g-file.',
+  },
+  {
+    id: 'cozio-1',
+    patternId: 'cozio',
+    fen: '4r3/2p3q1/1p1p2kp/p2Pn3/P1P5/1P4PB/7P/4RQK1 w - - 0 1',
+    solution: ['Qf5#'],
+    hint: 'Black\'s king is hemmed in by its own queen and h-pawn. Your bishop on h3 is ready to back up a check.',
+  },
+  {
+    id: 'cozio-2',
+    patternId: 'cozio',
+    fen: '4r1k1/1b2r1pp/2q5/6N1/Pp1P2PP/1P3Q2/3K2B1/3R3R b - - 0 1',
+    solution: ['Re2+', 'Qxe2', 'Qc3#'],
+    hint: 'Your b4 pawn guards a square right next to White\'s king. Can you make White\'s own pieces take away the king\'s last escape?',
+  },
+  {
+    id: 'cozio-3',
+    patternId: 'cozio',
+    fen: '8/4qnb1/p4kpp/1pp1pp2/3pP3/3P4/PPP3R1/2K2Q2 w - - 0 1',
+    solution: ['Rxg6+', 'Kxg6', 'Qxf5#'],
+    hint: 'Black\'s king is walled in by its own pieces, and your e4 pawn already guards a square next to it. Can you lure the king one step closer?',
+  },
+  {
+    id: 'cozio-4',
+    patternId: 'cozio',
+    fen: '6k1/1b3ppp/5q2/p7/P2Qn3/2NP2P1/2P3KP/1R2R1B1 b - - 0 1',
+    solution: ['Ng5+', 'Qe4', 'Bxe4+', 'Nxe4', 'Qf3#'],
+    hint: 'Your knight on e4 is blocking your bishop\'s long diagonal. Move it with tempo, then look at the light squares around White\'s king.',
+  },
+  {
+    id: 'cozio-5',
+    patternId: 'cozio',
+    fen: 'r5r1/3n1p1k/2p1q3/1pp1pRp1/4Pp1P/pP1P3Q/P1P2P2/1K1R4 w - - 0 1',
+    solution: ['Rxf7+', 'Qxf7', 'hxg5+', 'Kg7', 'Qh6#'],
+    hint: 'Deflect the queen and then set up a devastating discovered check.',
   },
   {
     id: 'mayet-1',
