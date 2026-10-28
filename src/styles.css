@@ -304,6 +304,7 @@ main {
   }
 
   .patterns {
+    display: none;
     flex-direction: row;
     flex-wrap: wrap;
   }
