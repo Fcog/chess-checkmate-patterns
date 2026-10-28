@@ -7,7 +7,7 @@ export type Exercise = {
 };
 
 /** Checkmate patterns currently available in the Practice section filter. */
-export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'railroad', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian'];
+export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'railroad', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens'];
 
 /** Practice exercises. */
 export const exercises: Exercise[] = [
@@ -227,6 +227,41 @@ export const exercises: Exercise[] = [
     fen: '2q2nk1/p4pp1/1p5p/2b5/4N1R1/P5p1/1P3PP1/6KR w - - 0 1',
     solution: ['Nf6+', 'Kh8', 'Rxh6+', 'gxh6', 'Rg8#'],
     hint: 'Your knight and both rooks are close to Black\'s king. The g7 pawn can\'t do two jobs at once.',
+  },
+  {
+    id: 'bodens-1',
+    patternId: 'bodens',
+    fen: '2krq3/pp1n1pbp/2p3p1/8/1P6/P5BP/2R2PP1/2R2BK1 w - - 0 1',
+    solution: ['Rxc6+', 'bxc6', 'Ba6#'],
+    hint: 'Your bishop on g3 already covers b8 and c7. Your other bishop just needs an open diagonal to the king.',
+  },
+  {
+    id: 'bodens-2',
+    patternId: 'bodens',
+    fen: 'q5k1/1pQ2pp1/2p5/5bb1/2B5/P1P4r/1P1R1P2/2KR2N1 b - - 0 1',
+    solution: ['Rxc3+', 'bxc3', 'Qxa3#'],
+    hint: 'Your f5 bishop already covers b1 and c2, and your queen can reach the a3–c1 diagonal. Only the b2 pawn holds White\'s position together.',
+  },
+  {
+    id: 'bodens-3',
+    patternId: 'bodens',
+    fen: 'rk1r3q/pp2bp2/2p1p1p1/3nN2p/5B2/7P/1Q2BPP1/R5K1 w - - 0 1',
+    solution: ['Nd7+', 'Kc8', 'Qxb7+', 'Kxb7', 'Ba6#'],
+    hint: 'Your f4 bishop is aimed at b8 and c7, but your own knight is in the way. Once it moves, look for a light-squared check.',
+  },
+  {
+    id: 'bodens-4',
+    patternId: 'bodens',
+    fen: '2kr1b1r/pp1n1pp1/2p1pn1p/2p1q3/8/2N1BQ1P/PP2BPP1/3R1RK1 w - - 0 1',
+    solution: ['Bf4', 'Qf5', 'Qxc6+', 'bxc6', 'Ba6#'],
+    hint: 'Black\'s queen is sitting on the diagonal your dark-squared bishop wants. Chase her away, then think about the light squares around the king.',
+  },
+  {
+    id: 'bodens-5',
+    patternId: 'bodens',
+    fen: 'r2qk2r/pp1n1ppp/4b3/2B1R3/8/3B4/P4PPP/R2Q2K1 w kq - 0 1',
+    solution: ['Rxe6+', 'fxe6', 'Qh5+', 'g6', 'Qxg6+', 'hxg6', 'Bxg6#'],
+    hint: 'Your c5 bishop already covers e7 and f8, and your other bishop is aimed at the kingside. Strip away the pawns shielding the king, whatever it costs.',
   },
   {
     id: 'mayet-1',
