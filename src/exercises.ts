@@ -7,7 +7,7 @@ export type Exercise = {
 };
 
 /** Checkmate patterns currently available in the Practice section filter. */
-export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'railroad', 'max-lange', 'damiano'];
+export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'railroad', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian'];
 
 /** Practice exercises. */
 export const exercises: Exercise[] = [
@@ -45,6 +45,13 @@ export const exercises: Exercise[] = [
     fen: '4k3/p3np2/1p2p3/3pP1QP/5P2/P2q4/2r3PR/4R1K1 b - - 0 1',
     solution: ['Qd4+', 'Kh1', 'Qe3', 'Qh4', 'Rc1', 'Rxc1', 'Qxc1+', 'Qe1', 'Qxe1#'],
     hint: 'White\'s first rank is guarded only by the e1 rook. Use checks and threats to give it too much work.',
+  },
+  {
+    id: 'back-rank-6',
+    patternId: 'back-rank',
+    fen: 'r1b1k2r/1p2bppp/p1n2q2/8/8/5B2/PPPQ1P1P/2KRR3 w kq - 0 1',
+    solution: ['Bxc6+', 'bxc6', 'Qd8#'],
+    hint: 'Black\'s king is stuck in the centre. The knight on c6 is the only piece covering d8, and the e7 bishop can\'t move.',
   },
   {
     id: 'anastasia-1',
@@ -150,5 +157,82 @@ export const exercises: Exercise[] = [
     fen: 'r1b1nrk1/pp3pp1/2n5/2Pp2q1/1P1B4/P2Bp3/1Q6/2K4R w - - 0 1',
     solution: ['Rh8+', 'Kxh8', 'Qh2+', 'Bh3', 'Qxh3+', 'Qh6', 'Qxh6+', 'Kg8', 'Qh7#'],
     hint: 'Your bishop on d3 is aimed at h7. The h-file is the road there, even if it costs material to open.',
+  },
+  {
+    id: 'opera-1',
+    patternId: 'opera',
+    fen: '3r2k1/bp1q1pp1/p1p4p/7b/2Q1NN2/4P3/PPP2PPP/R3K2R b KQ - 0 1',
+    solution: ['Qd1+', 'Rxd1', 'Rxd1#'],
+    hint: 'White\'s king is still in the centre, and your bishop on h5 reaches all the way to d1. Only one piece stands between your d8 rook and the back rank.',
+  },
+  {
+    id: 'opera-2',
+    patternId: 'opera',
+    fen: '6k1/pp3npp/2b3q1/2B4n/8/P6P/1PP3P1/3Q1RK1 w - - 0 1',
+    solution: ['Qd8+', 'Nxd8', 'Rf8#'],
+    hint: 'Your bishop on c5 already guards a back-rank square. What is stopping your rook from getting there?',
+  },
+  {
+    id: 'opera-3',
+    patternId: 'opera',
+    fen: 'rnb1kb1r/pp3ppp/2p5/4q3/4n3/3Q4/PPPB1PPP/2KR1BNR w kq - 0 1',
+    solution: ['Qd8+', 'Kxd8', 'Bg5+', 'Ke8', 'Rd8#'],
+    hint: 'Black\'s king is still in the centre, and your d1 rook is lined up behind your queen and bishop. Be ready to give something up.',
+  },
+  {
+    id: 'opera-4',
+    patternId: 'opera',
+    fen: 'r1b1k2r/1p2bppp/p1n2q2/8/8/5B2/PPPQ1P1P/2KRR3 w kq - 0 1',
+    solution: ['Bxc6+', 'Bd7', 'Qxd7+', 'Kf8', 'Qd8+', 'Rxd8', 'Rxd8+', 'Bxd8', 'Re8#'],
+    hint: 'Black\'s king is stuck in the centre and both your rooks are on open files. Keep checking, and don\'t be afraid to give up material.',
+  },
+  {
+    id: 'reti-1',
+    patternId: 'reti',
+    fen: 'rnb1kb1r/pp3ppp/2p5/4q3/4n3/3Q4/PPPB1PPP/2KR1BNR w kq - 0 1',
+    solution: ['Qd8+', 'Kxd8', 'Bg5+', 'Kc7', 'Bd8#'],
+    hint: 'Black\'s own pieces crowd the queenside. Open the d-file for your rook and let the bishop finish the job.',
+  },
+  {
+    id: 'arabian-1',
+    patternId: 'arabian',
+    fen: '8/pp5p/2p1k1p1/2P1n3/1P5P/6P1/r7/2R2BK1 b - - 0 1',
+    solution: ['Nf3+', 'Kh1', 'Rh2#'],
+    hint: 'Your rook already controls the second rank. Can your knight drive the king into the corner and guard the rook at the same time?',
+  },
+  {
+    id: 'arabian-2',
+    patternId: 'arabian',
+    fen: '2k4r/ppp4q/2n5/2b2pp1/PPQn4/2NB1RB1/2P3PP/5RK1 b - - 0 1',
+    solution: ['Nxf3+', 'Kh1', 'Qxh2+', 'Bxh2', 'Rxh2#'],
+    hint: 'Your c5 bishop and h8 rook are both aimed at White\'s king, but your own pieces are in the way. Clear the lines, whatever it costs.',
+  },
+  {
+    id: 'arabian-3',
+    patternId: 'arabian',
+    fen: '5r1k/1pq2p1p/p1bbpN2/5n2/6Q1/1B4RP/PPP2PP1/6K1 w - - 0 1',
+    solution: ['Qg8+', 'Rxg8', 'Rxg8#'],
+    hint: 'Your knight on f6 already controls a key square next to the king. Your queen and rook are both lined up on the g-file.',
+  },
+  {
+    id: 'arabian-4',
+    patternId: 'arabian',
+    fen: '1k4r1/pppQ4/P7/1PPpp1n1/3nP3/3N1P2/7P/5BK1 b - - 0 1',
+    solution: ['Nh3+', 'Kh1', 'Rg1#'],
+    hint: 'Your rook on g8 is aimed straight at White\'s king, but your own knight is in the way. Can you move it with tempo?',
+  },
+  {
+    id: 'arabian-5',
+    patternId: 'arabian',
+    fen: '2q2nk1/p4pp1/1p5p/2b5/4N1R1/P5p1/1P3PP1/6KR w - - 0 1',
+    solution: ['Nf6+', 'Kh8', 'Rxh6+', 'gxh6', 'Rg8#'],
+    hint: 'Your knight and both rooks are close to Black\'s king. The g7 pawn can\'t do two jobs at once.',
+  },
+  {
+    id: 'mayet-1',
+    patternId: 'mayet',
+    fen: '1q2rr2/pp2bp1k/2p2np1/8/7B/2N2NP1/PPP2PK1/3R3R w - - 0 1',
+    solution: ['Bxf6+', 'Kg8', 'Rh8#'],
+    hint: 'Your bishop on h4 is standing in front of your h1 rook. Where could it go to do the most damage?',
   },
 ];
