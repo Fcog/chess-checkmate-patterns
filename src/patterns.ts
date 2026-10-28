@@ -45,21 +45,21 @@ export const patterns: Pattern[] = [
     id: 'swallow-tail',
     name: "Swallow's tail mate",
     family: 'Queen mates',
-    fen: '6Q1/8/7r/7k/5P1p/8/8/K7 w - - 0 1',
-    solution: ['Qg5#'],
+    fen: '4Q3/8/6p1/5k2/3P2p1/8/8/K7 w - - 0 1',
+    solution: ['Qe5#'],
     idea:
-      'Also called the guéridon. The king’s own pieces flank it on the edge file, the pawn ' +
-      'guards the queen, and the queen mates from beside it — the shape of a bird’s tail.',
-    hint: 'Move next to the king on the file where your pawn defends you.',
+      'Also called the guéridon. The king’s own pieces block the two squares behind it, the ' +
+      'pawn guards the queen, and the queen mates from beside it — the shape of a bird’s tail.',
+    hint: 'Move next to the king, on the square your pawn defends.',
   },
   {
     id: 'cozio',
     name: "Cozio's mate",
     family: 'Queen mates',
-    fen: '6Q1/8/8/7p/5P1k/7p/8/K7 w - - 0 1',
-    solution: ['Qg5#'],
+    fen: '4Q3/8/8/3P1kp1/5p2/8/8/K7 w - - 0 1',
+    solution: ['Qe6#'],
     idea:
-      'The dovetail. The king is sandwiched between its own pawns and the queen strikes ' +
+      'Also called dovetail. The king is sandwiched between its own pawns and the queen strikes ' +
       'from the diagonal, covering both squares in front of it.',
     hint: 'A diagonal contact check, defended by the pawn.',
   },
