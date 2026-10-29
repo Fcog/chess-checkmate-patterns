@@ -5,6 +5,7 @@ import { Board } from './Board';
 import { exercises, practicePatternIds } from './exercises';
 import { families, mateIn, patterns } from './patterns';
 import { formatLine, legalDests, loadSolved, saveSolved, shuffle } from './helpers';
+import { PatternControls } from './PatternControls';
 import { PracticeControls } from './PracticeControls';
 import { PracticeFilters } from './PracticeFilters';
 
@@ -337,23 +338,17 @@ export function App() {
               onMove={onMove}
               syncKey={syncKey}
             />
-            <div className="controls">
-              <button onClick={() => restore(index)} disabled={ply === 0 && attempt.kind === 'idle'}>
-                Reset
-              </button>
-              <button onClick={() => setShowHint(true)} disabled={showHint || isDone}>
-                Hint
-              </button>
-              <button onClick={reveal} disabled={isDone || busy}>
-                Show solution
-              </button>
-              <button
-                onClick={() => restore((index + 1) % patterns.length)}
-                disabled={patterns.length < 2}
-              >
-                Next pattern
-              </button>
-            </div>
+            <PatternControls
+              canReset={!(ply === 0 && attempt.kind === 'idle')}
+              canGoNext={patterns.length >= 2}
+              isDone={isDone}
+              busy={busy}
+              showHint={showHint}
+              onReset={() => restore(index)}
+              onShowHint={() => setShowHint(true)}
+              onShowSolution={reveal}
+              onNext={() => restore((index + 1) % patterns.length)}
+            />
           </main>
 
           <aside className="info">
