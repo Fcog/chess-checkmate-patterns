@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Chess } from 'chess.js';
 import type { Key } from 'chessground/types';
@@ -389,6 +390,7 @@ export function App() {
           />
         </div>
       )}
+      <Analytics/>
     </div>
   );
 }
