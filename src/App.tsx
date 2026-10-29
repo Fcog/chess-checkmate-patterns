@@ -14,6 +14,7 @@ import { PatternList } from './PatternList';
 import { PracticeControls } from './PracticeControls';
 import { PracticeFilters } from './PracticeFilters';
 import { PracticeInfo } from './PracticeInfo';
+import { playBadMove, playGoodMove } from './sounds';
 
 /** Stable identity so the board effect does not re-run on every render. */
 const NO_DESTS = new Map<Key, Key[]>();
@@ -184,6 +185,7 @@ export function App() {
         san === activePuzzle.solution[ply] || (isFinalPly && chess.isCheckmate());
 
       if (!isExpectedMove) {
+        playBadMove();
         setAttempt({ kind: 'wrong', san });
         // Let the move sit on the board for a beat, then snap back to the position.
         clearTimers();
@@ -191,6 +193,7 @@ export function App() {
         return;
       }
 
+      playGoodMove();
       const nextPly = ply + 1;
       setPlayed((prev) => [...prev, san]);
       setFen(chess.fen());
