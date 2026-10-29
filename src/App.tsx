@@ -3,11 +3,12 @@ import { Chess } from 'chess.js';
 import type { Key } from 'chessground/types';
 import { Board } from './Board';
 import { exercises, practicePatternIds } from './exercises';
-import { families, mateIn, patterns } from './patterns';
+import { mateIn, patterns } from './patterns';
 import { Header, type Section } from './Header';
 import { legalDests, loadSolved, saveSolved, shuffle } from './helpers';
 import { PatternControls } from './PatternControls';
 import { PatternInfo } from './PatternInfo';
+import { PatternList } from './PatternList';
 import { PracticeControls } from './PracticeControls';
 import { PracticeFilters } from './PracticeFilters';
 import { PracticeInfo } from './PracticeInfo';
@@ -286,29 +287,7 @@ export function App() {
 
       {section === 'patterns' ? (
         <div className="layout">
-          <nav className="patterns">
-            {families.map((family) => (
-              <section key={family}>
-                <h3>{family}</h3>
-                {patterns.map((p, i) =>
-                  p.family !== family ? null : (
-                    <button
-                      key={p.id}
-                      className={`pattern${i === index ? ' active' : ''}`}
-                      onClick={() => restore(i)}
-                      aria-current={i === index}
-                    >
-                      <span className="check" aria-hidden="true">
-                        {solved.includes(p.id) ? '✓' : ''}
-                      </span>
-                      <span className="label">{p.name}</span>
-                      <span className="badge">M{mateIn(p)}</span>
-                    </button>
-                  ),
-                )}
-              </section>
-            ))}
-          </nav>
+          <PatternList activeIndex={index} solved={solved} onSelect={restore} />
 
           <main>
             <Board
