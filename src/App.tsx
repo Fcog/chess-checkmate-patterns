@@ -5,6 +5,7 @@ import { Board } from './Board';
 import { exercises, practicePatternIds } from './exercises';
 import { families, mateIn, patterns } from './patterns';
 import { formatLine, legalDests, loadSolved, saveSolved, shuffle } from './helpers';
+import { PracticeControls } from './PracticeControls';
 import { PracticeFilters } from './PracticeFilters';
 
 type Section = 'patterns' | 'practice';
@@ -396,34 +397,21 @@ export function App() {
                 </p>
               </div>
             )}
-            <div className="controls">
-              <button
-                onClick={() => restoreExercise(exerciseIndex)}
-                disabled={!exercise || (ply === 0 && attempt.kind === 'idle')}
-              >
-                Reset
-              </button>
-              <button
-                onClick={() => setRevealPattern((prev) => !prev)}
-                disabled={!exercise || isDone}
-              >
-                {revealPattern || isDone ? 'Pattern revealed' : 'Reveal pattern'}
-              </button>
-              {exercise?.hint && (
-                <button onClick={() => setShowHint(true)} disabled={showHint || isDone}>
-                  Hint
-                </button>
-              )}
-              <button onClick={reveal} disabled={!exercise || isDone || busy}>
-                Show solution
-              </button>
-              <button
-                onClick={() => restoreExercise((exerciseIndex + 1) % filteredExercises.length)}
-                disabled={filteredExercises.length < 2}
-              >
-                Next exercise
-              </button>
-            </div>
+            <PracticeControls
+              hasExercise={!!exercise}
+              hasHint={!!exercise?.hint}
+              canReset={!(ply === 0 && attempt.kind === 'idle')}
+              canGoNext={filteredExercises.length >= 2}
+              isDone={isDone}
+              busy={busy}
+              showHint={showHint}
+              revealPattern={revealPattern}
+              onReset={() => restoreExercise(exerciseIndex)}
+              onTogglePattern={() => setRevealPattern((prev) => !prev)}
+              onShowHint={() => setShowHint(true)}
+              onShowSolution={reveal}
+              onNext={() => restoreExercise((exerciseIndex + 1) % filteredExercises.length)}
+            />
           </main>
 
           <aside className="info">
