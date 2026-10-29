@@ -4,14 +4,13 @@ import type { Key } from 'chessground/types';
 import { Board } from './Board';
 import { exercises, practicePatternIds } from './exercises';
 import { families, mateIn, patterns } from './patterns';
+import { Header, type Section } from './Header';
 import { legalDests, loadSolved, saveSolved, shuffle } from './helpers';
 import { PatternControls } from './PatternControls';
 import { PatternInfo } from './PatternInfo';
 import { PracticeControls } from './PracticeControls';
 import { PracticeFilters } from './PracticeFilters';
 import { PracticeInfo } from './PracticeInfo';
-
-type Section = 'patterns' | 'practice';
 
 /** Stable identity so the board effect does not re-run on every render. */
 const NO_DESTS = new Map<Key, Key[]>();
@@ -275,32 +274,15 @@ export function App() {
 
   return (
     <div className="app">
-      <header>
-        <div className="header-left">
-          <h1>Checkmate patterns</h1>
-          <nav className="tabs" aria-label="Sections">
-            <button
-              className={`tab${section === 'patterns' ? ' active' : ''}`}
-              onClick={() => switchSection('patterns')}
-              aria-current={section === 'patterns' ? 'page' : undefined}
-            >
-              Patterns
-            </button>
-            <button
-              className={`tab${section === 'practice' ? ' active' : ''}`}
-              onClick={() => switchSection('practice')}
-              aria-current={section === 'practice' ? 'page' : undefined}
-            >
-              Practice
-            </button>
-          </nav>
-        </div>
-        <span className="progress">
-          {section === 'patterns'
+      <Header
+        section={section}
+        progress={
+          section === 'patterns'
             ? `${solved.filter((id) => patterns.some((p) => p.id === id)).length} / ${patterns.length} solved`
-            : `${solvedExercisesCount} / ${filteredExercises.length} solved`}
-        </span>
-      </header>
+            : `${solvedExercisesCount} / ${filteredExercises.length} solved`
+        }
+        onSwitchSection={switchSection}
+      />
 
       {section === 'patterns' ? (
         <div className="layout">
