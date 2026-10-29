@@ -6,6 +6,7 @@ import { exercises, practicePatternIds } from './exercises';
 import { mateIn, patterns } from './patterns';
 import { Header, type Section } from './Header';
 import { legalDests, loadSolved, saveSolved, shuffle } from './helpers';
+import { MenuToggle } from './MenuToggle';
 import { PatternControls } from './PatternControls';
 import { PatternInfo } from './PatternInfo';
 import { PatternList } from './PatternList';
@@ -287,7 +288,9 @@ export function App() {
 
       {section === 'patterns' ? (
         <div className="layout">
-          <PatternList activeIndex={index} solved={solved} onSelect={restore} />
+          <MenuToggle label="patterns">
+            <PatternList activeIndex={index} solved={solved} onSelect={restore} />
+          </MenuToggle>
 
           <main>
             <Board
@@ -325,12 +328,14 @@ export function App() {
         </div>
       ) : (
         <div className="layout">
-          <PracticeFilters
-            patterns={practicePatterns}
-            selectedIds={selectedPatternIds}
-            onSelectAll={selectAllPatterns}
-            onToggle={togglePatternFilter}
-          />
+          <MenuToggle label="filters">
+            <PracticeFilters
+              patterns={practicePatterns}
+              selectedIds={selectedPatternIds}
+              onSelectAll={selectAllPatterns}
+              onToggle={togglePatternFilter}
+            />
+          </MenuToggle>
 
           <main>
             {exercise ? (
