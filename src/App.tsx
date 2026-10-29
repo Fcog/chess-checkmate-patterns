@@ -5,6 +5,7 @@ import { Board } from './Board';
 import { exercises, practicePatternIds } from './exercises';
 import { families, mateIn, patterns } from './patterns';
 import { formatLine, legalDests, loadSolved, saveSolved, shuffle } from './helpers';
+import { PracticeFilters } from './PracticeFilters';
 
 type Section = 'patterns' | 'practice';
 
@@ -133,6 +134,12 @@ export function App() {
     },
     [loadPosition, selectedPatternIds, shuffledExercises],
   );
+
+  const selectAllPatterns = useCallback(() => {
+    setSelectedPatternIds([]);
+    setExerciseIndex(0);
+    if (shuffledExercises[0]) loadPosition(shuffledExercises[0].fen);
+  }, [loadPosition, shuffledExercises]);
 
   const activeFen = activePuzzle ? activePuzzle.fen : pattern.fen;
   const game = useMemo(() => new Chess(fen), [fen]);
@@ -360,44 +367,12 @@ export function App() {
         </div>
       ) : (
         <div className="layout">
-          <nav className="patterns" aria-label="Checkmate filters">
-            <section>
-              <h3>Mode</h3>
-              <button
-                className={`pattern${selectedPatternIds.length === 0 ? ' active' : ''}`}
-                onClick={() => {
-                  setSelectedPatternIds([]);
-                  setExerciseIndex(0);
-                  if (shuffledExercises[0]) loadPosition(shuffledExercises[0].fen);
-                }}
-                aria-pressed={selectedPatternIds.length === 0}
-              >
-                <span className="check" aria-hidden="true">
-                  {selectedPatternIds.length === 0 ? '✓' : ''}
-                </span>
-                <span className="label">All patterns (blind)</span>
-              </button>
-            </section>
-            <section>
-              <h3>Checkmates</h3>
-              {practicePatterns.map((p) => {
-                const isSelected = selectedPatternIds.includes(p.id);
-                return (
-                  <button
-                    key={p.id}
-                    className={`pattern${isSelected ? ' active' : ''}`}
-                    onClick={() => togglePatternFilter(p.id)}
-                    aria-pressed={isSelected}
-                  >
-                    <span className="check" aria-hidden="true">
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    <span className="label">{p.name}</span>
-                  </button>
-                );
-              })}
-            </section>
-          </nav>
+          <PracticeFilters
+            patterns={practicePatterns}
+            selectedIds={selectedPatternIds}
+            onSelectAll={selectAllPatterns}
+            onToggle={togglePatternFilter}
+          />
 
           <main>
             {exercise ? (
