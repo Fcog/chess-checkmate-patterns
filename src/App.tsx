@@ -6,6 +6,7 @@ import { exercises, practicePatternIds } from './exercises';
 import { families, mateIn, patterns } from './patterns';
 import { formatLine, legalDests, loadSolved, saveSolved, shuffle } from './helpers';
 import { PatternControls } from './PatternControls';
+import { PatternInfo } from './PatternInfo';
 import { PracticeControls } from './PracticeControls';
 import { PracticeFilters } from './PracticeFilters';
 
@@ -351,15 +352,14 @@ export function App() {
             />
           </main>
 
-          <aside className="info">
-            <h2>
-              {pattern.name} <span className="badge">Mate in {moves}</span>
-            </h2>
-            <div aria-live="polite">{feedback()}</div>
-            {played.length > 0 && <p className="line">{formatLine(pattern.fen, played)}</p>}
-            {(showHint || isDone) && <p className="hint">{pattern.hint}</p>}
-            {isDone && <p className="idea">{pattern.idea}</p>}
-          </aside>
+          <PatternInfo
+            pattern={pattern}
+            moves={moves}
+            played={played}
+            feedback={feedback()}
+            showHint={showHint}
+            isDone={isDone}
+          />
         </div>
       ) : (
         <div className="layout">
