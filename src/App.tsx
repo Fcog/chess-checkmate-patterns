@@ -4,11 +4,12 @@ import type { Key } from 'chessground/types';
 import { Board } from './Board';
 import { exercises, practicePatternIds } from './exercises';
 import { families, mateIn, patterns } from './patterns';
-import { formatLine, legalDests, loadSolved, saveSolved, shuffle } from './helpers';
+import { legalDests, loadSolved, saveSolved, shuffle } from './helpers';
 import { PatternControls } from './PatternControls';
 import { PatternInfo } from './PatternInfo';
 import { PracticeControls } from './PracticeControls';
 import { PracticeFilters } from './PracticeFilters';
+import { PracticeInfo } from './PracticeInfo';
 
 type Section = 'patterns' | 'practice';
 
@@ -409,35 +410,17 @@ export function App() {
             />
           </main>
 
-          <aside className="info">
-            {exercise ? (
-              <>
-                <h2>
-                  {revealPattern || isDone ? (
-                    <>
-                      {exercisePattern?.name ?? 'Exercise'}{' '}
-                      <span className="badge">Mate in {moves}</span>
-                    </>
-                  ) : (
-                    <>
-                      Exercise {exerciseIndex + 1} <span className="badge">Mate in {moves}</span>
-                    </>
-                  )}
-                </h2>
-                <div aria-live="polite">{feedback()}</div>
-                {played.length > 0 && <p className="line">{formatLine(exercise.fen, played)}</p>}
-                {(showHint || isDone) && exercise.hint && <p className="hint">{exercise.hint}</p>}
-                {isDone && exercisePattern && <p className="idea">{exercisePattern.idea}</p>}
-              </>
-            ) : (
-              <>
-                <h2>
-                  Pattern: <span className="badge">Hidden by default</span>
-                </h2>
-                <p className="feedback">No exercises match the current filter.</p>
-              </>
-            )}
-          </aside>
+          <PracticeInfo
+            exercise={exercise}
+            exercisePattern={exercisePattern}
+            exerciseIndex={exerciseIndex}
+            moves={moves}
+            played={played}
+            feedback={feedback()}
+            showHint={showHint}
+            isDone={isDone}
+            revealPattern={revealPattern}
+          />
         </div>
       )}
     </div>
