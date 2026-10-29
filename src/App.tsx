@@ -4,60 +4,15 @@ import type { Key } from 'chessground/types';
 import { Board } from './Board';
 import { exercises, practicePatternIds } from './exercises';
 import { families, mateIn, patterns } from './patterns';
+import { formatLine, legalDests, loadSolved, saveSolved, shuffle } from './helpers';
 
 type Section = 'patterns' | 'practice';
 
-const STORAGE_KEY = 'checkmate-patterns:solved';
 /** Stable identity so the board effect does not re-run on every render. */
 const NO_DESTS = new Map<Key, Key[]>();
 const REPLY_DELAY = 550;
 const REVERT_DELAY = 600;
 const REVEAL_STEP = 750;
-
-function loadSolved(): string[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === 'string') : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveSolved(ids: string[]) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
-  } catch {
-    // Private browsing or a full quota — progress just won't persist.
-  }
-}
-
-function legalDests(chess: Chess): Map<Key, Key[]> {
-  const dests = new Map<Key, Key[]>();
-  for (const move of chess.moves({ verbose: true })) {
-    const from = move.from as Key;
-    const to = move.to as Key;
-    const existing = dests.get(from);
-    if (existing) existing.push(to);
-    else dests.set(from, [to]);
-  }
-  return dests;
-}
-
-/** "1. Qg8+ Rxg8 2. Nf7#", numbered from wherever the puzzle starts. */
-function formatLine(fen: string, played: string[]): string {
-  const [, turn, , , , fullmove] = fen.split(' ');
-  let number = Number(fullmove) || 1;
-  let whiteToMove = turn === 'w';
-  const parts: string[] = [];
-  for (const san of played) {
-    if (whiteToMove) parts.push(`${number}. ${san}`);
-    else parts.push(parts.length ? san : `${number}... ${san}`);
-    if (!whiteToMove) number += 1;
-    whiteToMove = !whiteToMove;
-  }
-  return parts.join(' ');
-}
 
 type Attempt =
   | { kind: 'idle' }
@@ -78,12 +33,14 @@ export function App() {
     [],
   );
 
+  const [shuffledExercises] = useState(() => shuffle(exercises));
+
   const filteredExercises = useMemo(
     () =>
       selectedPatternIds.length === 0
-        ? exercises
-        : exercises.filter((ex) => selectedPatternIds.includes(ex.patternId)),
-    [selectedPatternIds],
+        ? shuffledExercises
+        : shuffledExercises.filter((ex) => selectedPatternIds.includes(ex.patternId)),
+    [selectedPatternIds, shuffledExercises],
   );
 
   const pattern = patterns[index];
@@ -169,12 +126,12 @@ export function App() {
       setSelectedPatternIds(nextIds);
       const nextList =
         nextIds.length === 0
-          ? exercises
-          : exercises.filter((ex) => nextIds.includes(ex.patternId));
+          ? shuffledExercises
+          : shuffledExercises.filter((ex) => nextIds.includes(ex.patternId));
       setExerciseIndex(0);
       if (nextList[0]) loadPosition(nextList[0].fen);
     },
-    [loadPosition, selectedPatternIds],
+    [loadPosition, selectedPatternIds, shuffledExercises],
   );
 
   const activeFen = activePuzzle ? activePuzzle.fen : pattern.fen;
@@ -411,7 +368,7 @@ export function App() {
                 onClick={() => {
                   setSelectedPatternIds([]);
                   setExerciseIndex(0);
-                  if (exercises[0]) loadPosition(exercises[0].fen);
+                  if (shuffledExercises[0]) loadPosition(shuffledExercises[0].fen);
                 }}
                 aria-pressed={selectedPatternIds.length === 0}
               >
