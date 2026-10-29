@@ -10,7 +10,10 @@ export function Header({ section, progress, onSwitchSection }: Props) {
   return (
     <header>
       <div className="header-left">
-        <h1>Checkmate patterns</h1>
+        <h1>
+          <img className="logo" src="/favicon.svg" alt="" width={28} height={28} />
+          Checkmate patterns
+        </h1>
         <nav className="tabs" aria-label="Sections">
           <button
             className={`tab${section === 'patterns' ? ' active' : ''}`}

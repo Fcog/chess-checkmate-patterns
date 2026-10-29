@@ -105,6 +105,15 @@ h1 {
   font-size: 22px;
   font-weight: 600;
   letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  display: block;
+  flex-shrink: 0;
+  margin-right: 1px;
 }
 
 .progress {
@@ -336,5 +345,13 @@ main {
 
   .menu.open .menu-toggle {
     margin-bottom: 8px;
+  }
+
+  .header-left {
+    gap: 14px;
+  }
+
+  .header-left h1 {
+      font-size: 18px;
   }
 }
