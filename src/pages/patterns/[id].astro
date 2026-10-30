@@ -1,0 +1,39 @@
+---
+import type { GetStaticPaths } from 'astro';
+import PatternArticle from '../../components/PatternArticle.astro';
+import { PatternTrainer } from '../../components/react/PatternTrainer';
+import Base from '../../layouts/Base.astro';
+import { mateIn, patterns } from '../../lib/patterns';
+
+export const getStaticPaths = (() =>
+  patterns.map((pattern) => ({ params: { id: pattern.id }, props: { pattern } }))) satisfies GetStaticPaths;
+
+const { pattern } = Astro.props;
+const path = `/patterns/${pattern.id}`;
+const description = `${pattern.intro} Solve the mate in ${mateIn(pattern)} on an interactive board.`;
+---
+
+<Base
+  title={`${pattern.name} – Chess Checkmate Pattern | Checkmate Patterns`}
+  description={description}
+  path={path}
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'LearningResource',
+    name: pattern.name,
+    description: pattern.intro,
+    url: new URL(path, Astro.site).href,
+    inLanguage: 'en',
+    isAccessibleForFree: true,
+    learningResourceType: 'Interactive chess puzzle',
+    about: { '@type': 'Thing', name: 'Checkmate patterns in chess' },
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'Checkmate Patterns',
+      url: Astro.site?.href,
+    },
+  }}
+>
+  <PatternTrainer client:load patternId={pattern.id} transition:persist="pattern-trainer" />
+  <PatternArticle pattern={pattern} />
+</Base>

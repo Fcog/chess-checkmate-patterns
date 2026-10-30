@@ -1,0 +1,45 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  /** Path of this page, e.g. "/patterns/arabian". Used for the canonical URL. */
+  path: string;
+  image?: string;
+  imageAlt?: string;
+  /** Structured data (schema.org) for this page. */
+  jsonLd?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description,
+  path,
+  image = '/og-image.png',
+  imageAlt = 'Checkmate Patterns logo with a golden chess king',
+  jsonLd,
+} = Astro.props;
+
+const canonical = new URL(path, Astro.site).href;
+const imageUrl = new URL(image, Astro.site).href;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<!-- Open Graph / social previews -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Checkmate Patterns" />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={imageAlt} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+
+{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}

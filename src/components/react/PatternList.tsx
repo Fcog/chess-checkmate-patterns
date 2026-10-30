@@ -1,31 +1,30 @@
-import { families, mateIn, patterns } from './patterns';
+import { families, mateIn, patterns } from '../../lib/patterns';
 
 export type Props = {
-  activeIndex: number;
+  activeId: string;
   solved: string[];
-  onSelect: (index: number) => void;
 };
 
-export function PatternList({ activeIndex, solved, onSelect }: Props) {
+export function PatternList({ activeId, solved }: Props) {
   return (
-    <nav className="patterns">
+    <nav className="patterns" aria-label="Checkmate patterns">
       {families.map((family) => (
         <section key={family}>
           <h3>{family}</h3>
-          {patterns.map((p, i) =>
+          {patterns.map((p) =>
             p.family !== family ? null : (
-              <button
+              <a
                 key={p.id}
-                className={`pattern${i === activeIndex ? ' active' : ''}`}
-                onClick={() => onSelect(i)}
-                aria-current={i === activeIndex}
+                href={`/patterns/${p.id}`}
+                className={`pattern${p.id === activeId ? ' active' : ''}`}
+                aria-current={p.id === activeId ? 'page' : undefined}
               >
                 <span className="check" aria-hidden="true">
                   {solved.includes(p.id) ? '✓' : ''}
                 </span>
                 <span className="label">{p.name}</span>
                 <span className="badge">M{mateIn(p)}</span>
-              </button>
+              </a>
             ),
           )}
         </section>

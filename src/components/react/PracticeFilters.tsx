@@ -1,4 +1,4 @@
-import type { Pattern } from './patterns';
+import type { Pattern } from '../../lib/patterns';
 
 export type Props = {
   patterns: Pattern[];

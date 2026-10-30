@@ -1,0 +1,40 @@
+---
+import Analytics from '@vercel/analytics/astro';
+import { ClientRouter } from 'astro:transitions';
+import SeoHead, { type Props as SeoProps } from '../components/SeoHead.astro';
+import 'chessground/assets/chessground.base.css';
+import 'chessground/assets/chessground.brown.css';
+import 'chessground/assets/chessground.cburnett.css';
+import '../styles/styles.css';
+
+export type Props = SeoProps;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-VGL8LH1VBE"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'G-VGL8LH1VBE');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#16130f" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <SeoHead {...Astro.props} />
+    <ClientRouter />
+  </head>
+  <body>
+    <slot />
+    <Analytics />
+  </body>
+</html>

@@ -3,32 +3,31 @@ export type Section = 'patterns' | 'practice';
 export type Props = {
   section: Section;
   progress: string;
-  onSwitchSection: (section: Section) => void;
 };
 
-export function Header({ section, progress, onSwitchSection }: Props) {
+export function Header({ section, progress }: Props) {
   return (
     <header>
       <div className="header-left">
-        <h1>
+        <a className="brand" href="/">
           <img className="logo" src="/favicon.svg" alt="" width={28} height={28} />
           Checkmate patterns
-        </h1>
+        </a>
         <nav className="tabs" aria-label="Sections">
-          <button
+          <a
             className={`tab${section === 'patterns' ? ' active' : ''}`}
-            onClick={() => onSwitchSection('patterns')}
+            href="/"
             aria-current={section === 'patterns' ? 'page' : undefined}
           >
             Patterns
-          </button>
-          <button
+          </a>
+          <a
             className={`tab${section === 'practice' ? ' active' : ''}`}
-            onClick={() => onSwitchSection('practice')}
+            href="/practice"
             aria-current={section === 'practice' ? 'page' : undefined}
           >
             Practice
-          </button>
+          </a>
         </nav>
       </div>
       <span className="progress">{progress}</span>

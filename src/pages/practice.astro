@@ -1,0 +1,35 @@
+---
+import { PracticeTrainer } from '../components/react/PracticeTrainer';
+import Base from '../layouts/Base.astro';
+import { exercises, practicePatternIds } from '../lib/exercises';
+import { patterns } from '../lib/patterns';
+
+const practicePatterns = patterns.filter((p) => practicePatternIds.includes(p.id));
+---
+
+<Base
+  title="Checkmate Practice Puzzles – Spot the Mating Pattern | Checkmate Patterns"
+  description={`${exercises.length} free checkmate puzzles where the pattern is hidden. Find the mate on an interactive board and train yourself to recognise mating patterns in real games.`}
+  path="/practice"
+>
+  <PracticeTrainer client:load />
+
+  <article class="page-text">
+    <h1>Checkmate practice puzzles</h1>
+    <p>
+      Knowing a pattern is one thing; spotting it in a real position is another. These puzzles mix
+      the patterns together and hide which one you’re looking at, so you have to recognise it
+      yourself. Filter by pattern on the left to focus on the ones you find hardest.
+    </p>
+    <p>Patterns covered in practice:</p>
+    <ul class="link-list">
+      {
+        practicePatterns.map((p) => (
+          <li>
+            <a href={`/patterns/${p.id}`}>{p.name}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </article>
+</Base>
