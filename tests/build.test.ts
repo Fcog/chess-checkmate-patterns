@@ -10,6 +10,8 @@ const match = (html: string, re: RegExp) => html.match(re)?.[1];
 const pages = [
   { path: '/', file: 'index.html' },
   { path: '/practice', file: 'practice/index.html' },
+  { path: '/terms', file: 'terms/index.html' },
+  { path: '/privacy', file: 'privacy/index.html' },
   ...patterns.map((p) => ({ path: `/patterns/${p.id}`, file: `patterns/${p.id}/index.html` })),
 ];
 
@@ -45,6 +47,18 @@ describe.skipIf(!existsSync(new URL('../dist', import.meta.url)))('built site', 
     expect(html).toContain(`<h1>${escape(pattern.name)}</h1>`);
     expect(html).toContain(escape(pattern.intro));
     expect(html).toContain('application/ld+json');
+  });
+
+  it.each(['terms', 'privacy'])('fills in the operator details on /%s', (page) => {
+    // Placeholders live in src/lib/site.ts.
+    expect(read(`${page}/index.html`)).not.toContain('[TODO');
+  });
+
+  it('links to the terms and privacy pages from the footer of every page', () => {
+    for (const page of heads) {
+      expect(page.html).toContain('href="/terms"');
+      expect(page.html).toContain('href="/privacy"');
+    }
   });
 
   it('lists every page in the sitemap, and not the 404 page', () => {

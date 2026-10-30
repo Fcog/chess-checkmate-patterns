@@ -1,0 +1,139 @@
+---
+import Page from '../layouts/Page.astro';
+import { site } from '../lib/site';
+---
+
+<Page
+  title="Privacy Policy | Checkmate Patterns"
+  description="How Checkmate Patterns handles your data: what is collected, why, for how long, and your rights under the GDPR."
+  path="/privacy"
+>
+  <h1>Privacy policy</h1>
+  <p class="meta">Last updated {site.legalUpdated}</p>
+
+  <p>
+    This policy explains what personal data {site.name} ({site.url}) processes when you use the
+    site, why, and what your rights are. It is written to meet the EU General Data Protection
+    Regulation (GDPR, in Dutch: AVG) and the Dutch Telecommunications Act (Telecommunicatiewet).
+  </p>
+
+  <h2>In short</h2>
+  <ul>
+    <li>You don’t need an account and we never ask for your name, email or any other details.</li>
+    <li>Your puzzle progress is stored only in your own browser and is never sent to us.</li>
+    <li>
+      We use analytics to see how many people visit and which pages they use. Google Analytics only
+      runs if you agree to it.
+    </li>
+    <li>We don’t sell your data, show ads, or build profiles of you.</li>
+  </ul>
+
+  <h2>Who is responsible for your data</h2>
+  <p>
+    The data controller is {site.operator}, who runs this site as a
+    private, non-commercial project. You can reach us at <a href={`mailto:${site.email}`}>{site.email}</a>.
+  </p>
+
+  <h2>What data we process and why</h2>
+
+  <h3>Progress stored on your device</h3>
+  <p>
+    The list of puzzles you have solved is saved in your browser’s local storage (under the key <code>checkmate-patterns:solved</code>) so you keep your progress between visits. This data
+    stays on your device and is never sent to us or anyone else. Because it is strictly necessary
+    for a feature you use, no consent is required. You can delete it at any time by clearing your
+    browser’s site data for {site.url}.
+  </p>
+
+  <h3>Hosting and server logs</h3>
+  <p>
+    The site is hosted by Vercel Inc. When you visit, Vercel’s servers automatically process
+    technical data needed to deliver the pages, such as your IP address, browser type, the page
+    requested and the time of the request. This is necessary to run the site and keep it secure.
+    Legal basis: our legitimate interest in providing a working and secure website (GDPR article
+    6(1)(f)). Vercel keeps these logs only for a short period.
+  </p>
+
+  <h3>Vercel Web Analytics</h3>
+  <p>
+    We use Vercel Web Analytics to count visits and see which pages are popular. It does not use
+    cookies and does not store anything on your device. Visitors are counted using a hash of the
+    request that is discarded after 24 hours, so we cannot identify you or follow you across
+    sites or days. We only see aggregated numbers. Legal basis: our legitimate interest in
+    understanding how the site is used so we can improve it (GDPR article 6(1)(f)).
+  </p>
+
+  <h3>Google Analytics</h3>
+  <p>
+    With your consent, we use Google Analytics 4, provided by Google Ireland Limited, to understand
+    in more detail how visitors use the site. Google Analytics places cookies (see below) and
+    collects data such as the pages you visit, how long you stay, your device and browser type,
+    and your approximate location (country or city, derived from your IP address). Google
+    Analytics 4 does not store full IP addresses. We have turned off data sharing with Google for
+    its own purposes and do not use Google Analytics for advertising.
+  </p>
+  <p>
+    Legal basis: your consent (GDPR article 6(1)(a)). You can withdraw your consent at any time;
+    this doesn’t affect processing that took place before you withdrew it. Google may process data
+    in the United States; such transfers are covered by the EU–US Data Privacy Framework, under
+    which Google is certified. See <a
+    href="https://policies.google.com/privacy" rel="noopener">Google’s privacy policy</a>.
+  </p>
+
+  <h2>Cookies</h2>
+  <p>We only use cookies for Google Analytics, and only after you agree.</p>
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Provider</th><th>Purpose</th><th>Expires</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>_ga</code></td><td>Google</td><td>Distinguishes visitors</td><td>2 years</td></tr>
+      <tr><td><code>_ga_*</code></td><td>Google</td><td>Keeps track of the current visit</td><td>2 years</td></tr>
+    </tbody>
+  </table>
+
+  <h2>How long we keep data</h2>
+  <ul>
+    <li>Progress in your browser: until you clear it.</li>
+    <li>Server logs: a short period, as set by our hosting provider.</li>
+    <li>Vercel Web Analytics: only aggregated, anonymous statistics are kept.</li>
+    <li>Google Analytics: event data is deleted automatically after at most 14 months.</li>
+  </ul>
+
+  <h2>Who we share data with</h2>
+  <p>
+    Only with the service providers named above (Vercel and Google), who process data on our
+    behalf to host the site and provide statistics. We don’t sell or rent personal data, and we
+    don’t share it with anyone else unless the law requires us to.
+  </p>
+
+  <h2>Children</h2>
+  <p>
+    The site is suitable for chess players of all ages. We don’t knowingly collect personal data
+    from children. Children under 16 should only agree to analytics cookies with permission from a
+    parent or guardian.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>Under the GDPR you have the right to:</p>
+  <ul>
+    <li>access the personal data we hold about you;</li>
+    <li>have incorrect data corrected;</li>
+    <li>have your data deleted;</li>
+    <li>restrict or object to processing;</li>
+    <li>receive your data in a portable format;</li>
+    <li>withdraw your consent at any time.</li>
+  </ul>
+  <p>
+    Because we don’t ask for your name or contact details, we usually cannot link data to you. To
+    exercise your rights, email <a href={`mailto:${site.email}`}>{site.email}</a> and we will
+    respond within one month. You also have the right to file a complaint with the Dutch Data
+    Protection Authority (<a href="https://autoriteitpersoonsgegevens.nl" rel="noopener">Autoriteit
+    Persoonsgegevens</a>) or the data protection authority in your own country.
+  </p>
+
+  <h2>Changes to this policy</h2>
+  <p>
+    We may update this policy, for example when we add or change a service. The date at the top
+    shows when it was last changed. Significant changes will be announced on the site.
+  </p>
+</Page>

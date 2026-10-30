@@ -1,6 +1,7 @@
 ---
 import Analytics from '@vercel/analytics/astro';
 import { ClientRouter } from 'astro:transitions';
+import Footer from '../components/Footer.astro';
 import SeoHead, { type Props as SeoProps } from '../components/SeoHead.astro';
 import 'chessground/assets/chessground.base.css';
 import 'chessground/assets/chessground.brown.css';
@@ -35,6 +36,7 @@ export type Props = SeoProps;
   </head>
   <body>
     <slot />
+    <Footer />
     <Analytics />
   </body>
 </html>

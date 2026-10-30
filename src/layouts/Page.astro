@@ -1,0 +1,16 @@
+---
+import { Header } from '../components/react/Header';
+import Base, { type Props as BaseProps } from './Base.astro';
+
+export type Props = BaseProps;
+---
+
+<!-- Layout for plain text pages: the site header without the trainer. -->
+<Base {...Astro.props}>
+  <div class="app">
+    <Header />
+  </div>
+  <article class="page-text legal">
+    <slot />
+  </article>
+</Base>

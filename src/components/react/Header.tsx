@@ -1,8 +1,8 @@
 export type Section = 'patterns' | 'practice';
 
 export type Props = {
-  section: Section;
-  progress: string;
+  section?: Section;
+  progress?: string;
 };
 
 export function Header({ section, progress }: Props) {
@@ -30,7 +30,7 @@ export function Header({ section, progress }: Props) {
           </a>
         </nav>
       </div>
-      <span className="progress">{progress}</span>
+      {progress && <span className="progress">{progress}</span>}
     </header>
   );
 }

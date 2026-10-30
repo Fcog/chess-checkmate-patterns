@@ -1,0 +1,105 @@
+---
+import Page from '../layouts/Page.astro';
+import { site } from '../lib/site';
+---
+
+<Page
+  title="Terms of Use | Checkmate Patterns"
+  description="The terms that apply when you use Checkmate Patterns, a free website for learning and practising chess checkmate patterns."
+  path="/terms"
+>
+  <h1>Terms of use</h1>
+  <p class="meta">Last updated {site.legalUpdated}</p>
+
+  <p>
+    These terms apply to your use of {site.name} ({site.url}), a free website for learning and
+    practising chess checkmate patterns. The site is run by {site.operator}, as a private, non-commercial project (“we”, “us”). By using the site, you agree
+    to these terms. If you don’t agree, please don’t use the site.
+  </p>
+
+  <h2>1. The service</h2>
+  <p>
+    The site is free to use and doesn’t require an account. We provide it as it is and as it is
+    available. We may change, suspend or stop the site, or any part of it, at any time and without
+    notice. We don’t guarantee that the site will always be available, error-free or secure.
+  </p>
+
+  <h2>2. Educational content</h2>
+  <p>
+    The puzzles, explanations and historical notes are provided for education and entertainment.
+    We take care to make them accurate, and every puzzle is checked automatically, but we can’t
+    guarantee that all content is complete, correct or up to date. Your progress is stored only in
+    your own browser; we can’t restore it if it is lost.
+  </p>
+
+  <h2>3. Acceptable use</h2>
+  <p>You agree not to:</p>
+  <ul>
+    <li>use the site in a way that breaks the law or the rights of others;</li>
+    <li>
+      try to gain unauthorised access to the site or its systems, or disrupt, overload or damage
+      them;
+    </li>
+    <li>
+      copy or scrape the site’s content on a large scale by automated means, or republish it as
+      your own;
+    </li>
+    <li>use the site to spread malware or spam.</li>
+  </ul>
+  <p>Normal indexing by search engines is welcome.</p>
+
+  <h2>4. Intellectual property</h2>
+  <p>
+    The texts, explanations, design and logo of this site are protected by copyright and belong to
+    us, unless stated otherwise. You may share links to the site and use the content for personal,
+    non-commercial study. Chess positions, moves and the historical names of checkmate patterns are
+    common knowledge and are not claimed by us.
+  </p>
+  <p>
+    The site uses open-source software, including <a
+    href="https://github.com/lichess-org/chessground" rel="noopener">chessground</a> (GPL-3.0)
+    and <a href="https://github.com/jhlywa/chess.js" rel="noopener">chess.js</a> (BSD-2-Clause).
+    These are used under their own licences, which also apply to them.
+  </p>
+
+  <h2>5. Liability</h2>
+  <p>
+    To the extent permitted by law, we are not liable for any damage resulting from the use of the
+    site, from the site being unavailable, or from errors in its content. This limitation does not
+    apply to damage caused by our intent or deliberate recklessness (opzet of
+    bewuste roekeloosheid), or where Dutch or EU law does not allow liability to be limited.
+  </p>
+  <p>
+    If you use the site as a consumer, these terms do not affect the rights you have under
+    mandatory consumer protection law.
+  </p>
+
+  <h2>6. Links to other websites</h2>
+  <p>
+    The site may link to other websites. We don’t control them and are not responsible for their
+    content or privacy practices.
+  </p>
+
+  <h2>7. Privacy</h2>
+  <p>
+    How we handle personal data is explained in our <a href="/privacy">privacy policy</a>.
+  </p>
+
+  <h2>8. Changes to these terms</h2>
+  <p>
+    We may change these terms from time to time. The date at the top shows when they were last
+    changed. If you keep using the site after a change, the new terms apply.
+  </p>
+
+  <h2>9. Applicable law and disputes</h2>
+  <p>
+    These terms are governed by Dutch law. Disputes will be submitted to the competent court in {site.country}. If you are a consumer living in another EU country, you also keep the protection
+    of the mandatory law of your own country and may bring a claim before the courts there. Before
+    going to court, please contact us first — we would much rather solve any problem together.
+  </p>
+
+  <h2>10. Contact</h2>
+  <p>
+    Questions about these terms? Email <a href={`mailto:${site.email}`}>{site.email}</a>.
+  </p>
+</Page>
