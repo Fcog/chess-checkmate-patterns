@@ -4,26 +4,30 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
-    "typecheck": "tsc -b --force",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "typecheck": "astro check",
+    "test": "vitest run src",
+    "test:build": "astro build && vitest run tests",
+    "test:watch": "vitest src"
   },
   "dependencies": {
+    "@astrojs/react": "^7.1.2",
+    "@astrojs/sitemap": "^3.7.4",
     "@vercel/analytics": "^2.0.1",
+    "astro": "^7.4.4",
     "chess.js": "^1.4.0",
     "chessground": "^9.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.12",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.4",
-    "typescript": "^5.6.3",
-    "vite": "^5.4.11",
-    "vitest": "^2.1.9"
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.5"
   }
 }

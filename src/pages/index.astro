@@ -1,0 +1,58 @@
+---
+import { PatternTrainer } from '../components/react/PatternTrainer';
+import Base from '../layouts/Base.astro';
+import { families, mateIn, patterns } from '../lib/patterns';
+---
+
+<Base
+  title="Checkmate Patterns – Learn & Practice Chess Mating Patterns"
+  description="Learn the classic chess checkmate patterns — Anastasia's, Arabian, Boden's, back-rank, Epaulette and more — then test yourself with interactive mate-in-N practice puzzles."
+  path="/"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Checkmate Patterns',
+    url: Astro.site?.href,
+    description:
+      'Learn the classic chess checkmate patterns and practice them with interactive mate-in-N puzzles.',
+    applicationCategory: 'EducationalApplication',
+    operatingSystem: 'Any',
+    inLanguage: 'en',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  }}
+>
+  <PatternTrainer client:load patternId={patterns[0].id} transition:persist="pattern-trainer" />
+
+  <article class="page-text">
+    <h1>Learn the classic chess checkmate patterns</h1>
+    <p>
+      Strong players don’t calculate every mate from scratch — they recognise the pattern. This
+      site teaches {patterns.length} classic checkmate patterns, from the back-rank mate to Anastasia’s,
+      Boden’s and the Arabian mate. Each pattern is a short puzzle on an interactive board: find the
+      mating move, get a hint if you need one, and read how the pattern works once you’ve solved it.
+    </p>
+    <p>
+      When you know the patterns, test yourself in <a href="/practice">Practice</a>: random positions
+      where the pattern is hidden, so you have to spot it on your own.
+    </p>
+
+    {
+      families.map((family) => (
+        <section>
+          <h2>{family}</h2>
+          <ul class="link-list">
+            {patterns
+              .filter((p) => p.family === family)
+              .map((p) => (
+                <li>
+                  <a href={`/patterns/${p.id}`}>{p.name}</a>{' '}
+                  <span class="badge">M{mateIn(p)}</span>
+                </li>
+              ))}
+          </ul>
+        </section>
+      ))
+    }
+  </article>
+</Base>

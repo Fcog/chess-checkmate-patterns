@@ -1,0 +1,43 @@
+---
+import { mateIn, patterns, type Pattern } from '../lib/patterns';
+
+export interface Props {
+  pattern: Pattern;
+}
+
+const { pattern } = Astro.props;
+const index = patterns.findIndex((p) => p.id === pattern.id);
+const prev = patterns[(index - 1 + patterns.length) % patterns.length];
+const next = patterns[(index + 1) % patterns.length];
+const related = patterns.filter((p) => p.family === pattern.family && p.id !== pattern.id);
+---
+
+<article class="page-text">
+  <h1>{pattern.name}</h1>
+  <p class="meta">{pattern.family} · Mate in {mateIn(pattern)}</p>
+  <p>{pattern.intro}</p>
+  <details>
+    <summary>How it works (spoiler)</summary>
+    <p>{pattern.idea}</p>
+  </details>
+
+  {
+    related.length > 0 && (
+      <>
+        <h2>More {pattern.family.toLowerCase()}</h2>
+        <ul class="link-list">
+          {related.map((p) => (
+            <li>
+              <a href={`/patterns/${p.id}`}>{p.name}</a>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+
+  <nav class="pager" aria-label="Pattern navigation">
+    <a href={`/patterns/${prev.id}`} rel="prev">← {prev.name}</a>
+    <a href={`/patterns/${next.id}`} rel="next">{next.name} →</a>
+  </nav>
+</article>

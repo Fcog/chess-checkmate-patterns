@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import type { Exercise } from './exercises';
-import { formatLine } from './helpers';
-import type { Pattern } from './patterns';
+import type { Exercise } from '../../lib/exercises';
+import { formatLine } from '../../lib/helpers';
+import type { Pattern } from '../../lib/patterns';
 
 export type Props = {
   exercise: Exercise | undefined;

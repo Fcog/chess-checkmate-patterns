@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { formatLine } from './helpers';
-import type { Pattern } from './patterns';
+import { formatLine } from '../../lib/helpers';
+import type { Pattern } from '../../lib/patterns';
 
 export type Props = {
   pattern: Pattern;

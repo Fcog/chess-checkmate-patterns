@@ -6,8 +6,8 @@ An interactive chess tactics trainer for learning and practicing **39 classic ch
 
 ## Tech Stack
 
-- **Framework:** [React 18](https://react.dev/) with [TypeScript](https://www.typescriptlang.org/)
-- **Build Tool:** [Vite](https://vite.dev/)
+- **Site framework:** [Astro](https://astro.build/) — a static HTML page per pattern (`/patterns/<id>`), plus `/` and `/practice`, with per-page SEO tags and a generated sitemap
+- **Interactive UI:** [React 18](https://react.dev/) islands with [TypeScript](https://www.typescriptlang.org/)
 - **Chess Logic & Validation:** [`chess.js`](https://github.com/jhlywa/chess.js) — FEN parsing, legal move generation, SAN formatting, and check/checkmate detection
 - **Chessboard UI:** [`chessground`](https://github.com/lichess-org/chessground) — Lichess's interactive board library providing drag-and-drop movement, legal destination indicators, check/last-move highlights, and smooth piece animations
 - **Testing:** [Vitest](https://vitest.dev/) — automated verification of the entire puzzle library
@@ -41,7 +41,7 @@ Puzzles are grouped into four piece families in the sidebar navigation, each bad
 - Displays a live `solved / total` counter in the header and checkmarks (`✓`) next to completed patterns in the sidebar.
 
 ### Verified Puzzle Integrity
-The test suite (`src/patterns.test.ts`) validates every pattern in the catalog to ensure:
+The test suite (`src/lib/patterns.test.ts`) validates every pattern in the catalog to ensure:
 - Every FEN is legal and starts with neither king in check.
 - Every solution plays out legally and ends in checkmate.
 - Every auto-played defender reply is strictly forced (the defender's only legal move).
@@ -63,4 +63,20 @@ npm test
 
 # Type-check and build for production
 npm run build
+
+# Build, then check the generated pages (titles, canonical URLs, sitemap)
+npm run test:build
+```
+
+## Project Structure
+
+```
+src/
+  pages/                 index.astro, practice.astro, 404.astro, patterns/[id].astro
+  layouts/Base.astro     shared <head>: SEO tags, analytics, view transitions
+  components/            Astro components (SeoHead, PatternArticle)
+  components/react/      interactive trainer: PatternTrainer, PracticeTrainer, Board, usePuzzle, …
+  lib/                   pattern and exercise data, puzzle logic, sounds, helpers
+  styles/styles.css
+tests/build.test.ts      checks the built HTML in dist/
 ```
