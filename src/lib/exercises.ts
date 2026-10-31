@@ -159,6 +159,13 @@ export const exercises: Exercise[] = [
     hint: 'Your bishop on d3 is aimed at h7. The h-file is the road there, even if it costs material to open.',
   },
   {
+    id: 'max-lange-3',
+    patternId: 'max-lange',
+    fen: 'r2qr1k1/pp3p1p/1bn4Q/4p3/3p4/1N1B1b2/PP3PPP/R4RK1 w - - 0 1',
+    solution: ['Bxh7+', 'Kh8', 'Bg6+', 'Kg8', 'Qh7+', 'Kf8', 'Qxf7#'],
+    hint: 'Your queen and bishop both point at h7. Keep giving checks and let the bishop guard the queen’s landing square.',
+  },
+  {
     id: 'opera-1',
     patternId: 'opera',
     fen: '3r2k1/bp1q1pp1/p1p4p/7b/2Q1NN2/4P3/PPP2PPP/R3K2R b KQ - 0 1',
@@ -381,5 +388,33 @@ export const exercises: Exercise[] = [
     fen: '5rk1/5ppp/1q6/2n4Q/P1B5/3p4/2P3PP/5RK1 b - - 0 1',
     solution: ['Ne4+', 'Kh1', 'Nf2+', 'Kg1', 'Nh3+', 'Kh1', 'Qg1+', 'Rxg1', 'Nf2#'],
     hint: '',
+  },
+  {
+    id: 'suffocation-1',
+    patternId: 'suffocation',
+    fen: 'k1rr4/p2p2b1/1p2p2p/2pN1pp1/2PP1B2/6P1/PP3PBP/6K1 w - - 0 1',
+    solution: ['Nxb6#'],
+    hint: 'Your g2 bishop is aimed at the king, with only your own knight in the way. Where can the knight go with check?',
+  },
+  {
+    id: 'bombardiers-1',
+    patternId: 'bombardiers',
+    fen: 'r3rbk1/1p5p/p1q3p1/3p4/1PB5/P3PQ2/1B1P2PP/2K5 w - - 0 1',
+    solution: ['Qxd5+', 'Qxd5', 'Bxd5+', 'Re6', 'Bxe6#'],
+    hint: 'Your b2 bishop already watches g7 and h8. Open the other diagonal towards g8, even if it costs your queen.',
+  },
+  {
+    id: 'bombardiers-2',
+    patternId: 'bombardiers',
+    fen: 'r2R1rk1/1pp2ppp/pq6/2b2NN1/1nB5/1P5P/PBP2PP1/2K4R w - - 0 1',
+    solution: ['Bxf7+', 'Kh8', 'Bxg7#'],
+    hint: 'Both your bishops are aimed at Black’s king. Use one to drive the king into the corner, then let the other finish on the long diagonal.',
+  },
+  {
+    id: 'bombardiers-3',
+    patternId: 'bombardiers',
+    fen: '4r2k/pp1r2pp/2pb4/7q/P1BQ4/1P6/1BP4P/6RK w - - 0 1',
+    solution: ['Qxg7+', 'Rxg7', 'Bxg7#'],
+    hint: 'Your c4 bishop already guards g8. Clear the long diagonal for the other bishop, whatever it costs.',
   },
 ];
