@@ -1,3 +1,5 @@
+import { ButtonLabel } from './ButtonLabel';
+
 export type Props = {
   canReset: boolean;
   canGoNext: boolean;
@@ -29,11 +31,11 @@ export function PatternControls({
       <button onClick={onShowHint} disabled={showHint || isDone}>
         Hint
       </button>
-      <button onClick={onShowSolution} disabled={isDone || busy}>
-        Show solution
+      <button onClick={onShowSolution} disabled={isDone || busy} aria-label="Show solution">
+        <ButtonLabel full="Show solution" short="Solution" />
       </button>
-      <button onClick={onNext} disabled={!canGoNext}>
-        Next pattern
+      <button onClick={onNext} disabled={!canGoNext} aria-label="Next pattern">
+        <ButtonLabel full="Next pattern" short="Next →" />
       </button>
     </div>
   );

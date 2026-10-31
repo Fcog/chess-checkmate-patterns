@@ -104,6 +104,7 @@ export function PracticeTrainer() {
             hasHint={!!exercise?.hint}
             canReset={puzzle.canReset}
             canGoNext={filteredExercises.length >= 2}
+            canGoPrevious={filteredExercises.length >= 2}
             isDone={puzzle.isDone}
             busy={puzzle.busy}
             showHint={puzzle.showHint}
@@ -112,6 +113,12 @@ export function PracticeTrainer() {
             onTogglePattern={() => setRevealPattern((prev) => !prev)}
             onShowHint={() => puzzle.setShowHint(true)}
             onShowSolution={puzzle.reveal}
+            onPrevious={() =>
+              goTo(
+                (exerciseIndex - 1 + filteredExercises.length) % filteredExercises.length,
+                filteredExercises,
+              )
+            }
             onNext={() =>
               goTo((exerciseIndex + 1) % filteredExercises.length, filteredExercises)
             }

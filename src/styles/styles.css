@@ -290,6 +290,53 @@ main {
   cursor: default;
 }
 
+.label-short {
+  display: none;
+}
+
+/*
+ * The controls sit in the board column, whose width depends on the layout rather than the
+ * screen, so the labels shrink based on that column. This keeps them on one line.
+ */
+main {
+  container-type: inline-size;
+}
+
+@container (max-width: 599px) {
+  .controls button.nav .label-full {
+    display: none;
+  }
+
+  .controls button.nav .label-short {
+    display: inline;
+  }
+}
+
+@container (max-width: 499px) {
+  .controls {
+    flex-wrap: nowrap;
+    gap: 6px;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .controls button {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 7px 6px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .controls .label-full {
+    display: none;
+  }
+
+  .controls .label-short {
+    display: inline;
+  }
+}
+
 .info {
   padding: 16px;
   border: 1px solid var(--line);
@@ -500,4 +547,5 @@ a {
   .brand {
     font-size: 18px;
   }
+
 }
