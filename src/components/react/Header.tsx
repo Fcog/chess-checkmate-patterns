@@ -1,11 +1,15 @@
+import { MenuButton, type MenuState } from './Menu';
+
 export type Section = 'patterns' | 'practice';
 
 export type Props = {
   section?: Section;
   progress?: string;
+  /** On mobile, the button that opens this page's menu, shown next to the tabs. */
+  menu?: MenuState;
 };
 
-export function Header({ section, progress }: Props) {
+export function Header({ section, progress, menu }: Props) {
   return (
     <header>
       <div className="header-left">
@@ -31,6 +35,7 @@ export function Header({ section, progress }: Props) {
         </nav>
       </div>
       {progress && <span className="progress">{progress}</span>}
+      {menu && <MenuButton {...menu} />}
     </header>
   );
 }

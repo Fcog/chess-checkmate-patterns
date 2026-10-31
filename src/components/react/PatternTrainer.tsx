@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { navigate } from 'astro:transitions/client';
 import { patterns } from '../../lib/patterns';
 import { Board } from './Board';
 import { Feedback } from './Feedback';
 import { Header } from './Header';
-import { MenuToggle } from './MenuToggle';
+import { MenuPanel } from './Menu';
 import { PatternControls } from './PatternControls';
 import { PatternInfo } from './PatternInfo';
 import { PatternList } from './PatternList';
@@ -22,6 +22,7 @@ export function PatternTrainer({ patternId }: Props) {
   );
   const pattern = patterns[index];
   const { solved, markSolved } = useSolved();
+  const [menuOpen, setMenuOpen] = useState(false);
   const puzzle = usePuzzle(pattern, markSolved);
   const { load } = puzzle;
 
@@ -35,12 +36,20 @@ export function PatternTrainer({ patternId }: Props) {
 
   return (
     <div className="app">
-      <Header section="patterns" progress={`${solvedCount} / ${patterns.length} solved`} />
+      <Header
+        section="patterns"
+        progress={`${solvedCount} / ${patterns.length} solved`}
+        menu={{
+          label: 'List',
+          open: menuOpen,
+          onToggle: () => setMenuOpen((prev) => !prev),
+        }}
+      />
 
       <div className="layout">
-        <MenuToggle label="patterns">
+        <MenuPanel open={menuOpen} onClose={() => setMenuOpen(false)}>
           <PatternList activeId={pattern.id} solved={solved} />
-        </MenuToggle>
+        </MenuPanel>
 
         <main>
           <Board {...puzzle.boardProps} />

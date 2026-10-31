@@ -5,7 +5,7 @@ import { patterns } from '../../lib/patterns';
 import { Board } from './Board';
 import { Feedback } from './Feedback';
 import { Header } from './Header';
-import { MenuToggle } from './MenuToggle';
+import { MenuPanel } from './Menu';
 import { PracticeControls } from './PracticeControls';
 import { PracticeFilters } from './PracticeFilters';
 import { PracticeInfo } from './PracticeInfo';
@@ -27,6 +27,7 @@ export function PracticeTrainer() {
   const [revealPattern, setRevealPattern] = useState(false);
 
   const { solved, markSolved } = useSolved();
+  const [menuOpen, setMenuOpen] = useState(false);
   const puzzle = usePuzzle(exercises[0], markSolved);
   const { load } = puzzle;
 
@@ -75,17 +76,22 @@ export function PracticeTrainer() {
       <Header
         section="practice"
         progress={`${solvedExercisesCount} / ${filteredExercises.length} solved`}
+        menu={{
+          label: 'Filters',
+          open: menuOpen,
+          onToggle: () => setMenuOpen((prev) => !prev),
+        }}
       />
 
       <div className="layout">
-        <MenuToggle label="filters">
+        <MenuPanel open={menuOpen} onClose={() => setMenuOpen(false)}>
           <PracticeFilters
             patterns={practicePatterns}
             selectedIds={selectedPatternIds}
             onSelectAll={selectAllPatterns}
             onToggle={togglePatternFilter}
           />
-        </MenuToggle>
+        </MenuPanel>
 
         <main>
           {exercise ? (
