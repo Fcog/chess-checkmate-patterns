@@ -1,3 +1,6 @@
 {
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/patterns/railroad", "destination": "/patterns/triangle", "permanent": true }
+  ]
 }

@@ -7,7 +7,7 @@ export type Exercise = {
 };
 
 /** Checkmate patterns currently available in the Practice section filter. */
-export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'railroad', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio'];
+export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box'];
 
 /** Practice exercises. */
 export const exercises: Exercise[] = [
@@ -94,13 +94,6 @@ export const exercises: Exercise[] = [
     fen: '2k3r1/ppp5/3q4/PP3pnp/3Pp3/4P2P/2Q2PP1/2R2RK1 b - - 0 1',
     solution: ['Nf3+', 'Kh1', 'Qh2#'],
     hint: 'White\'s kingside dark squares are weak. Your queen and knight work well together near h2.',
-  },
-  {
-    id: 'railroad-1',
-    patternId: 'railroad',
-    fen: 'r1b4R/2q1b1p1/p3pkP1/4p3/1p2P3/5P2/PPP3Q1/K7 w - - 0 1',
-    solution: ['Rh5', 'Qxc2', 'Qg5#'],
-    hint: 'Your queen wants a square right next to the king, but she needs support. Look for a quiet rook move.',
   },
   {
     id: 'max-lange-1',
@@ -416,5 +409,57 @@ export const exercises: Exercise[] = [
     fen: '4r2k/pp1r2pp/2pb4/7q/P1BQ4/1P6/1BP4P/6RK w - - 0 1',
     solution: ['Qxg7+', 'Rxg7', 'Bxg7#'],
     hint: 'Your c4 bishop already guards g8. Clear the long diagonal for the other bishop, whatever it costs.',
+  },
+  {
+    id: 'triangle-1',
+    patternId: 'triangle',
+    fen: 'r1b5/pp2b1k1/1q2p3/4P2Q/5p2/8/PP4PP/5R1K w - - 0 1',
+    solution: ['Rxf4', 'Qd8', 'Rf7+', 'Kg8', 'Qh7#'],
+    hint: 'Your queen needs a partner on the seventh rank. Clear the way for your rook first.',
+  },
+  {
+    id: 'triangle-2',
+    patternId: 'triangle',
+    fen: 'Nk3r2/pp1Q4/8/3P4/P4q2/7P/1PP5/6RK b - - 0 1',
+    solution: ['Qe4+', 'Kh2', 'Rf2+', 'Kg3', 'Qf4#'],
+    hint: 'Drive the king up the board with checks. Your rook can join on the f-file to protect the queen.',
+  },
+  {
+    id: 'triangle-3',
+    patternId: 'triangle',
+    fen: '8/p6p/kpQB4/6p1/4P3/P7/1q3PPP/2R4K w - - 0 1',
+    solution: ['Qa4+', 'Kb7', 'Rc7+', 'Kb8', 'Qxa7#'],
+    hint: 'Chase the king back with checks, then bring your rook to the seventh rank to support the queen.',
+  },
+  {
+    id: 'triangle-4',
+    patternId: 'triangle',
+    fen: '3r1rk1/1bqp2pp/pp2p3/8/2P1P1Pb/1P6/PB1NQP2/R2R2K1 b - - 0 1',
+    solution: ['Rxf2', 'Qe3', 'Qh2#'],
+    hint: 'The f2 pawn is the only thing between your rook and White’s second rank. Your queen is already aiming at h2.',
+  },
+  {
+    id: 'triangle-5',
+    patternId: 'triangle',
+    fen: '2b3k1/1pr4p/p2R2p1/1q6/8/QP5P/P6K/8 w - - 0 1',
+    solution: [
+      'Rd8+', 'Kf7', 'Qf8+', 'Ke6', 'Rd6+', 'Ke5', 'Qf6+', 'Ke4',
+      'Rd4+', 'Ke3', 'Qf4+', 'Ke2', 'Rd2+', 'Ke1', 'Qf2#',
+    ],
+    hint: 'Your queen and rook can take turns giving check, protecting each other all the way down the board.',
+  },
+  {
+    id: 'kill-box-1',
+    patternId: 'kill-box',
+    fen: '8/pp2Brbk/6pp/1P1Np2r/P1P5/3P1q2/1R3pRP/5Q1K b - - 0 1',
+    solution: ['Rxh2+', 'Kxh2', 'Qh5+', 'Kg3', 'Rf3#'],
+    hint: 'Rip open the h-file to drag the king out, then let your queen and f-file rook box it in.',
+  },
+  {
+    id: 'kill-box-2',
+    patternId: 'kill-box',
+    fen: '6k1/pp4pp/2pb2rr/3p4/3PpP1q/4P1NP/PPR4K/2R1QN2 b - - 0 1',
+    solution: ['Qxh3+', 'Kg1', 'Qh1+', 'Kf2', 'Qf3+', 'Kg1', 'Rh1#'],
+    hint: 'Your queen and h-file rook work as a team. Keep checking until the queen guards the corner for the rook.',
   },
 ];

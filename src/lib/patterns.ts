@@ -81,8 +81,8 @@ export const patterns: Pattern[] = [
     intro:
       'A queen-and-rook mate where the queen boxes in the king from a distance. A key ' +
       'technique for converting a queen-and-rook ending quickly.',
-    fen: '8/8/7R/k7/2Q5/8/8/6K1 w - - 0 1',
-    solution: ['Ra6#'],
+    fen: '4k3/8/5Q2/8/8/8/8/3RK3 w - - 0 1',
+    solution: ['Rd8#'],
     idea:
       'The queen sits a knight’s-move away from the king and blankets a 3×3 box around it. ' +
       'The rook slides in to check, defended by the queen along the diagonal.',
@@ -93,28 +93,16 @@ export const patterns: Pattern[] = [
     name: 'Triangle mate',
     family: 'Queen mates',
     intro:
-      'Queen, rook and king work together in a triangle to trap the enemy king on the edge of ' +
+      'Queen and rook team up with a contact check: the king, queen and rook form a triangle ' +
+      'that leaves the enemy king nowhere to go.',
+    fen: '8/4r3/4k3/3R4/8/5Q2/8/3RK3 w - - 0 1',
+    solution: ['Qf5#'],
+    idea:
+      'The queen checks from the square diagonally next to the king, protected by the rook on ' +
+      'the same rank. Together the queen and rooks cover every square around the king, so ' +
+      'king, queen and rook form a triangle the king cannot escape — even in the middle of ' +
       'the board.',
-    fen: '6k1/7p/5Q2/8/8/8/8/3R2K1 w - - 0 1',
-    solution: ['Rd8#'],
-    idea:
-      'Queen, rook and king form a triangle: the queen covers the escape squares in front ' +
-      'of the king while the rook mates along the back rank.',
-    hint: 'The queen has the seventh rank covered — mate on the eighth.',
-  },
-  {
-    id: 'railroad',
-    name: 'Railroad mate',
-    family: 'Queen mates',
-    intro:
-      'Queen and rook move side by side like a train on two rails, protecting each other all ' +
-      'the way to the king.',
-    fen: 'k7/1R6/8/8/8/8/7Q/6K1 w - - 0 1',
-    solution: ['Qb8#'],
-    idea:
-      'Queen and rook run side by side like a train on two rails, each defending the other. ' +
-      'The queen pulls up next to the king and cannot be taken.',
-    hint: 'Ride the diagonal into the corner, right beside the king.',
+    hint: 'Check from right beside the king, on a square your rook protects.',
   },
   {
     id: 'max-lange',

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Chess, validateFen } from 'chess.js';
-import { exercises, type Exercise } from './exercises';
+import { exercises, practicePatternIds, type Exercise } from './exercises';
 import { families, mateIn, patterns, type Pattern } from './patterns';
 
 /**
@@ -129,5 +129,12 @@ describe.each(exercises.map((ex): [string, Exercise] => [ex.id, ex]))('exercise 
       chess.move(san);
     });
     expect(chess.isCheckmate()).toBe(true);
+  });
+});
+
+describe('practice filters', () => {
+  it('has a filter for every pattern that has exercises, and no empty filters', () => {
+    const used = [...new Set(exercises.map((ex) => ex.patternId))].sort();
+    expect([...practicePatternIds].sort()).toEqual(used);
   });
 });

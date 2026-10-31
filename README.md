@@ -1,6 +1,6 @@
 # Chess Checkmate Patterns
 
-An interactive chess tactics trainer for learning and practicing **39 classic checkmate patterns**. Players solve forced-mate puzzles directly on an interactive board, organized by piece family, with hints, animated solution reveals, and tactical explanations for each motif.
+An interactive chess tactics trainer for learning and practicing **38 classic checkmate patterns**. Players solve forced-mate puzzles directly on an interactive board, organized by piece family, with hints, animated solution reveals, and tactical explanations for each motif.
 
 ---
 
@@ -17,9 +17,9 @@ An interactive chess tactics trainer for learning and practicing **39 classic ch
 
 ## Features
 
-### Curated Library of 39 Checkmate Patterns
+### Curated Library of 38 Checkmate Patterns
 Puzzles are grouped into four piece families in the sidebar navigation, each badged with its mate depth (`M1`, `M2`, etc.):
-- **Queen mates (14):** Epaulette, Swallow's tail, Cozio's, Kill box, Triangle, Railroad, Max Lange's, Balestra, Bucking bronco, Sneaky stallion, Damiano's, Lolli's, Greco's, and Scholar's mate.
+- **Queen mates (13):** Epaulette, Swallow's tail, Cozio's, Kill box, Triangle, Max Lange's, Balestra, Bucking bronco, Sneaky stallion, Damiano's, Lolli's, Greco's, and Scholar's mate.
 - **Rook mates (15):** Back-rank, Blind swine, Lawnmower, h-file, Opera, Mayet's, Réti's, Pillsbury's, Morphy's, Corner, Anastasia's, Arabian, Vuković's, Hook, and Anderssen's mate.
 - **Minor-piece mates (9):** Diagonal corridor, Bombardiers', Boden's, Smothered, Philidor's legacy (Mate in 2), Two knights, Suffocation, Collaboration, and Blackburne's mate.
 - **Pawn mates (1):** David and Goliath mate.
