@@ -131,6 +131,20 @@ export const exercises: Exercise[] = [
     hint: 'Your queen is blocking your own bishop’s diagonal. Give it up on g2 with check, and the rook that takes it will be pinned.',
   },
   {
+    id: 'back-rank-18',
+    patternId: 'back-rank',
+    fen: 'r2qk2r/pbpn1pp1/1p1ppb2/8/4PP2/1BPP1Rp1/PP2Q1P1/RNB1N1K1 b kq - 0 1',
+    solution: ['Bd4+', 'cxd4', 'Rh1+', 'Kxh1', 'Qh4+', 'Kg1', 'Qh2+', 'Kf1', 'Qh1#'],
+    hint: 'Your g3 pawn and the open h-file are deadly. Chase the king with checks until its own pieces leave it nowhere to go.',
+  },
+  {
+    id: 'back-rank-19',
+    patternId: 'back-rank',
+    fen: 'r3kb1r/1pp3p1/p3bp1p/5q2/3QN3/1P6/PBP3P1/3RR1K1 w kq - 0 1',
+    solution: ['Qd7+', 'Bxd7', 'Nd6+', 'Kd8', 'Nf7+', 'Kc8', 'Re8+', 'Bxe8', 'Rd8#'],
+    hint: 'Black’s king is stuck in the centre. Use checks to walk it towards its own queenside pawns, and keep your knight close to guard the rook.',
+  },
+  {
     id: 'anastasia-1',
     patternId: 'anastasia',
     fen: 'k2r3r/pppN1pp1/3n3q/1P6/Q3R1P1/2P4p/P4P1P/R5K1 w - - 0 1',
