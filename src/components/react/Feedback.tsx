@@ -14,7 +14,13 @@ export function Feedback({ attempt, moves, ply, heroColor }: Props) {
 
   switch (attempt.kind) {
     case 'wrong':
-      return <p className="feedback wrong">{attempt.san} does not force mate. Try again.</p>;
+      return attempt.reply ? (
+        <p className="feedback wrong">
+          {attempt.san} isn’t it — {defender} answers {attempt.reply}. Try again.
+        </p>
+      ) : (
+        <p className="feedback wrong">{attempt.san} is stalemate — a draw. Try again.</p>
+      );
     case 'progress':
       return (
         <p className="feedback right">

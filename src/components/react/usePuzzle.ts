@@ -3,19 +3,21 @@ import { Chess } from 'chess.js';
 import type { Color, Key } from 'chessground/types';
 import { legalDests } from '../../lib/helpers';
 import { mateIn } from '../../lib/patterns';
-import { checkMove, playSan, type Puzzle } from '../../lib/puzzle';
+import { checkMove, playSan, refutation, type Puzzle } from '../../lib/puzzle';
 import { playBadMove, playGoodMove } from '../../lib/sounds';
 
 /** Stable identity so the board effect does not re-run on every render. */
 const NO_DESTS = new Map<Key, Key[]>();
 const REPLY_DELAY = 550;
-const REVERT_DELAY = 600;
+/** How long the opponent's answer to a wrong move stays on the board. */
+const WRONG_SHOW = 2000;
 const REVEAL_STEP = 750;
 
 export type Attempt =
   | { kind: 'idle' }
   | { kind: 'progress'; hero: string; reply: string }
-  | { kind: 'wrong'; san: string }
+  /** `reply` is the opponent's answer shown on the board; null means the move stalemated. */
+  | { kind: 'wrong'; san: string; reply: string | null }
   | { kind: 'solved'; revealed: boolean };
 
 /**
@@ -32,6 +34,8 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
   const [lastMove, setLastMove] = useState<Key[] | undefined>(undefined);
   const [showHint, setShowHint] = useState(false);
   const [syncKey, setSyncKey] = useState(0);
+  /** Temporary position while a wrong move and its answer are shown; `fen` stays the real one. */
+  const [displayFen, setDisplayFen] = useState<string | undefined>(undefined);
 
   const timers = useRef<number[]>([]);
   const clearTimers = useCallback(() => {
@@ -53,6 +57,7 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
       setAttempt({ kind: 'idle' });
       setBusy(false);
       setLastMove(undefined);
+      setDisplayFen(undefined);
       setShowHint(false);
       setSyncKey((k) => k + 1);
     },
@@ -61,6 +66,7 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
 
   const game = useMemo(() => new Chess(fen), [fen]);
   const dests = useMemo(() => legalDests(game), [game]);
+  const shownGame = useMemo(() => (displayFen ? new Chess(displayFen) : game), [displayFen, game]);
   const heroColor: Color = useMemo(
     () => (new Chess(puzzle?.fen ?? fen).turn() === 'w' ? 'white' : 'black'),
     [puzzle, fen],
@@ -80,11 +86,28 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
       }
 
       if (result.kind === 'wrong') {
+        // Let the opponent answer on the board so the player sees why the move fails, then
+        // put the position back.
         playBadMove();
-        setAttempt({ kind: 'wrong', san: result.san });
-        // Let the move sit on the board for a beat, then snap back to the position.
+        const reply = refutation(result.fen, result.to);
+        const previousLastMove = lastMove;
         clearTimers();
-        schedule(REVERT_DELAY, () => setSyncKey((k) => k + 1));
+        setBusy(true);
+        setAttempt({ kind: 'wrong', san: result.san, reply: reply?.san ?? null });
+        setDisplayFen(result.fen);
+        setLastMove([from, to]);
+        if (reply) {
+          schedule(REPLY_DELAY, () => {
+            setDisplayFen(reply.fen);
+            setLastMove([reply.from as Key, reply.to as Key]);
+          });
+        }
+        schedule(REPLY_DELAY + WRONG_SHOW, () => {
+          setDisplayFen(undefined);
+          setLastMove(previousLastMove);
+          setBusy(false);
+          setSyncKey((k) => k + 1);
+        });
         return;
       }
 
@@ -114,12 +137,13 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
         setBusy(false);
       });
     },
-    [clearTimers, fen, locked, onSolved, ply, puzzle, schedule],
+    [clearTimers, fen, lastMove, locked, onSolved, ply, puzzle, schedule],
   );
 
   const reveal = useCallback(() => {
     if (!puzzle) return;
     clearTimers();
+    setDisplayFen(undefined);
     setBusy(true);
     let cursor = fen;
     const remaining = puzzle.solution.slice(ply);
@@ -155,12 +179,12 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
     setShowHint,
     canReset: !(ply === 0 && attempt.kind === 'idle'),
     boardProps: {
-      fen,
+      fen: displayFen ?? fen,
       orientation: heroColor,
-      turnColor: (game.turn() === 'w' ? 'white' : 'black') as Color,
+      turnColor: (shownGame.turn() === 'w' ? 'white' : 'black') as Color,
       dests: locked ? NO_DESTS : dests,
       lastMove,
-      check: game.inCheck(),
+      check: shownGame.inCheck(),
       viewOnly: locked,
       onMove,
       syncKey,
