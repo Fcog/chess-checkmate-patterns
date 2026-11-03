@@ -7,7 +7,7 @@ export type Exercise = {
 };
 
 /** Checkmate patterns currently available in the Practice section filter. */
-export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box'];
+export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box', 'balestra', 'bronco', 'stallion', 'lolli', 'blind-swine', 'lawnmower', 'philidor', 'morphy'];
 
 /** Practice exercises. */
 export const exercises: Exercise[] = [
@@ -52,6 +52,83 @@ export const exercises: Exercise[] = [
     fen: 'r1b1k2r/1p2bppp/p1n2q2/8/8/5B2/PPPQ1P1P/2KRR3 w kq - 0 1',
     solution: ['Bxc6+', 'bxc6', 'Qd8#'],
     hint: 'Black\'s king is stuck in the centre. The knight on c6 is the only piece covering d8, and the e7 bishop can\'t move.',
+  },
+  {
+    id: 'back-rank-7',
+    patternId: 'back-rank',
+    fen: '4Rnk1/pr3ppp/1p3q2/5NQ1/2p5/8/P4PPP/6K1 w - - 0 1',
+    solution: ['Nh6+', 'Qxh6', 'Rxf8+', 'Kxf8', 'Qd8#'],
+    hint: 'Black’s queen is the only piece guarding d8. Deflect it with check, then break through on the back rank.',
+  },
+  {
+    id: 'back-rank-8',
+    patternId: 'back-rank',
+    fen: '6k1/5pp1/B3b2p/2Qn4/RP1q4/8/3r1RPP/6K1 b - - 0 1',
+    solution: ['Rd1+', 'Bf1', 'Rxf1+', 'Kxf1', 'Qd1#'],
+    hint: 'White’s king has no air on the first rank. Use your rook to break through so your queen can follow.',
+  },
+  {
+    id: 'back-rank-9',
+    patternId: 'back-rank',
+    fen: '1r3nk1/5pb1/p2p1Pp1/3P2P1/2p1q1B1/2Pn3Q/6RR/6BK b - - 0 1',
+    solution: ['Nf2+', 'Bxf2', 'Rb1+', 'Bg1', 'Rxg1+', 'Kxg1', 'Qe1#'],
+    hint: 'White’s rooks on g2 and h2 leave the king no air. Clear away the defenders of the first rank one by one.',
+  },
+  {
+    id: 'back-rank-10',
+    patternId: 'back-rank',
+    fen: '8/5Bpk/1p2p2p/4Pp2/7q/P3P3/5P1P/2r2NKQ b - - 0 1',
+    solution: ['Qg4+', 'Qg2', 'Rxf1+', 'Kxf1', 'Qd1#'],
+    hint: 'Force White’s queen to block in front of its own king, then remove the f1 knight.',
+  },
+  {
+    id: 'back-rank-11',
+    patternId: 'back-rank',
+    fen: '2r2krQ/1b3p2/4pP2/8/Np2p3/7R/1Pq4P/4KR2 w - - 0 1',
+    solution: ['Qxg8+', 'Kxg8', 'Rg1+', 'Qg2', 'Rxg2+', 'Kf8', 'Rh8#'],
+    hint: 'Your f6 pawn takes away e7 and g7. Pull the king onto the back rank and let your rooks finish.',
+  },
+  {
+    id: 'back-rank-12',
+    patternId: 'back-rank',
+    fen: '4kr2/4r3/p3P1RQ/1ppp4/8/8/q1PP2PP/4R2K w - - 0 1',
+    solution: ['Qxf8+', 'Kxf8', 'Rf1+', 'Ke8', 'Rg8#'],
+    hint: 'The f8 rook is the king’s only guard on the back rank. Remove it and bring your other rook to the f-file with check.',
+  },
+  {
+    id: 'back-rank-13',
+    patternId: 'back-rank',
+    fen: '6k1/5p1p/6p1/2N5/3rr3/BP1n4/P6P/3R1RK1 b - - 0 1',
+    solution: ['Rg4+', 'Kh1', 'Nf2+', 'Rxf2', 'Rxd1+', 'Rf1', 'Rxf1#'],
+    hint: 'Drive the king into the corner with a rook check on the g-file, then overload White’s rooks on the first rank.',
+  },
+  {
+    id: 'back-rank-14',
+    patternId: 'back-rank',
+    fen: '5rk1/1p5p/3NN1nQ/p2Pp3/P5B1/6PK/1Pq4P/5r2 b - - 0 1',
+    solution: ['Qxh2+', 'Kxh2', 'R8f2+', 'Kh3', 'Rh1#'],
+    hint: 'White’s king is boxed in by its own g3 pawn and g4 bishop. Drag it out with a sacrifice, then let your rooks finish on the h-file.',
+  },
+  {
+    id: 'back-rank-15',
+    patternId: 'back-rank',
+    fen: 'k7/1p1q1pp1/p2p4/P2P2P1/4R2r/7r/KPP1Q1R1/8 b - - 0 1',
+    solution: ['Qa4+', 'Rxa4', 'Rxa4+', 'Kb1', 'Rh1+', 'Rg1', 'Rxg1+', 'Qd1', 'Rxd1#'],
+    hint: 'Force the king onto the first rank behind its own pawns. Your rooks can then chew through every defender.',
+  },
+  {
+    id: 'back-rank-16',
+    patternId: 'back-rank',
+    fen: 'r5rk/pp4pp/2p3b1/3P3q/1P2P3/6b1/PQ3RBP/B4R1K w - - 0 1',
+    solution: ['Qxg7+', 'Rxg7', 'Rf8+', 'Rxf8', 'Rxf8#'],
+    hint: 'Your a1 bishop and queen both aim at g7. Once a rook lands there, it is pinned and the back rank is yours.',
+  },
+  {
+    id: 'back-rank-17',
+    patternId: 'back-rank',
+    fen: 'r3k3/1b2p1Q1/2q1r3/8/p2p4/6P1/PPP1R1PP/4R2K b q - 0 1',
+    solution: ['Qxg2+', 'Rxg2', 'Rxe1#'],
+    hint: 'Your queen is blocking your own bishop’s diagonal. Give it up on g2 with check, and the rook that takes it will be pinned.',
   },
   {
     id: 'anastasia-1',
@@ -159,6 +236,62 @@ export const exercises: Exercise[] = [
     hint: 'Your queen and bishop both point at h7. Keep giving checks and let the bishop guard the queen’s landing square.',
   },
   {
+    id: 'max-lange-4',
+    patternId: 'max-lange',
+    fen: 'k5n1/1p2p3/p1p1pb1p/5q2/2P3pP/P1P1P1B1/3Q2PK/1r6 w - - 0 1',
+    solution: ['Qd8+', 'Ka7', 'Bb8+', 'Ka8', 'Bc7+', 'Ka7', 'Qb8#'],
+    hint: 'The king is stuck behind its own pawns. Use checks to bring your bishop next to the queen’s mating square.',
+  },
+  {
+    id: 'balestra-1',
+    patternId: 'balestra',
+    fen: '6k1/4Qpp1/7p/5q2/3bR3/r4B2/P5PP/5K2 b - - 0 1',
+    solution: ['Rxf3+', 'gxf3', 'Qxf3+', 'Ke1', 'Bc3#'],
+    hint: 'The f3 bishop is White’s key defender. Remove it, then let your queen cover the king’s squares from a distance while your bishop gives the check.',
+  },
+  {
+    id: 'bronco-1',
+    patternId: 'bronco',
+    fen: 'q7/7k/4p1pp/3pN3/3Pb3/2P3QP/r5PK/2B1R3 w - - 0 1',
+    solution: ['Rxe4', 'dxe4', 'Qxg6+', 'Kh8', 'Nf7#'],
+    hint: 'The e4 bishop guards g6. Remove it, and your queen and knight can finish next to the corner.',
+  },
+  {
+    id: 'stallion-1',
+    patternId: 'stallion',
+    fen: '2kr1b2/Qp1q1pp1/6p1/N1p1p1n1/2P5/4PP1r/P4PK1/R1B2R2 b - - 0 1',
+    solution: ['Rh2+', 'Kxh2', 'Qh3+', 'Kg1', 'Nxf3#'],
+    hint: 'Sacrifice on the h-file to drag the king out. Once your queen takes the squares around it, its own rook and pawn leave it trapped.',
+  },
+  {
+    id: 'lolli-1',
+    patternId: 'lolli',
+    fen: '2br1rk1/pp3p1p/2p2Pp1/4B3/3p2Pq/3P3P/PP4P1/R1Q2R1K w - - 0 1',
+    solution: ['Bg3', 'Qxg3', 'Qh6', 'Rd6', 'Qg7#'],
+    hint: 'Your f6 pawn already guards g7. Get Black’s queen out of the way so yours can reach h6.',
+  },
+  {
+    id: 'blind-swine-1',
+    patternId: 'blind-swine',
+    fen: '2k5/pp3ppp/2pq4/8/PP6/2P1P1NP/1r1r1P2/2R1QRK1 b - - 0 1',
+    solution: ['Qxg3+', 'fxg3', 'Rg2+', 'Kh1', 'Rh2+', 'Kg1', 'Rbg2#'],
+    hint: 'Your two rooks already own White’s second rank. Remove the g3 knight, then let the rooks hunt the king together.',
+  },
+  {
+    id: 'lawnmower-1',
+    patternId: 'lawnmower',
+    fen: 'r3r2k/1p5p/3p1b2/q1p5/2P1Q3/6R1/8/1K3R2 w - - 0 1',
+    solution: ['Qxh7+', 'Kxh7', 'Rh1+', 'Bh4', 'Rxh4#'],
+    hint: 'Your g3 rook already fences off the g-file. Open the h-file for the other rook, whatever it costs.',
+  },
+  {
+    id: 'morphy-1',
+    patternId: 'morphy',
+    fen: '5rk1/p4ppp/1p1rp3/3qB3/3PR3/5Q1P/PP3PP1/6K1 w - - 0 1',
+    solution: ['Qf6', 'gxf6', 'Rg4+', 'Kh8', 'Bxf6#'],
+    hint: 'The g7 pawn is the only thing shielding the king from your rook and bishop. Offer your queen to tear it away.',
+  },
+  {
     id: 'opera-1',
     patternId: 'opera',
     fen: '3r2k1/bp1q1pp1/p1p4p/7b/2Q1NN2/4P3/PPP2PPP/R3K2R b KQ - 0 1',
@@ -187,11 +320,25 @@ export const exercises: Exercise[] = [
     hint: 'Black\'s king is stuck in the centre and both your rooks are on open files. Keep checking, and don\'t be afraid to give up material.',
   },
   {
+    id: 'opera-5',
+    patternId: 'opera',
+    fen: 'r3kb1r/p2n1ppp/4q3/4p1B1/4P3/1Q6/PPP2PPP/2KR4 w kq - 0 1',
+    solution: ['Qb8+', 'Nxb8', 'Rd8#'],
+    hint: 'Morphy’s famous finish: only the d7 knight stands between your rook and d8. Lure it away, whatever it costs.',
+  },
+  {
     id: 'reti-1',
     patternId: 'reti',
     fen: 'rnb1kb1r/pp3ppp/2p5/4q3/4n3/3Q4/PPPB1PPP/2KR1BNR w kq - 0 1',
     solution: ['Qd8+', 'Kxd8', 'Bg5+', 'Kc7', 'Bd8#'],
     hint: 'Black\'s own pieces crowd the queenside. Open the d-file for your rook and let the bishop finish the job.',
+  },
+  {
+    id: 'reti-2',
+    patternId: 'reti',
+    fen: '2kr2nr/pp3ppp/8/4p3/2p1P1b1/2Pn1N2/PPK2PPP/RNB2B1R b - - 0 1',
+    solution: ['Ne1+', 'Nxe1', 'Bd1#'],
+    hint: 'Your rook controls the open d-file and White’s king is hemmed in by its own pieces. Only the f3 knight blocks your bishop’s path to d1.',
   },
   {
     id: 'arabian-1',
@@ -341,6 +488,20 @@ export const exercises: Exercise[] = [
     hint: 'Your bishop on h4 is standing in front of your h1 rook. Where could it go to do the most damage?',
   },
   {
+    id: 'mayet-2',
+    patternId: 'mayet',
+    fen: 'r1b2rk1/ppp2ppp/8/bBQ5/5q2/2P2N1P/3N1PP1/4R1K1 w - - 0 1',
+    solution: ['Qxf8+', 'Kxf8', 'Re8#'],
+    hint: 'Your b5 bishop already guards e8. Clear the back rank, whatever it costs.',
+  },
+  {
+    id: 'mayet-3',
+    patternId: 'mayet',
+    fen: '2r1nrk1/p4p1p/1p2p1pQ/nPqbRN2/8/P2B4/1BP2PPP/3R2K1 w - - 0 1',
+    solution: ['Ne7+', 'Qxe7', 'Qxh7+', 'Kxh7', 'Rh5+', 'Kg8', 'Rh8#'],
+    hint: 'Your b2 bishop is aimed at h8, with only your own e5 rook in the way. Open the h-file for that rook.',
+  },
+  {
     id: 'smothered-1',
     patternId: 'smothered',
     fen: 'r1b1k2r/ppppqppp/2n5/4n3/1PP2B2/5N2/1P1NPPPP/R2QKB1R b KQkq - 0 1',
@@ -381,6 +542,13 @@ export const exercises: Exercise[] = [
     fen: '5rk1/5ppp/1q6/2n4Q/P1B5/3p4/2P3PP/5RK1 b - - 0 1',
     solution: ['Ne4+', 'Kh1', 'Nf2+', 'Kg1', 'Nh3+', 'Kh1', 'Qg1+', 'Rxg1', 'Nf2#'],
     hint: '',
+  },
+  {
+    id: 'philidor-1',
+    patternId: 'philidor',
+    fen: 'r2q1rk1/ppp3pp/2nbpn2/4p3/2Q5/2N2N1P/PPPP1PP1/R1B2RK1 w - - 0 1',
+    solution: ['Qxe6+', 'Kh8', 'Ng5', 'Re8', 'Nf7+', 'Kg8', 'Nh6+', 'Kh8', 'Qg8+', 'Rxg8', 'Nf7#'],
+    hint: 'Black’s king is short of air in the corner. Your knight and queen can set up Philidor’s legacy.',
   },
   {
     id: 'suffocation-1',
