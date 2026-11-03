@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { exercises, practicePatternIds, type Exercise } from '../../lib/exercises';
 import { shuffle } from '../../lib/helpers';
 import { patterns } from '../../lib/patterns';
+import { depthOptions, filterExercises, type Depth } from '../../lib/practice';
 import { Board } from './Board';
 import { Feedback } from './Feedback';
 import { Header } from './Header';
@@ -14,15 +15,12 @@ import { useSolved } from './useSolved';
 
 const practicePatterns = patterns.filter((p) => practicePatternIds.includes(p.id));
 
-function filterExercises(order: Exercise[], patternIds: string[]): Exercise[] {
-  return patternIds.length === 0 ? order : order.filter((ex) => patternIds.includes(ex.patternId));
-}
-
 export function PracticeTrainer() {
   // The server can't know the random order, so it renders the original order and the
   // shuffle happens right after hydration.
   const [order, setOrder] = useState(exercises);
   const [selectedPatternIds, setSelectedPatternIds] = useState<string[]>([]);
+  const [depth, setDepth] = useState<Depth>('any');
   const [exerciseIndex, setExerciseIndex] = useState(0);
   const [revealPattern, setRevealPattern] = useState(false);
 
@@ -32,8 +30,8 @@ export function PracticeTrainer() {
   const { load } = puzzle;
 
   const filteredExercises = useMemo(
-    () => filterExercises(order, selectedPatternIds),
-    [order, selectedPatternIds],
+    () => filterExercises(order, selectedPatternIds, depth),
+    [order, selectedPatternIds, depth],
   );
   const exercise = filteredExercises[exerciseIndex] ?? filteredExercises[0];
   const exercisePattern = useMemo(
@@ -61,13 +59,24 @@ export function PracticeTrainer() {
       ? selectedPatternIds.filter((item) => item !== id)
       : [...selectedPatternIds, id];
     setSelectedPatternIds(nextIds);
-    goTo(0, filterExercises(order, nextIds));
+    goTo(0, filterExercises(order, nextIds, depth));
   };
 
   const selectAllPatterns = () => {
     setSelectedPatternIds([]);
-    goTo(0, order);
+    goTo(0, filterExercises(order, [], depth));
   };
+
+  const selectDepth = (next: Depth) => {
+    setDepth(next);
+    goTo(0, filterExercises(order, selectedPatternIds, next));
+  };
+
+  // Lengths with no exercises for the current pattern selection are greyed out.
+  const depthChoices = depthOptions.map((option) => ({
+    ...option,
+    available: filterExercises(exercises, selectedPatternIds, option.value).length > 0,
+  }));
 
   const solvedExercisesCount = filteredExercises.filter((ex) => solved.includes(ex.id)).length;
 
@@ -90,6 +99,9 @@ export function PracticeTrainer() {
             selectedIds={selectedPatternIds}
             onSelectAll={selectAllPatterns}
             onToggle={togglePatternFilter}
+            depths={depthChoices}
+            selectedDepth={depth}
+            onSelectDepth={selectDepth}
           />
         </MenuPanel>
 

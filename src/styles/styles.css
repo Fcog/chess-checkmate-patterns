@@ -208,6 +208,42 @@ header {
   color: var(--text);
 }
 
+.depths {
+  display: flex;
+  gap: 5px;
+  padding: 0 10px 4px;
+}
+
+.depth {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 4px 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.depth:hover:not(:disabled) {
+  background: var(--panel-hover);
+  color: var(--text);
+}
+
+.depth.active {
+  border-color: var(--accent);
+  background: var(--panel);
+  color: var(--accent);
+}
+
+.depth:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
 .pattern .check {
   width: 12px;
   color: var(--good);
@@ -534,6 +570,15 @@ a {
 
   .menu:not(.open) {
     display: none;
+  }
+
+  /* The filter sections sit side by side here; give the length buttons a full row. */
+  .depth-section {
+    flex-basis: 100%;
+  }
+
+  .depths {
+    max-width: 360px;
   }
 
   .brand {
