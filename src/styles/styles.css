@@ -474,6 +474,43 @@ main {
   color: var(--accent);
 }
 
+.pattern-preview {
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.board.mini {
+  max-width: 228px;
+  margin: 0 auto;
+}
+
+.pattern-preview figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.replay-button {
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.replay-button:hover {
+  background: var(--panel-hover);
+  border-color: var(--accent);
+}
+
 .share {
   display: flex;
   flex-wrap: wrap;

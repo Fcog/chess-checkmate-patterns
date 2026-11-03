@@ -3,6 +3,7 @@ import type { Exercise } from '../../lib/exercises';
 import { formatLine } from '../../lib/helpers';
 import type { Pattern } from '../../lib/patterns';
 import { shareCode } from '../../lib/share';
+import { PatternPreview } from './PatternPreview';
 import { ShareButton } from './ShareButton';
 
 export type Props = {
@@ -47,12 +48,22 @@ export function PracticeInfo({
           <div aria-live="polite">{feedback}</div>
           {played.length > 0 && <p className="line">{formatLine(exercise.fen, played)}</p>}
           {(showHint || isDone) && exercise.hint && <p className="hint">{exercise.hint}</p>}
-          {isDone && exercisePattern && <p className="idea">{exercisePattern.idea}</p>}
           <ShareButton
+            label="Share puzzle"
             path={`/practice/${shareCode(exercise.id)}`}
             title="Checkmate puzzle – Checkmate Patterns"
             text={`Can you find the mate in ${moves}?`}
           />
+          {(revealPattern || isDone) && exercisePattern && (
+            <>
+              <PatternPreview
+                key={exercise.id}
+                pattern={exercisePattern}
+                side={exercise.fen.split(' ')[1] === 'w' ? 'white' : 'black'}
+              />
+              <p className="idea">{exercisePattern.idea}</p>
+            </>
+          )}
         </>
       ) : (
         <>

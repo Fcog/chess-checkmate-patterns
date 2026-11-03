@@ -14,6 +14,9 @@ export type Props = {
   onMove: (from: Key, to: Key) => void;
   /** Bump to force a re-sync even when `fen` is unchanged (e.g. reverting a wrong move). */
   syncKey: number;
+  /** Show rank and file labels. Read once when the board mounts. */
+  coordinates?: boolean;
+  className?: string;
 };
 
 export function Board(props: Props) {
@@ -35,7 +38,7 @@ export function Board(props: Props) {
       turnColor: initial.turnColor,
       lastMove: initial.lastMove,
       check: initial.check,
-      coordinates: true,
+      coordinates: initial.coordinates ?? true,
       animation: { enabled: true, duration: 200 },
       highlight: { lastMove: true, check: true },
       draggable: { showGhost: true },
@@ -80,5 +83,5 @@ export function Board(props: Props) {
     props.syncKey,
   ]);
 
-  return <div className="board" ref={el} />;
+  return <div className={props.className ? `board ${props.className}` : 'board'} ref={el} />;
 }

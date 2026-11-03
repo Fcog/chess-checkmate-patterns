@@ -5,6 +5,8 @@ export type Props = {
   path: string;
   title: string;
   text: string;
+  /** Button text, e.g. "Share puzzle", so it's clear what the link is for. */
+  label?: string;
 };
 
 type Status = { kind: 'idle' } | { kind: 'copied' } | { kind: 'manual'; url: string };
@@ -13,7 +15,7 @@ type Status = { kind: 'idle' } | { kind: 'copied' } | { kind: 'manual'; url: str
  * Opens the system share sheet where there is one (mostly phones). Otherwise copies the link,
  * or shows it for manual copying if the clipboard isn't available.
  */
-export function ShareButton({ path, title, text }: Props) {
+export function ShareButton({ path, title, text, label = 'Share' }: Props) {
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
 
   // A new exercise or pattern means a new link.
@@ -47,7 +49,7 @@ export function ShareButton({ path, title, text }: Props) {
   return (
     <div className="share">
       <button type="button" className="share-button" onClick={share}>
-        Share
+        {label}
       </button>
       <span className="share-status" aria-live="polite">
         {status.kind === 'copied' && 'Link copied'}

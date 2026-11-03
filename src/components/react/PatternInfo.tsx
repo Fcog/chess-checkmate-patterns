@@ -23,6 +23,7 @@ export function PatternInfo({ pattern, moves, played, feedback, showHint, isDone
       {(showHint || isDone) && <p className="hint">{pattern.hint}</p>}
       {isDone && <p className="idea">{pattern.idea}</p>}
       <ShareButton
+        label="Share pattern"
         path={`/patterns/${pattern.id}`}
         title={`${pattern.name} – Checkmate Patterns`}
         text={`Learn the ${pattern.name} — a mate in ${moves} chess pattern.`}
