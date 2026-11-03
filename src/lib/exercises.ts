@@ -7,7 +7,7 @@ export type Exercise = {
 };
 
 /** Checkmate patterns currently available in the Practice section filter. */
-export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box', 'balestra', 'bronco', 'stallion', 'lolli', 'blind-swine', 'lawnmower', 'philidor', 'morphy'];
+export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box', 'balestra', 'bronco', 'stallion', 'lolli', 'blind-swine', 'lawnmower', 'philidor', 'morphy', 'blackburne'];
 
 /** Practice exercises. */
 export const exercises: Exercise[] = [
@@ -332,6 +332,13 @@ export const exercises: Exercise[] = [
     fen: '5rk1/p4ppp/1p1rp3/3qB3/3PR3/5Q1P/PP3PP1/6K1 w - - 0 1',
     solution: ['Qf6', 'gxf6', 'Rg4+', 'Kh8', 'Bxf6#'],
     hint: 'The g7 pawn is the only thing shielding the king from your rook and bishop. Offer your queen to tear it away.',
+  },
+  {
+    id: 'blackburne-1',
+    patternId: 'blackburne',
+    fen: 'r1bq1rk1/3nbp1p/p3p1p1/1p1pB1N1/3P3P/2PB4/PP3PP1/R2QK2R w KQ - 0 1',
+    solution: ['Qh5', 'gxh5', 'Bxh7#'],
+    hint: 'Your e5 bishop covers g7 and h8, and the knight guards h7. Only the g6 pawn blocks your other bishop’s path to h7 — lure it away, even at the cost of your queen.',
   },
   {
     id: 'opera-1',
