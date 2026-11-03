@@ -145,6 +145,20 @@ export const exercises: Exercise[] = [
     hint: 'Black’s king is stuck in the centre. Use checks to walk it towards its own queenside pawns, and keep your knight close to guard the rook.',
   },
   {
+    id: 'back-rank-20',
+    patternId: 'back-rank',
+    fen: '8/1Q3pk1/5qp1/p1pN3p/P1Br3P/1P3pP1/2P2P1K/8 b - - 0 1',
+    solution: ['Rxh4+', 'Kg1', 'Qa1+', 'Bf1', 'Qxf1+', 'Kxf1', 'Rh1#'],
+    hint: 'Your f3 pawn covers e2 and g2. Drive the king to the first rank, then remove its last defender.',
+  },
+  {
+    id: 'back-rank-21',
+    patternId: 'back-rank',
+    fen: '8/1Q3pk1/5qp1/p1pN3p/P1Br3P/1P3pP1/2P2P1K/8 b - - 0 1',
+    solution: ['Rxh4+', 'gxh4', 'Qxh4+', 'Kg1', 'Qg5+', 'Kf1', 'Qc1#'],
+    hint: 'Your f3 pawn covers e2 and g2. If White takes the rook, your queen can chase the king to the first rank on its own.',
+  },
+  {
     id: 'anastasia-1',
     patternId: 'anastasia',
     fen: 'k2r3r/pppN1pp1/3n3q/1P6/Q3R1P1/2P4p/P4P1P/R5K1 w - - 0 1',
@@ -262,6 +276,13 @@ export const exercises: Exercise[] = [
     fen: 'k5n1/1p2p3/p1p1pb1p/5q2/2P3pP/P1P1P1B1/3Q2PK/1r6 w - - 0 1',
     solution: ['Qd8+', 'Ka7', 'Bb8+', 'Ka8', 'Bc7+', 'Ka7', 'Qb8#'],
     hint: 'The king is stuck behind its own pawns. Use checks to bring your bishop next to the queen’s mating square.',
+  },
+  {
+    id: 'max-lange-5',
+    patternId: 'max-lange',
+    fen: '6nk/pp3B2/2b4p/2p2Pq1/P2b4/1P4PP/7K/4RQ2 b - - 0 1',
+    solution: ['Bg1+', 'Qxg1', 'Qd2+', 'Re2', 'Qxe2+', 'Qg2', 'Qxg2#'],
+    hint: 'Your c6 bishop rules the long light diagonal all the way to g2. Get your queen there with checks.',
   },
   {
     id: 'balestra-1',
