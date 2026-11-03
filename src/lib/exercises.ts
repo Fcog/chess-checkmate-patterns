@@ -173,6 +173,13 @@ export const exercises: Exercise[] = [
     hint: 'White\'s kingside dark squares are weak. Your queen and knight work well together near h2.',
   },
   {
+    id: 'anastasia-7',
+    patternId: 'anastasia',
+    fen: 'r4rk1/pp3ppp/4n3/1p1N4/8/4R3/qPQ2PPP/3R2K1 w - - 0 1',
+    solution: ['Ne7+', 'Kh8', 'Qxh7+', 'Kxh7', 'Rh3#'],
+    hint: 'A knight on e7 would take away g8 and g6. After that, the h-file is the only road left, even if it costs your queen.',
+  },
+  {
     id: 'max-lange-1',
     patternId: 'max-lange',
     fen: '3r3r/8/k7/p3p2q/1p3p2/6P1/2Q2PBP/6K1 w - - 0 1',
