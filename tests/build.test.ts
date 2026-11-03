@@ -1,6 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { exercises } from '../src/lib/exercises';
 import { patterns } from '../src/lib/patterns';
+import { shareCode } from '../src/lib/share';
 
 // Run with `npm run test:build`, which builds the site first.
 const SITE = 'https://www.checkmate-patterns.com';
@@ -59,6 +61,28 @@ describe.skipIf(!existsSync(new URL('../dist', import.meta.url)))('built site', 
       expect(page.html).toContain('href="/terms"');
       expect(page.html).toContain('href="/privacy"');
     }
+  });
+
+  it.each(exercises)('has a spoiler-free share page for exercise $id', (exercise) => {
+    const code = shareCode(exercise.id);
+    const html = read(`practice/${code}/index.html`);
+    const title = match(html, /<title>(.*?)<\/title>/) ?? '';
+    const pattern = patterns.find((p) => p.id === exercise.patternId);
+    expect(title).toMatch(/^Checkmate puzzle: (White|Black) to mate in \d+ \| Checkmate Patterns$/);
+    expect(html).toContain(`<link rel="canonical" href="${SITE}/practice/${code}"`);
+    expect(html).toContain('<meta name="robots" content="noindex"');
+    // What a visitor or a link preview sees must not give the pattern away. (The filter
+    // list on the page names every pattern, so only these parts are checked.)
+    const visible = [
+      title,
+      match(html, /<meta name="description" content="(.*?)"/),
+      match(html, /<meta property="og:title" content="(.*?)"/),
+      match(html, /<meta property="og:description" content="(.*?)"/),
+      match(html, /<h1>(.*?)<\/h1>/),
+    ].join(' ');
+    expect(visible).not.toMatch(new RegExp(exercise.patternId.replace('-', '.'), 'i'));
+    expect(visible).not.toContain(pattern?.name.replaceAll("'", '&#39;'));
+    expect(html).not.toContain(exercise.id);
   });
 
   it('lists every page in the sitemap, and not the 404 page', () => {

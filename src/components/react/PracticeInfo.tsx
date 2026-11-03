@@ -2,6 +2,8 @@ import type { ReactNode } from 'react';
 import type { Exercise } from '../../lib/exercises';
 import { formatLine } from '../../lib/helpers';
 import type { Pattern } from '../../lib/patterns';
+import { shareCode } from '../../lib/share';
+import { ShareButton } from './ShareButton';
 
 export type Props = {
   exercise: Exercise | undefined;
@@ -46,6 +48,11 @@ export function PracticeInfo({
           {played.length > 0 && <p className="line">{formatLine(exercise.fen, played)}</p>}
           {(showHint || isDone) && exercise.hint && <p className="hint">{exercise.hint}</p>}
           {isDone && exercisePattern && <p className="idea">{exercisePattern.idea}</p>}
+          <ShareButton
+            path={`/practice/${shareCode(exercise.id)}`}
+            title="Checkmate puzzle – Checkmate Patterns"
+            text={`Can you find the mate in ${moves}?`}
+          />
         </>
       ) : (
         <>

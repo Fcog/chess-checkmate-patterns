@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { formatLine } from '../../lib/helpers';
 import type { Pattern } from '../../lib/patterns';
+import { ShareButton } from './ShareButton';
 
 export type Props = {
   pattern: Pattern;
@@ -21,6 +22,11 @@ export function PatternInfo({ pattern, moves, played, feedback, showHint, isDone
       {played.length > 0 && <p className="line">{formatLine(pattern.fen, played)}</p>}
       {(showHint || isDone) && <p className="hint">{pattern.hint}</p>}
       {isDone && <p className="idea">{pattern.idea}</p>}
+      <ShareButton
+        path={`/patterns/${pattern.id}`}
+        title={`${pattern.name} – Checkmate Patterns`}
+        text={`Learn the ${pattern.name} — a mate in ${moves} chess pattern.`}
+      />
     </aside>
   );
 }

@@ -8,6 +8,8 @@ export interface Props {
   imageAlt?: string;
   /** Structured data (schema.org) for this page. */
   jsonLd?: Record<string, unknown>;
+  /** Keep the page out of search results (e.g. pages only meant for sharing). */
+  noindex?: boolean;
 }
 
 const {
@@ -17,6 +19,7 @@ const {
   image = '/og-image.png',
   imageAlt = 'Checkmate Patterns logo with a golden chess king',
   jsonLd,
+  noindex = false,
 } = Astro.props;
 
 const canonical = new URL(path, Astro.site).href;
@@ -26,6 +29,7 @@ const imageUrl = new URL(image, Astro.site).href;
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex" />}
 
 <!-- Open Graph / social previews -->
 <meta property="og:type" content="website" />

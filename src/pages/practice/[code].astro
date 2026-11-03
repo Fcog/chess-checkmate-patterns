@@ -1,0 +1,40 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { PracticeTrainer } from '../../components/react/PracticeTrainer';
+import Base from '../../layouts/Base.astro';
+import { exercises } from '../../lib/exercises';
+import { mateIn } from '../../lib/patterns';
+import { shareCode } from '../../lib/share';
+
+// One page per exercise, so an exercise can be shared by link. The code is neutral and the
+// page never names the pattern, so the puzzle stays blind.
+export const getStaticPaths = (() =>
+  exercises.map((exercise) => ({
+    params: { code: shareCode(exercise.id) },
+    props: { exercise },
+  }))) satisfies GetStaticPaths;
+
+const { exercise } = Astro.props;
+const side = exercise.fen.split(' ')[1] === 'w' ? 'White' : 'Black';
+const moves = mateIn(exercise);
+const heading = `Checkmate puzzle: ${side} to mate in ${moves}`;
+---
+
+<Base
+  title={`${heading} | Checkmate Patterns`}
+  description={`Can you find the mate in ${moves}? Solve this checkmate puzzle on an interactive board, then keep practising with more hidden mating patterns.`}
+  path={`/practice/${shareCode(exercise.id)}`}
+  noindex
+>
+  <PracticeTrainer client:load initialCode={shareCode(exercise.id)} />
+
+  <article class="page-text">
+    <h1>{heading}</h1>
+    <p>
+      Someone shared this puzzle with you. Find the mating line on the board above — the pattern is
+      hidden, so you have to spot it yourself. When you’re done, press Next to keep going with
+      more <a href="/practice">practice puzzles</a>, or learn the <a href="/">checkmate patterns</a>
+      first.
+    </p>
+  </article>
+</Base>

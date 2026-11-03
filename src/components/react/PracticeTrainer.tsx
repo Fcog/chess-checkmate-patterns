@@ -3,6 +3,7 @@ import { exercises, practicePatternIds, type Exercise } from '../../lib/exercise
 import { shuffle } from '../../lib/helpers';
 import { patterns } from '../../lib/patterns';
 import { depthOptions, filterExercises, type Depth } from '../../lib/practice';
+import { exerciseByCode } from '../../lib/share';
 import { Board } from './Board';
 import { Feedback } from './Feedback';
 import { Header } from './Header';
@@ -15,10 +16,23 @@ import { useSolved } from './useSolved';
 
 const practicePatterns = patterns.filter((p) => practicePatternIds.includes(p.id));
 
-export function PracticeTrainer() {
-  // The server can't know the random order, so it renders the original order and the
-  // shuffle happens right after hydration.
-  const [order, setOrder] = useState(exercises);
+/** Moves the exercise with `id` (if any) to the front, keeping the rest in order. */
+function withFirst(list: Exercise[], id: string | undefined): Exercise[] {
+  const first = list.find((ex) => ex.id === id);
+  return first ? [first, ...list.filter((ex) => ex !== first)] : list;
+}
+
+export type Props = {
+  /** Share code of the exercise to start with, when opened from a shared link. */
+  initialCode?: string;
+};
+
+export function PracticeTrainer({ initialCode }: Props) {
+  // The share code, not the exercise id, is passed in so the page source doesn't name the pattern.
+  const initialExerciseId = initialCode ? exerciseByCode(initialCode)?.id : undefined;
+  // The server can't know the random order, so it renders the original order (with any
+  // shared exercise first) and the shuffle happens right after hydration.
+  const [order, setOrder] = useState(() => withFirst(exercises, initialExerciseId));
   const [selectedPatternIds, setSelectedPatternIds] = useState<string[]>([]);
   const [depth, setDepth] = useState<Depth>('any');
   const [exerciseIndex, setExerciseIndex] = useState(0);
@@ -26,7 +40,7 @@ export function PracticeTrainer() {
 
   const { solved, markSolved } = useSolved();
   const [menuOpen, setMenuOpen] = useState(false);
-  const puzzle = usePuzzle(exercises[0], markSolved);
+  const puzzle = usePuzzle(order[0], markSolved);
   const { load } = puzzle;
 
   const filteredExercises = useMemo(
@@ -49,10 +63,10 @@ export function PracticeTrainer() {
   );
 
   useEffect(() => {
-    const shuffled = shuffle(exercises);
+    const shuffled = withFirst(shuffle(exercises), initialExerciseId);
     setOrder(shuffled);
     goTo(0, shuffled);
-  }, [goTo]);
+  }, [goTo, initialExerciseId]);
 
   const togglePatternFilter = (id: string) => {
     const nextIds = selectedPatternIds.includes(id)
