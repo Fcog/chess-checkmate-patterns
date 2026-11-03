@@ -291,11 +291,72 @@ main {
   aspect-ratio: 1;
   border-radius: 4px;
   overflow: hidden;
+  /* Lets the coordinates scale with the board (cqw units below). */
+  container-type: inline-size;
 }
 
 .cg-wrap {
   width: 100%;
   height: 100%;
+}
+
+/*
+ * Board coordinates. Chessground offsets them by fixed pixel amounts that only line up on a
+ * large board, so on phones they drift into the neighbouring square. Place each label inside
+ * its own square instead: rank numbers top-left of the left column, file letters bottom-right
+ * of the bottom row.
+ */
+.board.cg-wrap coords {
+  opacity: 1;
+  font-family: inherit;
+  font-size: clamp(11px, 2.8cqw, 14px);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.board.cg-wrap coords.ranks {
+  top: 0;
+  left: 0;
+  width: 12.5%;
+  height: 100%;
+  align-items: flex-start;
+}
+
+.board.cg-wrap coords.ranks coord {
+  flex: 1 1 0;
+  padding: 0.3em 0 0 0.3em;
+  transform: none;
+}
+
+.board.cg-wrap coords.files {
+  top: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 12.5%;
+  align-items: flex-end;
+  text-transform: none;
+}
+
+.board.cg-wrap coords.files coord {
+  flex: 1 1 0;
+  padding: 0 0.3em 0.25em 0;
+  text-align: right;
+}
+
+/* Dark text on light squares, light text on dark squares. */
+.board.orientation-white coords.ranks coord:nth-child(even),
+.board.orientation-white coords.files coord:nth-child(even),
+.board.orientation-black coords.ranks coord:nth-child(odd),
+.board.orientation-black coords.files coord:nth-child(odd) {
+  color: #8b6440;
+}
+
+.board.orientation-white coords.ranks coord:nth-child(odd),
+.board.orientation-white coords.files coord:nth-child(odd),
+.board.orientation-black coords.ranks coord:nth-child(even),
+.board.orientation-black coords.files coord:nth-child(even) {
+  color: #f6e8d2;
 }
 
 .controls {
