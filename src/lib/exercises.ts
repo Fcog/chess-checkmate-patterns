@@ -7,7 +7,7 @@ export type Exercise = {
 };
 
 /** Checkmate patterns currently available in the Practice section filter. */
-export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box', 'balestra', 'bronco', 'stallion', 'lolli', 'blind-swine', 'lawnmower', 'philidor', 'morphy', 'blackburne'];
+export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box', 'balestra', 'bronco', 'stallion', 'lolli', 'blind-swine', 'lawnmower', 'philidor', 'morphy', 'blackburne', 'legal'];
 
 /** Practice exercises. */
 export const exercises: Exercise[] = [
@@ -339,6 +339,20 @@ export const exercises: Exercise[] = [
     fen: 'r1bq1rk1/3nbp1p/p3p1p1/1p1pB1N1/3P3P/2PB4/PP3PP1/R2QK2R w KQ - 0 1',
     solution: ['Qh5', 'gxh5', 'Bxh7#'],
     hint: 'Your e5 bishop covers g7 and h8, and the knight guards h7. Only the g6 pawn blocks your other bishop’s path to h7 — lure it away, even at the cost of your queen.',
+  },
+  {
+    id: 'legal-1',
+    patternId: 'legal',
+    fen: 'r2qkbnr/ppp2ppp/3p4/4N3/2B1P3/2N5/PP3PPP/R1Bb1RK1 w kq - 0 1',
+    solution: ['Bxf7+', 'Ke7', 'Nd5#'],
+    hint: 'Black has just grabbed your queen. Drive the king out into the open with check and let your minor pieces finish.',
+  },
+  {
+    id: 'legal-2',
+    patternId: 'legal',
+    fen: 'r1bB1rk1/ppp2pp1/2p4p/2b5/4n3/2NP4/PPP2PPP/R2QKB1R b KQ - 0 1',
+    solution: ['Bxf2+', 'Ke2', 'Bg4#'],
+    hint: 'White’s king is still in the centre, hemmed in by its own queen and bishop. Your knight on e4 can protect a bishop on f2.',
   },
   {
     id: 'opera-1',

@@ -554,6 +554,21 @@ export const patterns: Pattern[] = [
       'g8, and the second bishop checks down the long diagonal.',
     hint: 'Two of the three pieces are already in place.',
   },
+  {
+    id: 'legal',
+    name: "Légal's mate",
+    family: 'Minor-piece mates',
+    intro:
+      'Named after the 18th-century French master Kermur Sire de Légal. Three minor pieces ' +
+      'combine against a king that has been drawn out into the centre.',
+    fen: '3q1b2/4kB2/3p4/4N3/8/2N5/8/6K1 w - - 0 1',
+    solution: ['Nd5#'],
+    idea:
+      'The king on e7 is boxed in by its own queen, bishop and pawn. The bishop on f7 covers e8 ' +
+      'and e6, the e5 knight guards d7 and protects the bishop, and the other knight mates ' +
+      'from d5, taking away f6 as well.',
+    hint: 'Only one piece is missing from the net. Find the knight check that also covers f6.',
+  },
 
   // ---------- Pawn mates ----------
   {
