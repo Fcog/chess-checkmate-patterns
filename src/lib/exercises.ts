@@ -7,7 +7,7 @@ export type Exercise = {
 };
 
 /** Checkmate patterns currently available in the Practice section filter. */
-export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box', 'balestra', 'bronco', 'stallion', 'lolli', 'blind-swine', 'lawnmower', 'philidor', 'morphy', 'blackburne', 'legal', 'corner', 'pillsbury', 'david', 'greco', 'vukovic', 'hook'];
+export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box', 'balestra', 'bronco', 'stallion', 'lolli', 'blind-swine', 'lawnmower', 'philidor', 'morphy', 'blackburne', 'legal', 'corner', 'pillsbury', 'david', 'greco', 'vukovic', 'hook', 'anderssen', 'corridor', 'two-knights', 'collaboration'];
 
 /** Practice exercises. */
 export const exercises: Exercise[] = [
@@ -411,6 +411,13 @@ export const exercises: Exercise[] = [
     hint: 'Black’s king is stuck in the middle of the board. Check from e8 to fence it in, and a humble pawn can finish the job.',
   },
   {
+    id: 'david-2',
+    patternId: 'david',
+    fen: '6r1/p1R5/5pk1/6P1/3r1PK1/6Q1/1q6/5R2 w - - 0 1',
+    solution: ['Qd3+', 'Rxd3', 'f5#'],
+    hint: 'Your f-pawn could deliver mate, but the d4 rook pins it to your king. Deflect that rook with a queen sacrifice.',
+  },
+  {
     id: 'greco-1',
     patternId: 'greco',
     fen: 'r4r1k/ppn1NBpp/4b3/4P3/3p1R2/1P6/P1P3PP/R5K1 w - - 0 1',
@@ -460,11 +467,46 @@ export const exercises: Exercise[] = [
     hint: 'A knight on g6, protected by your f5 pawn, can guard your rook right next to the king. Clear the back rank first.',
   },
   {
+    id: 'anderssen-1',
+    patternId: 'anderssen',
+    fen: '3r2k1/p4rPp/1b1q3Q/n1p1pP2/1p6/3B1NR1/P4P1P/6RK w - - 0 1',
+    solution: ['Qxh7+', 'Kxh7', 'f6+', 'Kg8', 'Bh7+', 'Kxh7', 'Rh3+', 'Kg8', 'Rh8#'],
+    hint: 'Your g7 pawn can guard h8 once the f-pawn backs it up. Strip away the h7 pawn with sacrifices to open the h-file for a rook.',
+  },
+  {
+    id: 'corridor-1',
+    patternId: 'corridor',
+    fen: '8/p4B2/8/6pp/R7/1P4Pk/P1r4P/3n2K1 w - - 0 1',
+    solution: ['Rh4+', 'gxh4', 'Be6#'],
+    hint: 'Black’s king is almost out of squares. Give up your rook so that a pawn blocks the king in, then your bishop finishes on the diagonal.',
+  },
+  {
+    id: 'two-knights-1',
+    patternId: 'two-knights',
+    fen: '2r2r1k/pb2b1p1/1p4Qp/3nN3/2p1N1Pq/3B4/PPP4P/1KR4R w - - 0 1',
+    solution: ['Qh7+', 'Kxh7', 'Nf6+', 'Kh8', 'Ng6#'],
+    hint: 'Drag the king to h7 with a queen sacrifice. Then both knights join in: one takes away g8 and h7, the other gives the final check.',
+  },
+  {
+    id: 'collaboration-1',
+    patternId: 'collaboration',
+    fen: '7r/4Rpk1/6p1/q2p4/P3b3/5NPn/2B1QP1P/7K b - - 0 1',
+    solution: ['Qe1+', 'Qxe1', 'Bxf3#'],
+    hint: 'Your h3 knight already covers g1. Deflect White’s queen so your bishop can check along the long diagonal.',
+  },
+  {
     id: 'blackburne-1',
     patternId: 'blackburne',
     fen: 'r1bq1rk1/3nbp1p/p3p1p1/1p1pB1N1/3P3P/2PB4/PP3PP1/R2QK2R w KQ - 0 1',
     solution: ['Qh5', 'gxh5', 'Bxh7#'],
     hint: 'Your e5 bishop covers g7 and h8, and the knight guards h7. Only the g6 pawn blocks your other bishop’s path to h7 — lure it away, even at the cost of your queen.',
+  },
+  {
+    id: 'blackburne-2',
+    patternId: 'blackburne',
+    fen: 'r4rk1/p4pp1/1p1b1n1p/7q/1P4bN/P3P1P1/2BB1P1P/1Q2RR1K b - - 0 1',
+    solution: ['Qxh4', 'gxh4', 'Bf3+', 'Kg1', 'Ng4', 'h3', 'Bh2#'],
+    hint: 'Give up the queen to open White’s kingside. Then a bishop on the long diagonal, a knight and your other bishop can do the rest.',
   },
   {
     id: 'legal-1',
@@ -642,6 +684,13 @@ export const exercises: Exercise[] = [
     hint: 'Your f4 bishop already covers b8 and c7. Rip open the a6–c8 diagonal for your other bishop, even at the cost of your queen.',
   },
   {
+    id: 'bodens-8',
+    patternId: 'bodens',
+    fen: 'r1bqk2r/p1pn1pp1/1p2pn1p/8/3P4/B1PB4/P1P1QPPP/R3K1NR w KQkq - 0 1',
+    solution: ['Qxe6+', 'fxe6', 'Bg6#'],
+    hint: 'Your a3 bishop already covers e7 and f8. Sacrifice the queen so the f-pawn opens the diagonal to e8 for your other bishop.',
+  },
+  {
     id: 'epaulette-1',
     patternId: 'epaulette',
     fen: '1k4r1/ppp4p/8/2b1n3/P7/1PN2qP1/2PQ1P1P/2B2RKR b - - 0 1',
@@ -810,6 +859,13 @@ export const exercises: Exercise[] = [
     hint: 'Your g2 bishop is aimed at the king, with only your own knight in the way. Where can the knight go with check?',
   },
   {
+    id: 'suffocation-2',
+    patternId: 'suffocation',
+    fen: 'r2q1rk1/pb3pbp/np4pQ/3p4/1P1N4/P2BP3/1B3PPP/R3K2R w KQ - 0 1',
+    solution: ['Qxg7+', 'Kxg7', 'Nf5+', 'Kg8', 'Nh6#'],
+    hint: 'Your b2 bishop aims at g7 and h8 from behind your own d4 knight. Remove the g7 bishop, then move the knight with check to open the diagonal.',
+  },
+  {
     id: 'bombardiers-1',
     patternId: 'bombardiers',
     fen: 'r3rbk1/1p5p/p1q3p1/3p4/1PB5/P3PQ2/1B1P2PP/2K5 w - - 0 1',
@@ -836,6 +892,13 @@ export const exercises: Exercise[] = [
     fen: 'r3k2r/pbpp1ppp/1p6/2bBPP2/8/1QPp1P1q/PP1P3P/RNBR3K b kq - 0 1',
     solution: ['Qxf3+', 'Bxf3', 'Bxf3#'],
     hint: 'Your c5 bishop already guards g1. Clear the long diagonal for your other bishop, whatever it costs.',
+  },
+  {
+    id: 'bombardiers-5',
+    patternId: 'bombardiers',
+    fen: 'r3kb1r/pppn1ppp/2b1p3/q5B1/3P4/2PQ2N1/PPB2P1P/2K1R1R1 w kq - 0 1',
+    solution: ['Rxe6+', 'fxe6', 'Qg6+', 'hxg6', 'Bxg6#'],
+    hint: 'Your g5 bishop already covers d8 and e7. Sacrifice rook and queen to open the diagonal to e8 for your other bishop.',
   },
   {
     id: 'triangle-1',
