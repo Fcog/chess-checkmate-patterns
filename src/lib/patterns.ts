@@ -193,13 +193,14 @@ export const patterns: Pattern[] = [
     name: "Greco's mate",
     family: 'Queen mates',
     intro:
-      'Named after the 17th-century Italian player Gioachino Greco. A queen-and-bishop mate ' +
-      'against a castled king on the open h-file.',
+      'Named after the 17th-century Italian player Gioachino Greco. A bishop and a queen or ' +
+      'rook mate a castled king down the open h-file.',
     fen: '7k/6p1/8/8/2B4P/5Q2/8/6K1 w - - 0 1',
     solution: ['Qh5#'],
     idea:
       'Named for Gioachino Greco. The bishop controls the corner escape square from afar, the ' +
-      'king’s own pawn blocks the rest, and the queen mates down the open file.',
+      'king’s own pawn blocks the rest, and the queen mates down the open file. A rook can ' +
+      'deliver the same mate, which is why it is also called the h-file mate.',
     hint: 'Swing onto the file the king is standing on.',
   },
   {
@@ -258,20 +259,6 @@ export const patterns: Pattern[] = [
       'The ladder: two major pieces cut the board in half rank by rank, mowing the king to ' +
       'the edge until one of them checks on the last one.',
     hint: 'One rook fences off the seventh rank. Check on the eighth.',
-  },
-  {
-    id: 'h-file',
-    name: 'h-file mate',
-    family: 'Rook mates',
-    intro:
-      'A rook-and-bishop attack down the open h-file, one of the most common ways to break ' +
-      'open a castled king.',
-    fen: '7k/6p1/8/3B4/8/8/6K1/R7 w - - 0 1',
-    solution: ['Rh1#'],
-    idea:
-      'The classic attack on the castled king: its own pawn blocks the escape, the bishop ' +
-      'covers the square beside it, and the rook mates down the open h-file.',
-    hint: 'The bishop guards the corner exit. Take the file.',
   },
   {
     id: 'opera',

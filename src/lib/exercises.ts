@@ -7,7 +7,7 @@ export type Exercise = {
 };
 
 /** Checkmate patterns currently available in the Practice section filter. */
-export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box', 'balestra', 'bronco', 'stallion', 'lolli', 'blind-swine', 'lawnmower', 'philidor', 'morphy', 'blackburne', 'legal', 'corner', 'pillsbury', 'david', 'h-file', 'vukovic'];
+export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box', 'balestra', 'bronco', 'stallion', 'lolli', 'blind-swine', 'lawnmower', 'philidor', 'morphy', 'blackburne', 'legal', 'corner', 'pillsbury', 'david', 'greco', 'vukovic'];
 
 /** Practice exercises. */
 export const exercises: Exercise[] = [
@@ -411,15 +411,15 @@ export const exercises: Exercise[] = [
     hint: 'Black’s king is stuck in the middle of the board. Check from e8 to fence it in, and a humble pawn can finish the job.',
   },
   {
-    id: 'h-file-1',
-    patternId: 'h-file',
+    id: 'greco-1',
+    patternId: 'greco',
     fen: 'r4r1k/ppn1NBpp/4b3/4P3/3p1R2/1P6/P1P3PP/R5K1 w - - 0 1',
     solution: ['Ng6+', 'hxg6', 'Rh4#'],
     hint: 'Your f7 bishop guards g8. Use a knight check to pull the h7 pawn away and open the h-file for your rook.',
   },
   {
-    id: 'h-file-2',
-    patternId: 'h-file',
+    id: 'greco-2',
+    patternId: 'greco',
     fen: 'r2q1rk1/pbp3pp/1p1b4/3N1p2/2B5/P3PPn1/1P3P1P/2RQK2R w K - 0 1',
     solution: ['Ne7+', 'Kh8', 'Ng6+', 'hxg6', 'hxg3+', 'Qh4', 'Rxh4#'],
     hint: 'Your c4 bishop already watches g8. Use knight checks to pry open the h-file, where your h1 rook is waiting.',
