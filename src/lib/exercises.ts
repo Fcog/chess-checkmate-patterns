@@ -425,6 +425,13 @@ export const exercises: Exercise[] = [
     hint: 'Your c4 bishop already watches g8. Use knight checks to pry open the h-file, where your h1 rook is waiting.',
   },
   {
+    id: 'greco-3',
+    patternId: 'greco',
+    fen: '1r3r1k/5Bpp/8/p7/P2q4/5R2/1b4PP/1Q3R1K w - - 0 1',
+    solution: ['Qxh7+', 'Kxh7', 'Rh3+', 'Qh4', 'Rxh4#'],
+    hint: 'Your f7 bishop guards g8 and g6. Rip open the h-file with a queen sacrifice so your rook can mate down it.',
+  },
+  {
     id: 'vukovic-1',
     patternId: 'vukovic',
     fen: 'R7/8/8/7p/6n1/6k1/3r4/5K2 b - - 0 1',
@@ -437,6 +444,13 @@ export const exercises: Exercise[] = [
     fen: '2r5/8/8/5K1k/4N1R1/7P/8/8 w - - 0 1',
     solution: ['Nf6+', 'Kh6', 'Rg6#'],
     hint: 'Your king can protect a rook on g6. First bring the knight to a square where it guards both squares beside Black’s king.',
+  },
+  {
+    id: 'vukovic-3',
+    patternId: 'vukovic',
+    fen: '2r4k/p6p/1b1pPNpB/6P1/2p2p2/8/P1r2PK1/7R w - - 0 1',
+    solution: ['Bg7+', 'Kxg7', 'Rxh7+', 'Kf8', 'Rf7#'],
+    hint: 'Your knight guards e8 and g8, and the e6 pawn would protect a rook on f7. Sacrifice the bishop to open the h-file for the rook.',
   },
   {
     id: 'blackburne-1',
