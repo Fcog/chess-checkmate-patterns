@@ -7,7 +7,7 @@ export type Exercise = {
 };
 
 /** Checkmate patterns currently available in the Practice section filter. */
-export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box', 'balestra', 'bronco', 'stallion', 'lolli', 'blind-swine', 'lawnmower', 'philidor', 'morphy', 'blackburne', 'legal', 'corner', 'pillsbury', 'david', 'greco', 'vukovic'];
+export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box', 'balestra', 'bronco', 'stallion', 'lolli', 'blind-swine', 'lawnmower', 'philidor', 'morphy', 'blackburne', 'legal', 'corner', 'pillsbury', 'david', 'greco', 'vukovic', 'hook'];
 
 /** Practice exercises. */
 export const exercises: Exercise[] = [
@@ -451,6 +451,13 @@ export const exercises: Exercise[] = [
     fen: '2r4k/p6p/1b1pPNpB/6P1/2p2p2/8/P1r2PK1/7R w - - 0 1',
     solution: ['Bg7+', 'Kxg7', 'Rxh7+', 'Kf8', 'Rf7#'],
     hint: 'Your knight guards e8 and g8, and the e6 pawn would protect a rook on f7. Sacrifice the bishop to open the h-file for the rook.',
+  },
+  {
+    id: 'hook-1',
+    patternId: 'hook',
+    fen: '6rk/pp3Qp1/1q5p/3pNP2/n1p5/2P5/PP6/2K1R3 w - - 0 1',
+    solution: ['Ng6+', 'Kh7', 'Qxg8+', 'Kxg8', 'Re8+', 'Kf7', 'Rf8#'],
+    hint: 'A knight on g6, protected by your f5 pawn, can guard your rook right next to the king. Clear the back rank first.',
   },
   {
     id: 'blackburne-1',

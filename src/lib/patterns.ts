@@ -392,12 +392,14 @@ export const patterns: Pattern[] = [
     intro:
       'A rook, knight and pawn form a chain of defenders shaped like a hook around the enemy ' +
       'king.',
-    fen: '7k/6pp/5N2/4P3/8/8/8/1K5R w - - 0 1',
-    solution: ['Rxh7#'],
+    fen: 'R7/4kp2/5N2/4P3/8/8/8/1K6 w - - 0 1',
+    solution: ['Re8#'],
     idea:
-      'A chain of defenders shaped like a hook: pawn defends knight, knight defends rook, ' +
-      'rook checks, and the king’s own pawn seals the last square.',
-    hint: 'Capture your way onto the seventh — the knight is behind you.',
+      'A chain of defenders shaped like a hook: the pawn defends the knight, the knight ' +
+      'defends the rook, and the rook checks from right beside the king. The pawn is what ' +
+      'makes it work — the king stands next to the knight, so without it the king would ' +
+      'simply take the knight. The king’s own pawn seals the last square.',
+    hint: 'The rook can land next to the king — the knight guards it, and your pawn guards the knight.',
   },
   {
     id: 'anderssen',
