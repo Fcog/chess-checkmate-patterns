@@ -279,14 +279,15 @@ export const patterns: Pattern[] = [
     name: "Mayet's mate",
     family: 'Rook mates',
     intro:
-      'A rook-and-bishop mate against a king in the corner, with the bishop working from the ' +
-      'long diagonal.',
-    fen: '6k1/5p2/8/8/8/8/1B6/6KR w - - 0 1',
-    solution: ['Rh8#'],
+      'A rook-and-bishop mate on the back rank: the rook checks right beside the king and a ' +
+      'bishop keeps it safe from a distance. Also known as the h-file mate.',
+    fen: '5k2/5pp1/8/1B6/8/8/8/4R1K1 w - - 0 1',
+    solution: ['Re8#'],
     idea:
-      'The rook mates in the corner right next to the king, defended along the long dark ' +
-      'diagonal by a bishop the king cannot reach.',
-    hint: 'Go to the corner — look at what your bishop sees.',
+      'The rook lands on the back rank right next to the king, defended from afar by a bishop ' +
+      'the king cannot reach, while the king’s own pawns block every escape. When the rook ' +
+      'arrives down the open h-file against a castled king, it’s also called the h-file mate.',
+    hint: 'Land the rook right beside the king — check what your bishop guards.',
   },
   {
     id: 'reti',
