@@ -23,6 +23,22 @@ export function mateIn(puzzle: { solution: string[] }): number {
   return Math.ceil(puzzle.solution.length / 2);
 }
 
+/**
+ * The pattern "Next pattern" should go to: the first unsolved one after `index`, wrapping
+ * round the list. When everything else is solved, simply the next one in order.
+ */
+export function nextPatternIndex(
+  list: { id: string }[],
+  index: number,
+  solved: string[],
+): number {
+  for (let step = 1; step < list.length; step++) {
+    const candidate = (index + step) % list.length;
+    if (!solved.includes(list[candidate].id)) return candidate;
+  }
+  return (index + 1) % list.length;
+}
+
 export const families: Family[] = [
   'Queen mates',
   'Rook mates',
@@ -95,7 +111,7 @@ export const patterns: Pattern[] = [
     intro:
       'Queen and rook team up with a contact check: the king, queen and rook form a triangle ' +
       'that leaves the enemy king nowhere to go.',
-    fen: '8/4r3/4k3/3R4/8/5Q2/8/3RK3 w - - 0 1',
+    fen: '8/4r3/4k3/3R4/8/5Q2/8/4K3 w - - 0 1',
     solution: ['Qf5#'],
     idea:
       'The queen checks from the square diagonally next to the king, protected by the rook on ' +
@@ -309,14 +325,16 @@ export const patterns: Pattern[] = [
     name: "Réti's mate",
     family: 'Rook mates',
     intro:
-      'Named after Richard Réti. A rook-and-bishop finish where the king’s own pieces leave ' +
-      'it nowhere to go.',
-    fen: 'rk6/pp6/8/8/8/4B3/8/2R3K1 w - - 0 1',
-    solution: ['Bf4#'],
+      'Named after Richard Réti, who finished his famous game against Tartakower (Vienna, ' +
+      '1910) with it. A bishop checks right beside the king, with a rook guarding it.',
+    fen: '1nb5/1pk5/2p5/6B1/8/8/8/3R2K1 w - - 0 1',
+    solution: ['Bd8#'],
     idea:
-      'Richard Réti’s finish: the bishop checks along the diagonal, the rook covers the one ' +
-      'open file, and the king’s own rook and pawns do the rest.',
-    hint: 'Get on the diagonal that ends on the king.',
+      'The bishop checks from the square right next to the king, and the rook behind it on the ' +
+      'same open file protects it, so the king cannot take it. The rook also covers the file ' +
+      'beside the king, the bishop’s diagonal runs on through the king, and the king’s own ' +
+      'pieces block the rest.',
+    hint: 'A bishop can check right next to the king if your rook guards it from behind.',
   },
   {
     id: 'pillsbury',
@@ -552,7 +570,7 @@ export const patterns: Pattern[] = [
     intro:
       'Named after Joseph Henry Blackburne. Three minor pieces and no heavy artillery combine ' +
       'against the castled king.',
-    fen: 'r6k/p3N3/8/8/8/3B4/8/2B3K1 w - - 0 1',
+    fen: '7k/4N3/8/8/8/3B4/8/2B3K1 w - - 0 1',
     solution: ['Bb2#'],
     idea:
       'Three minor pieces and no heavy artillery: one bishop covers h7, the knight covers ' +

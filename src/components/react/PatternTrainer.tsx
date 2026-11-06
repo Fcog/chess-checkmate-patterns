@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { navigate } from 'astro:transitions/client';
-import { patterns } from '../../lib/patterns';
+import { nextPatternIndex, patterns } from '../../lib/patterns';
 import { Board } from './Board';
 import { Feedback } from './Feedback';
 import { Header } from './Header';
@@ -31,7 +31,7 @@ export function PatternTrainer({ patternId }: Props) {
     load(patterns[index]);
   }, [index, load]);
 
-  const next = patterns[(index + 1) % patterns.length];
+  const next = patterns[nextPatternIndex(patterns, index, solved)];
   const solvedCount = solved.filter((id) => patterns.some((p) => p.id === id)).length;
 
   return (

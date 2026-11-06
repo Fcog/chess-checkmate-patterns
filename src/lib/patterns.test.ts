@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { Chess, validateFen } from 'chess.js';
 import { exercises, practicePatternIds, type Exercise } from './exercises';
-import { families, mateIn, patterns, type Pattern } from './patterns';
+import { families, mateIn, nextPatternIndex, patterns, type Pattern } from './patterns';
 
 /**
  * Can the side to move force mate within `moves` of its own moves, starting with `san`?
@@ -147,5 +147,30 @@ describe('practice filters', () => {
   it('has a filter for every pattern that has exercises, and no empty filters', () => {
     const used = [...new Set(exercises.map((ex) => ex.patternId))].sort();
     expect([...practicePatternIds].sort()).toEqual(used);
+  });
+});
+
+describe('nextPatternIndex', () => {
+  const list = [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }];
+
+  it('goes to the next pattern when nothing is solved', () => {
+    expect(nextPatternIndex(list, 0, [])).toBe(1);
+  });
+
+  it('skips patterns that are already solved', () => {
+    expect(nextPatternIndex(list, 0, ['b', 'c'])).toBe(3);
+  });
+
+  it('wraps round to the start of the list', () => {
+    expect(nextPatternIndex(list, 2, ['d'])).toBe(0);
+  });
+
+  it('ignores whether the current pattern is solved', () => {
+    expect(nextPatternIndex(list, 1, ['b'])).toBe(2);
+  });
+
+  it('falls back to the next pattern when everything is solved', () => {
+    expect(nextPatternIndex(list, 3, ['a', 'b', 'c', 'd'])).toBe(0);
+    expect(nextPatternIndex(list, 1, ['a', 'b', 'c', 'd'])).toBe(2);
   });
 });
