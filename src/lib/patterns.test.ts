@@ -121,6 +121,17 @@ describe.each(exercises.map((ex): [string, Exercise] => [ex.id, ex]))('exercise 
     expect(inCheck(ex.fen, defender)).toBe(false);
   });
 
+  it.each(ex.alternatives ?? [])('has a valid alternative line %#', (...line) => {
+    expect(line).toHaveLength(ex.solution.length);
+    expect(line).not.toEqual(ex.solution);
+    const chess = new Chess(ex.fen);
+    line.forEach((san, ply) => {
+      expect(chess.moves(), `ply ${ply} (${san})`).toContain(san);
+      chess.move(san);
+    });
+    expect(chess.isCheckmate()).toBe(true);
+  });
+
   it('plays out legally and ends in checkmate', () => {
     expect(ex.solution.length % 2).toBe(1);
     const chess = new Chess(ex.fen);

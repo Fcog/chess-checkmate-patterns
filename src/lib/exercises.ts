@@ -3,11 +3,13 @@ export type Exercise = {
   patternId: string;
   fen: string;
   solution: string[];
+  /** Other winning lines the player may follow instead; same length as `solution`. */
+  alternatives?: string[][];
   hint?: string;
 };
 
 /** Checkmate patterns currently available in the Practice section filter. */
-export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box', 'balestra', 'bronco', 'stallion', 'lolli', 'blind-swine', 'lawnmower', 'philidor', 'morphy', 'blackburne', 'legal', 'corner', 'pillsbury', 'david', 'greco', 'vukovic', 'hook', 'anderssen', 'corridor', 'two-knights', 'collaboration'];
+export const practicePatternIds: string[] = ['back-rank', 'anastasia', 'triangle', 'max-lange', 'damiano', 'opera', 'mayet', 'reti', 'arabian', 'bodens', 'epaulette', 'cozio', 'smothered', 'suffocation', 'bombardiers', 'kill-box', 'balestra', 'bronco', 'stallion', 'lolli', 'blind-swine', 'lawnmower', 'philidor', 'morphy', 'blackburne', 'legal', 'corner', 'pillsbury', 'david', 'greco', 'vukovic', 'hook', 'anderssen', 'corridor', 'two-knights', 'collaboration', 'fools'];
 
 /** Practice exercises. */
 export const exercises: Exercise[] = [
@@ -493,6 +495,42 @@ export const exercises: Exercise[] = [
     fen: '7r/4Rpk1/6p1/q2p4/P3b3/5NPn/2B1QP1P/7K b - - 0 1',
     solution: ['Qe1+', 'Qxe1', 'Bxf3#'],
     hint: 'Your h3 knight already covers g1. Deflect White’s queen so your bishop can check along the long diagonal.',
+  },
+  {
+    id: 'fools-1',
+    patternId: 'fools',
+    fen: 'r1bqkb1r/ppppp1pp/8/3n4/8/3B4/PPP2PPP/R1BQK1NR w KQkq - 0 1',
+    solution: ['Qh5+', 'g6', 'Qxg6+', 'hxg6', 'Bxg6#'],
+    alternatives: [['Qh5+', 'g6', 'Bxg6+', 'hxg6', 'Qxg6#']],
+    hint: 'Black’s f-pawn is gone, so the h5–e8 diagonal leads straight to the king. Your queen and bishop can both use it.',
+  },
+  {
+    id: 'fools-2',
+    patternId: 'fools',
+    fen: 'rnbqkbnr/pppp1ppp/8/8/5P2/8/PPPPP2P/RNBQKBNR b KQkq - 0 1',
+    solution: ['Qh4#'],
+    hint: 'White’s f- and g-pawns have both left their squares. Which diagonal now leads straight to the king?',
+  },
+  {
+    id: 'fools-3',
+    patternId: 'fools',
+    fen: 'r1bqkb2/pp1pp1pr/5n2/2p5/3n4/2NB4/PPP3PP/R1B1K1NR w KQq - 0 1',
+    solution: ['Bg6#'],
+    hint: 'Black’s f-pawn is missing and the h7 pawn has gone. Find the diagonal that leads straight to the king.',
+  },
+  {
+    id: 'fools-4',
+    patternId: 'fools',
+    fen: 'r1bqkbnr/pppnp1p1/4p2p/8/4p3/2N5/PPPP1PPP/R1BQKB1R w KQq - 0 1',
+    solution: ['Qh5+', 'g6', 'Qxg6#'],
+    hint: 'Black’s f-pawn has just left f7, opening the h5–e8 diagonal. Check along it and follow up.',
+  },
+  {
+    id: 'fools-5',
+    patternId: 'fools',
+    fen: 'rn1qkb1r/p1ppp2p/1p3nP1/7Q/3P4/3B4/PPP2PbP/RNB1K1NR w KQkq - 0 1',
+    solution: ['gxh7+', 'Nxh5', 'Bg6#'],
+    hint: 'Your queen is attacked, but a pawn check comes first. Then the h5–e8 diagonal is open for your bishop.',
   },
   {
     id: 'blackburne-1',

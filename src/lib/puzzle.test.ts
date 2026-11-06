@@ -13,7 +13,7 @@ describe('checkMove', () => {
   const epaulette = byId('epaulette'); // 3rkr2/8/1Q6/... — Qe6#
 
   it('accepts the solution move and marks a mate-in-1 as solved', () => {
-    expect(checkMove(epaulette, epaulette.fen, 0, 'b6', 'e6')).toMatchObject({
+    expect(checkMove(epaulette, epaulette.fen, [], 'b6', 'e6')).toMatchObject({
       kind: 'correct',
       san: 'Qe6#',
       solved: true,
@@ -21,7 +21,7 @@ describe('checkMove', () => {
   });
 
   it('rejects a legal move that does not mate', () => {
-    expect(checkMove(epaulette, epaulette.fen, 0, 'b6', 'b7')).toMatchObject({
+    expect(checkMove(epaulette, epaulette.fen, [], 'b6', 'b7')).toMatchObject({
       kind: 'wrong',
       san: 'Qb7',
       to: 'b7',
@@ -31,7 +31,7 @@ describe('checkMove', () => {
   it('accepts a checkmate that comes earlier than the solution', () => {
     // Back-rank: Re8 mates at once, even though the stored line is longer.
     const puzzle = { id: 'test', fen: '6k1/5ppp/8/8/8/8/8/4R1K1 w - - 0 1', solution: ['Kf1', 'h6', 'Re8#'] };
-    expect(checkMove(puzzle, puzzle.fen, 0, 'e1', 'e8')).toMatchObject({
+    expect(checkMove(puzzle, puzzle.fen, [], 'e1', 'e8')).toMatchObject({
       kind: 'correct',
       san: 'Re8#',
       solved: true,
@@ -39,12 +39,12 @@ describe('checkMove', () => {
   });
 
   it('reports an illegal move', () => {
-    expect(checkMove(epaulette, epaulette.fen, 0, 'b6', 'h8')).toEqual({ kind: 'illegal' });
+    expect(checkMove(epaulette, epaulette.fen, [], 'b6', 'h8')).toEqual({ kind: 'illegal' });
   });
 
   it('accepts any mating move on the final ply', () => {
     const alternative = { ...epaulette, solution: ['Qb8'] };
-    expect(checkMove(alternative, epaulette.fen, 0, 'b6', 'e6')).toMatchObject({
+    expect(checkMove(alternative, epaulette.fen, [], 'b6', 'e6')).toMatchObject({
       kind: 'correct',
       solved: true,
     });
@@ -54,11 +54,45 @@ describe('checkMove', () => {
     const philidor = byId('philidor');
     const [first] = philidor.solution;
     const { from, to } = playSan(philidor.fen, first);
-    expect(checkMove(philidor, philidor.fen, 0, from, to)).toMatchObject({
+    expect(checkMove(philidor, philidor.fen, [], from, to)).toMatchObject({
       kind: 'correct',
       san: first,
       solved: false,
     });
+  });
+});
+
+describe('checkMove with alternative lines', () => {
+  // Fool's mate exercise: 2.Qxg6+ (main line) and 2.Bxg6+ (alternative) both mate.
+  const puzzle = {
+    id: 'alt',
+    fen: 'r1bqkb1r/ppppp1pp/8/3n4/8/3B4/PPP2PPP/R1BQK1NR w KQkq - 0 1',
+    solution: ['Qh5+', 'g6', 'Qxg6+', 'hxg6', 'Bxg6#'],
+    alternatives: [['Qh5+', 'g6', 'Bxg6+', 'hxg6', 'Qxg6#']],
+  };
+  const afterFirst = playSan(playSan(puzzle.fen, 'Qh5+').fen, 'g6').fen;
+
+  it('accepts the main line', () => {
+    expect(checkMove(puzzle, afterFirst, ['Qh5+', 'g6'], 'h5', 'g6')).toMatchObject({
+      kind: 'correct',
+      san: 'Qxg6+',
+      line: puzzle.solution,
+    });
+  });
+
+  it('accepts an alternative line and follows it', () => {
+    expect(checkMove(puzzle, afterFirst, ['Qh5+', 'g6'], 'd3', 'g6')).toMatchObject({
+      kind: 'correct',
+      san: 'Bxg6+',
+      solved: false,
+      line: puzzle.alternatives[0],
+    });
+  });
+
+  it('only follows lines that match the moves played so far', () => {
+    // Bxg6 would be right after Qh5+ g6, but not as the very first move.
+    const result = checkMove(puzzle, puzzle.fen, [], 'd3', 'g6');
+    expect(result.kind).toBe('wrong');
   });
 });
 
@@ -74,7 +108,7 @@ describe('playSan', () => {
 describe('refutation', () => {
   it('plays a legal reply and reports the resulting position', () => {
     const epaulette = byId('epaulette');
-    const wrong = checkMove(epaulette, epaulette.fen, 0, 'b6', 'b7');
+    const wrong = checkMove(epaulette, epaulette.fen, [], 'b6', 'b7');
     if (wrong.kind !== 'wrong') throw new Error('expected a wrong move');
     const reply = refutation(wrong.fen, wrong.to);
     expect(reply).not.toBeNull();

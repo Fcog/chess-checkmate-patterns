@@ -5,25 +5,35 @@ export type Puzzle = {
   id: string;
   fen: string;
   solution: string[];
+  /** Other winning lines, the same length as `solution`. */
+  alternatives?: string[][];
   hint?: string;
 };
+
+/** The main solution followed by any alternative lines. */
+export function solutionLines(puzzle: Puzzle): string[][] {
+  return [puzzle.solution, ...(puzzle.alternatives ?? [])];
+}
 
 export type MoveResult =
   | { kind: 'illegal' }
   | { kind: 'wrong'; san: string; fen: string; to: string }
-  | { kind: 'correct'; san: string; fen: string; solved: boolean };
+  /** `line` is the solution line the player is now following. */
+  | { kind: 'correct'; san: string; fen: string; solved: boolean; line: string[] };
 
 /**
- * Checks the player's move against the solution at `ply`. Any move that gives checkmate
- * counts as correct and solves the puzzle, even if it isn't the one in the solution.
+ * Checks the player's move against every solution line that matches the moves played so
+ * far. Any move that gives checkmate counts as correct and solves the puzzle, even if it
+ * isn't in a solution line.
  */
 export function checkMove(
   puzzle: Puzzle,
   fen: string,
-  ply: number,
+  played: string[],
   from: string,
   to: string,
 ): MoveResult {
+  const ply = played.length;
   const chess = new Chess(fen);
   let san: string;
   try {
@@ -32,9 +42,14 @@ export function checkMove(
     return { kind: 'illegal' };
   }
 
-  if (chess.isCheckmate()) return { kind: 'correct', san, fen: chess.fen(), solved: true };
-  if (san !== puzzle.solution[ply]) return { kind: 'wrong', san, fen: chess.fen(), to };
-  return { kind: 'correct', san, fen: chess.fen(), solved: ply + 1 >= puzzle.solution.length };
+  const line = solutionLines(puzzle).find(
+    (candidate) => candidate[ply] === san && played.every((move, i) => candidate[i] === move),
+  );
+  if (chess.isCheckmate()) {
+    return { kind: 'correct', san, fen: chess.fen(), solved: true, line: line ?? puzzle.solution };
+  }
+  if (!line) return { kind: 'wrong', san, fen: chess.fen(), to };
+  return { kind: 'correct', san, fen: chess.fen(), solved: ply + 1 >= line.length, line };
 }
 
 /** Plays a move from the solution and reports where it went. */

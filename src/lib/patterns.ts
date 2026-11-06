@@ -217,6 +217,21 @@ export const patterns: Pattern[] = [
       'captures there protected by the bishop on c4.',
     hint: 'Take the pawn your bishop is guarding.',
   },
+  {
+    id: 'fools',
+    name: "Fool's mate",
+    family: 'Queen mates',
+    intro:
+      'The fastest checkmate in chess. Pushing the f- and g-pawns early opens a diagonal ' +
+      'straight to the king — learn to punish it, and never to allow it yourself.',
+    fen: 'rnbqkbnr/ppppp2p/5p2/6p1/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+    solution: ['Qh5#'],
+    idea:
+      'With the f-pawn gone from its square, the diagonal from h5 to e8 runs straight to the ' +
+      'king. The queen checks along it, nothing can block, and the king is hemmed in by its ' +
+      'own queen, bishop and pawns. In the classic version Black mates with 1.f3 e5 2.g4 Qh4#.',
+    hint: 'Look at the diagonal the f-pawn left open.',
+  },
 
   // ---------- Rook mates ----------
   {

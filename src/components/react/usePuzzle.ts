@@ -28,6 +28,8 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
   const [puzzle, setPuzzle] = useState(initial);
   const [fen, setFen] = useState(initial?.fen ?? new Chess().fen());
   const [ply, setPly] = useState(0);
+  /** The solution line being followed: the main one, or an alternative the player chose. */
+  const [line, setLine] = useState<string[]>(initial?.solution ?? []);
   const [played, setPlayed] = useState<string[]>([]);
   const [attempt, setAttempt] = useState<Attempt>({ kind: 'idle' });
   const [busy, setBusy] = useState(false);
@@ -51,6 +53,7 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
     (next: Puzzle | undefined) => {
       clearTimers();
       setPuzzle(next);
+      setLine(next?.solution ?? []);
       if (next) setFen(next.fen);
       setPly(0);
       setPlayed([]);
@@ -78,7 +81,7 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
   const onMove = useCallback(
     (from: Key, to: Key) => {
       if (locked || !puzzle) return;
-      const result = checkMove(puzzle, fen, ply, from, to);
+      const result = checkMove(puzzle, fen, played, from, to);
 
       if (result.kind === 'illegal') {
         setSyncKey((k) => k + 1);
@@ -125,7 +128,8 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
       }
 
       // The defender's reply is played automatically on odd plies.
-      const replySan = puzzle.solution[nextPly];
+      setLine(result.line);
+      const replySan = result.line[nextPly];
       setBusy(true);
       schedule(REPLY_DELAY, () => {
         const reply = playSan(result.fen, replySan);
@@ -137,7 +141,7 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
         setBusy(false);
       });
     },
-    [clearTimers, fen, lastMove, locked, onSolved, ply, puzzle, schedule],
+    [clearTimers, fen, lastMove, locked, onSolved, played, ply, puzzle, schedule],
   );
 
   const reveal = useCallback(() => {
@@ -146,7 +150,7 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
     setDisplayFen(undefined);
     setBusy(true);
     let cursor = fen;
-    const remaining = puzzle.solution.slice(ply);
+    const remaining = line.slice(ply);
     remaining.forEach((san, i) => {
       schedule(i * REVEAL_STEP, () => {
         const move = playSan(cursor, san);
@@ -161,7 +165,7 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
         }
       });
     });
-  }, [clearTimers, fen, ply, puzzle, schedule]);
+  }, [clearTimers, fen, line, ply, puzzle, schedule]);
 
   return {
     puzzle,
