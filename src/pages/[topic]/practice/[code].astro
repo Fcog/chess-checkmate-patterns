@@ -1,0 +1,49 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { PracticeTrainer } from '../../../components/react/PracticeTrainer';
+import Base from '../../../layouts/Base.astro';
+import { exercises } from '../../../lib/exercises';
+import { movesToFind } from '../../../lib/motifs';
+import { shareCode } from '../../../lib/share';
+import { site } from '../../../lib/site';
+import { practicePath, sharePath, topicById } from '../../../lib/topics';
+
+// One page per exercise, so an exercise can be shared by link. The code is neutral and the
+// page never names the pattern, so the puzzle stays blind.
+export const getStaticPaths = (() =>
+  exercises.map((exercise) => ({
+    params: { topic: exercise.topic, code: shareCode(exercise.id) },
+    props: { exercise },
+  }))) satisfies GetStaticPaths;
+
+const { exercise } = Astro.props;
+const topic = topicById(exercise.topic);
+const side = exercise.fen.split(' ')[1] === 'w' ? 'White' : 'Black';
+const moves = movesToFind(exercise);
+const goal = exercise.goal;
+const heading =
+  goal.kind === 'mate'
+    ? `Checkmate puzzle: ${side} to mate in ${moves}`
+    : `Chess puzzle: ${side} to play and ${goal.label.toLowerCase()}`;
+const question =
+  goal.kind === 'mate' ? `Can you find the mate in ${moves}?` : `Can you find the winning line?`;
+---
+
+<Base
+  title={`${heading} | ${site.name}`}
+  description={`${question} Solve this chess puzzle on an interactive board, then keep practising with more hidden patterns.`}
+  path={sharePath(exercise.topic, shareCode(exercise.id))}
+  noindex
+>
+  <PracticeTrainer client:load topic={exercise.topic} initialCode={shareCode(exercise.id)} />
+
+  <article class="page-text">
+    <h1>{heading}</h1>
+    <p>
+      Someone shared this puzzle with you. Find the winning line on the board above — the motif is
+      hidden, so you have to spot it yourself. When you’re done, press Next to keep going with
+      more <a href={practicePath(topic.id)}>{topic.name.toLowerCase()} puzzles</a>, or
+      <a href={topic.path}>learn the {topic.noun}s</a> first.
+    </p>
+  </article>
+</Base>

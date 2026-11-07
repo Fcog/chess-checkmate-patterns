@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import type { Exercise } from './exercises';
-import { depthOptions, filterExercises } from './practice';
+import { depthOptions, filterExercises, noFilter, type PracticeFilter } from './practice';
 
-const ex = (id: string, patternId: string, moves: number): Exercise => ({
+const ex = (id: string, motifId: string, moves: number, topic: Exercise['topic'] = 'checkmates'): Exercise => ({
   id,
-  patternId,
+  motifId,
+  topic,
+  goal: { kind: 'mate' },
   fen: '8/8/8/8/8/8/8/8 w - - 0 1',
   // A mate in N has 2N - 1 plies.
   solution: Array.from({ length: 2 * moves - 1 }, () => 'x'),
@@ -16,29 +18,37 @@ const list = [
   ex('c', 'smothered', 3),
   ex('d', 'smothered', 5),
   ex('e', 'back-rank', 8),
+  ex('f', 'fork', 2, 'tactics'),
 ];
+const by = (filter: Partial<PracticeFilter>) => ({ ...noFilter, ...filter });
 const ids = (exs: Exercise[]) => exs.map((e) => e.id);
 
 describe('filterExercises', () => {
-  it('returns everything with no pattern and any length', () => {
-    expect(ids(filterExercises(list, [], 'any'))).toEqual(['a', 'b', 'c', 'd', 'e']);
+  it('returns everything with no motif and any length', () => {
+    expect(ids(filterExercises(list, noFilter))).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
   });
 
-  it('filters by exact mate length', () => {
-    expect(ids(filterExercises(list, [], 2))).toEqual(['b']);
+
+
+  it('filters by exact length', () => {
+    expect(ids(filterExercises(list, by({ depth: 2 })))).toEqual(['b', 'f']);
   });
 
-  it('groups mate in 5 and longer under 5+', () => {
-    expect(ids(filterExercises(list, [], 5))).toEqual(['d', 'e']);
+  it('groups 5 moves and longer under 5+', () => {
+    expect(ids(filterExercises(list, by({ depth: 5 })))).toEqual(['d', 'e']);
   });
 
-  it('combines the pattern and length filters', () => {
-    expect(ids(filterExercises(list, ['back-rank'], 5))).toEqual(['e']);
-    expect(ids(filterExercises(list, ['smothered'], 1))).toEqual([]);
+  it('combines the motif and length filters', () => {
+    expect(ids(filterExercises(list, by({ motifIds: ['back-rank'], depth: 5 })))).toEqual(['e']);
+    expect(ids(filterExercises(list, by({ motifIds: ['smothered'], depth: 1 })))).toEqual([]);
   });
 
   it('keeps the given order', () => {
-    expect(ids(filterExercises([...list].reverse(), ['back-rank'], 'any'))).toEqual(['e', 'b', 'a']);
+    expect(ids(filterExercises([...list].reverse(), by({ motifIds: ['back-rank'] })))).toEqual([
+      'e',
+      'b',
+      'a',
+    ]);
   });
 });
 

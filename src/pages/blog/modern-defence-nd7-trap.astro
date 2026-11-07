@@ -1,0 +1,109 @@
+---
+import { LineViewer } from '../../components/react/LineViewer';
+import Page from '../../layouts/Page.astro';
+import { formatDate, postBySlug } from '../../lib/posts';
+import { site } from '../../lib/site';
+
+const post = postBySlug('modern-defence-nd7-trap');
+const path = `/blog/${post.slug}`;
+
+const START = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+// After 1.e4 g6 2.d4 Bg7 3.Nf3 d6 4.Bc4 Nd7, White to play move 5.
+const TRAP = 'r1bqk1nr/pppnppbp/3p2p1/8/2BPP3/5N2/PPP2PPP/RNBQK2R w KQkq - 2 5';
+---
+
+<Page
+  title={`${post.title} | ${site.name}`}
+  description={post.description}
+  path={path}
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    url: new URL(path, Astro.site).href,
+    inLanguage: 'en',
+    author: { '@type': 'Person', name: site.operator },
+    publisher: { '@type': 'Organization', name: site.name, url: Astro.site?.href },
+  }}
+>
+  <p class="breadcrumb"><a href="/blog">Blog</a> · {post.category}</p>
+  <h1>{post.title}</h1>
+  <p class="meta">{formatDate(post.date)}</p>
+
+  <p>
+    The Modern Defence starts with 1.e4 g6. Black lets White build a big pawn centre and plans to
+    attack it later, with the bishop on g7 aiming down the long diagonal. It’s a flexible, perfectly
+    sound opening — but its slow, quiet set-up leaves room for one very natural-looking mistake.
+  </p>
+  <p>
+    After 1.e4 g6 2.d4 Bg7 3.Nf3 d6 4.Bc4, the move 4...Nd7 looks harmless: the knight develops
+    and supports a later ...e5. But with White’s bishop on c4 eyeing f7, the f7 pawn is guarded
+    only by the king, and the knight on d7 takes away the king’s and queen’s last spare squares.
+  </p>
+
+  <LineViewer
+    client:visible
+    fen={START}
+    moves={['e4', 'g6', 'd4', 'Bg7', 'Nf3', 'd6', 'Bc4', 'Nd7']}
+    label="The opening: 1.e4 g6 2.d4 Bg7 3.Nf3 d6 4.Bc4 Nd7"
+  />
+
+  <h2>The trap: 5.Bxf7+! Kxf7 6.Ng5+</h2>
+  <p>
+    White gives up the bishop to drag the king out: 5.Bxf7+ Kxf7, and then 6.Ng5+. Now the king has
+    three squares — e8, f8 and f6 — and every one of them loses. The usual hiding place, g8, is still
+    taken by Black’s own knight.
+  </p>
+
+  <h3>6...Kf8 — the royal fork</h3>
+  <p>
+    7.Ne6+ forks the king and the queen. Wherever the king goes, 8.Nxd8 wins the queen, and White
+    ends up a queen for a bishop.
+  </p>
+  <LineViewer
+    client:visible
+    fen={TRAP}
+    moves={['Bxf7+', 'Kxf7', 'Ng5+', 'Kf8', 'Ne6+', 'Ke8', 'Nxd8']}
+    label="Variation 6...Kf8 7.Ne6+ Ke8 8.Nxd8"
+  />
+
+  <h3>6...Ke8 — the trapped queen</h3>
+  <p>
+    7.Ne6 isn’t even check, but it doesn’t need to be: the queen on d8 has no squares at all. It is
+    walled in by its own king on e8, knight on d7, bishop on c8 and pawns on c7 and e7. Whatever
+    Black plays, 8.Nxd8 takes the queen.
+  </p>
+  <LineViewer
+    client:visible
+    fen={TRAP}
+    moves={['Bxf7+', 'Kxf7', 'Ng5+', 'Ke8', 'Ne6', 'Ndf6', 'Nxd8']}
+    label="Variation 6...Ke8 7.Ne6 Ndf6 8.Nxd8"
+  />
+
+  <h3>6...Kf6 — straight into mate</h3>
+  <p>
+    Stepping forward is the worst choice: 7.Qf3# is checkmate. The queen checks along the f-file,
+    the knight on g5 covers e6 and f7 and is protected by the bishop on c1, the pawn on d4 covers e5, and
+    Black’s own pawns and bishop block the rest.
+  </p>
+  <LineViewer
+    client:visible
+    fen={TRAP}
+    moves={['Bxf7+', 'Kxf7', 'Ng5+', 'Kf6', 'Qf3#']}
+    label="Variation 6...Kf6 7.Qf3#"
+  />
+
+  <h2>How to avoid it</h2>
+  <p>
+    The problem isn’t the bishop on c4 — it’s 4...Nd7 before the kingside is developed. With
+    4...Nf6 instead, the same 5.Bxf7+ Kxf7 6.Ng5+ just lets the king step to g8, and White has given
+    up a bishop for a pawn. As a rule: when a bishop is aiming at f7, make sure your king has
+    somewhere to go before you shut in your own queen.
+  </p>
+  <p>
+    Want to recognise finishing blows like 7.Qf3#? Learn the <a href="/">checkmate patterns</a>, then
+    test yourself in <a href="/checkmates/practice">practice</a>.
+  </p>
+</Page>

@@ -1,8 +1,10 @@
-import type { Pattern } from '../../lib/patterns';
+import type { Motif } from '../../lib/motifs';
 import type { Depth } from '../../lib/practice';
 
 export type Props = {
-  patterns: Pattern[];
+  motifs: Motif[];
+  /** Heading of the motif list, e.g. "Checkmates". */
+  topicName: string;
   selectedIds: string[];
   onSelectAll: () => void;
   onToggle: (id: string) => void;
@@ -12,7 +14,8 @@ export type Props = {
 };
 
 export function PracticeFilters({
-  patterns,
+  motifs,
+  topicName,
   selectedIds,
   onSelectAll,
   onToggle,
@@ -22,7 +25,7 @@ export function PracticeFilters({
 }: Props) {
   const allSelected = selectedIds.length === 0;
   return (
-    <nav className="patterns" aria-label="Checkmate filters">
+    <nav className="patterns" aria-label="Practice filters">
       <section>
         <h3>Mode</h3>
         <button
@@ -33,11 +36,11 @@ export function PracticeFilters({
           <span className="check" aria-hidden="true">
             {allSelected ? '✓' : ''}
           </span>
-          <span className="label">All patterns (blind)</span>
+          <span className="label">All motifs (blind)</span>
         </button>
       </section>
       <section className="depth-section">
-        <h3 id="depth-label">Moves to mate</h3>
+        <h3 id="depth-label">Moves</h3>
         <div className="depths" role="radiogroup" aria-labelledby="depth-label">
           {depths.map(({ value, label, available }) => {
             const isSelected = value === selectedDepth;
@@ -47,7 +50,7 @@ export function PracticeFilters({
                 className={`depth${isSelected ? ' active' : ''}`}
                 role="radio"
                 aria-checked={isSelected}
-                aria-label={value === 'any' ? 'Any length' : `Mate in ${label}`}
+                aria-label={value === 'any' ? 'Any length' : `${label} moves`}
                 disabled={!available && !isSelected}
                 onClick={() => onSelectDepth(value)}
               >
@@ -58,20 +61,20 @@ export function PracticeFilters({
         </div>
       </section>
       <section>
-        <h3>Checkmates</h3>
-        {patterns.map((p) => {
-          const isSelected = selectedIds.includes(p.id);
+        <h3>{topicName}</h3>
+        {motifs.map((m) => {
+          const isSelected = selectedIds.includes(m.id);
           return (
             <button
-              key={p.id}
+              key={m.id}
               className={`pattern${isSelected ? ' active' : ''}`}
-              onClick={() => onToggle(p.id)}
+              onClick={() => onToggle(m.id)}
               aria-pressed={isSelected}
             >
               <span className="check" aria-hidden="true">
                 {isSelected ? '✓' : ''}
               </span>
-              <span className="label">{p.name}</span>
+              <span className="label">{m.name}</span>
             </button>
           );
         })}

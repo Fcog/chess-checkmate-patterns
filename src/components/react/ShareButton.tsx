@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export type Props = {
-  /** Path on this site to share, e.g. "/patterns/arabian". */
+  /** Path on this site to share, e.g. "/checkmates/arabian". */
   path: string;
   title: string;
   text: string;

@@ -1,14 +1,17 @@
 import type { Color } from 'chessground/types';
+import { taskDone, taskPrompt } from '../../lib/motifs';
+import type { Puzzle } from '../../lib/puzzle';
 import type { Attempt } from './usePuzzle';
 
 export type Props = {
+  puzzle: Pick<Puzzle, 'solution' | 'goal'> | undefined;
   attempt: Attempt;
   moves: number;
   ply: number;
   heroColor: Color;
 };
 
-export function Feedback({ attempt, moves, ply, heroColor }: Props) {
+export function Feedback({ puzzle, attempt, moves, ply, heroColor }: Props) {
   const defender = heroColor === 'white' ? 'Black' : 'White';
   const heroMovesLeft = moves - Math.ceil(ply / 2);
 
@@ -31,14 +34,14 @@ export function Feedback({ attempt, moves, ply, heroColor }: Props) {
     case 'solved':
       return (
         <p className="feedback right">
-          {attempt.revealed ? 'That is the line.' : 'Checkmate. Well done.'}
+          {attempt.revealed
+            ? 'That is the line.'
+            : attempt.mate
+              ? 'Checkmate. Well done.'
+              : puzzle && taskDone(puzzle)}
         </p>
       );
     default:
-      return (
-        <p className="feedback">
-          Find the mate in {moves} for {heroColor}.
-        </p>
-      );
+      return <p className="feedback">{puzzle && taskPrompt(puzzle, heroColor)}</p>;
   }
 }

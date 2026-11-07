@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Chess } from 'chess.js';
 import type { Color, Key } from 'chessground/types';
 import { legalDests } from '../../lib/helpers';
-import { mateIn } from '../../lib/patterns';
+import { movesToFind } from '../../lib/motifs';
 import { checkMove, playSan, refutation, type Puzzle } from '../../lib/puzzle';
 import { playBadMove, playGoodMove } from '../../lib/sounds';
 
@@ -18,7 +18,8 @@ export type Attempt =
   | { kind: 'progress'; hero: string; reply: string }
   /** `reply` is the opponent's answer shown on the board; null means the move stalemated. */
   | { kind: 'wrong'; san: string; reply: string | null }
-  | { kind: 'solved'; revealed: boolean };
+  /** `mate`: the player's last move gave checkmate. */
+  | { kind: 'solved'; revealed: boolean; mate?: boolean };
 
 /**
  * Board state for playing through one puzzle at a time. Call `load` to switch to another
@@ -76,7 +77,7 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
   );
   const isDone = attempt.kind === 'solved';
   const locked = isDone || busy;
-  const moves = puzzle ? mateIn(puzzle) : 1;
+  const moves = puzzle ? movesToFind(puzzle) : 1;
 
   const onMove = useCallback(
     (from: Key, to: Key) => {
@@ -122,7 +123,7 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
       setLastMove([from, to]);
 
       if (result.solved) {
-        setAttempt({ kind: 'solved', revealed: false });
+        setAttempt({ kind: 'solved', revealed: false, mate: new Chess(result.fen).isCheckmate() });
         onSolved(puzzle.id);
         return;
       }

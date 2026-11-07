@@ -1,4 +1,7 @@
 /**
+ * The site's name and address, used everywhere the brand appears (header, titles, SEO,
+ * astro.config.mjs). Renaming the site is a change here only.
+ *
  * Details shown on the terms and privacy pages. The privacy policy has to name who runs
  * the site and how to reach them (GDPR art. 13). `npm run test:build` fails while any
  * placeholder is left.

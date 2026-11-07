@@ -1,0 +1,52 @@
+---
+import type { GetStaticPaths } from 'astro';
+import MotifArticle from '../../components/MotifArticle.astro';
+import { MotifTrainer } from '../../components/react/MotifTrainer';
+import Base from '../../layouts/Base.astro';
+import { motifPath, motifs, taskLabel } from '../../lib/motifs';
+import { site } from '../../lib/site';
+import { topicById } from '../../lib/topics';
+
+// One page per motif, under its topic: /checkmates/arabian, /tactics/fork.
+export const getStaticPaths = (() =>
+  motifs.map((motif) => ({
+    params: { topic: motif.topic, id: motif.id },
+    props: { motif },
+  }))) satisfies GetStaticPaths;
+
+const { motif } = Astro.props;
+const topic = topicById(motif.topic);
+const path = motifPath(motif);
+const noun = topic.noun.replace(/\b\w/g, (c) => c.toUpperCase());
+const description = `${motif.intro} Solve it on an interactive board (${taskLabel(motif).toLowerCase()}).`;
+---
+
+<Base
+  title={`${motif.name} – ${noun.startsWith('Chess') ? noun : `Chess ${noun}`} | ${site.name}`}
+  description={description}
+  path={path}
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'LearningResource',
+    name: motif.name,
+    description: motif.intro,
+    url: new URL(path, Astro.site).href,
+    inLanguage: 'en',
+    isAccessibleForFree: true,
+    learningResourceType: 'Interactive chess puzzle',
+    about: { '@type': 'Thing', name: `${topic.name} in chess` },
+    isPartOf: {
+      '@type': 'WebSite',
+      name: site.name,
+      url: Astro.site?.href,
+    },
+  }}
+>
+  <MotifTrainer
+    client:load
+    topic={motif.topic}
+    motifId={motif.id}
+    transition:persist="motif-trainer"
+  />
+  <MotifArticle motif={motif} />
+</Base>

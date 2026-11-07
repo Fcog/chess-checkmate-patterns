@@ -1,20 +1,26 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { exercises } from '../src/lib/exercises';
-import { patterns } from '../src/lib/patterns';
+import { motifById, motifPath, motifs } from '../src/lib/motifs';
+import { posts } from '../src/lib/posts';
 import { shareCode } from '../src/lib/share';
+import { site } from '../src/lib/site';
+import { practicePath, sharePath, topics } from '../src/lib/topics';
 
 // Run with `npm run test:build`, which builds the site first.
-const SITE = 'https://www.checkmate-patterns.com';
+const SITE = site.url;
 const read = (file: string) => readFileSync(new URL(`../dist/${file}`, import.meta.url), 'utf8');
 const match = (html: string, re: RegExp) => html.match(re)?.[1];
 
 const pages = [
   { path: '/', file: 'index.html' },
-  { path: '/practice', file: 'practice/index.html' },
   { path: '/terms', file: 'terms/index.html' },
   { path: '/privacy', file: 'privacy/index.html' },
-  ...patterns.map((p) => ({ path: `/patterns/${p.id}`, file: `patterns/${p.id}/index.html` })),
+  { path: '/blog', file: 'blog/index.html' },
+  ...posts.map((p) => ({ path: `/blog/${p.slug}`, file: `blog/${p.slug}/index.html` })),
+  ...topics.map((t) => ({ path: t.path, file: `${t.path.slice(1)}/index.html` })),
+  ...topics.map((t) => ({ path: practicePath(t.id), file: `${practicePath(t.id).slice(1)}/index.html` })),
+  ...motifs.map((m) => ({ path: motifPath(m), file: `${motifPath(m).slice(1)}/index.html` })),
 ];
 
 describe.skipIf(!existsSync(new URL('../dist', import.meta.url)))('built site', () => {
@@ -43,8 +49,8 @@ describe.skipIf(!existsSync(new URL('../dist', import.meta.url)))('built site', 
     expect(new Set(heads.map((p) => p.description)).size).toBe(heads.length);
   });
 
-  it.each(patterns)('renders the text for $name into its page', (pattern) => {
-    const html = read(`patterns/${pattern.id}/index.html`);
+  it.each(motifs)('renders the text for $name into its page', (pattern) => {
+    const html = read(`${motifPath(pattern).slice(1)}/index.html`);
     const escape = (s: string) => s.replaceAll("'", '&#39;').replaceAll('"', '&quot;');
     expect(html).toContain(`<h1>${escape(pattern.name)}</h1>`);
     expect(html).toContain(escape(pattern.intro));
@@ -65,11 +71,16 @@ describe.skipIf(!existsSync(new URL('../dist', import.meta.url)))('built site', 
 
   it.each(exercises)('has a spoiler-free share page for exercise $id', (exercise) => {
     const code = shareCode(exercise.id);
-    const html = read(`practice/${code}/index.html`);
+    const path = sharePath(exercise.topic, code);
+    const html = read(`${path.slice(1)}/index.html`);
     const title = match(html, /<title>(.*?)<\/title>/) ?? '';
-    const pattern = patterns.find((p) => p.id === exercise.patternId);
-    expect(title).toMatch(/^Checkmate puzzle: (White|Black) to mate in \d+ \| Checkmate Patterns$/);
-    expect(html).toContain(`<link rel="canonical" href="${SITE}/practice/${code}"`);
+    const pattern = motifById(exercise.motifId);
+    expect(title).toMatch(
+      exercise.goal.kind === 'mate'
+        ? /^Checkmate puzzle: (White|Black) to mate in \d+ \| /
+        : /^Chess puzzle: (White|Black) to play and [a-z ]+ \| /,
+    );
+    expect(html).toContain(`<link rel="canonical" href="${SITE}${path}"`);
     expect(html).toContain('<meta name="robots" content="noindex"');
     // What a visitor or a link preview sees must not give the pattern away. (The filter
     // list on the page names every pattern, so only these parts are checked.)
@@ -80,9 +91,15 @@ describe.skipIf(!existsSync(new URL('../dist', import.meta.url)))('built site', 
       match(html, /<meta property="og:description" content="(.*?)"/),
       match(html, /<h1>(.*?)<\/h1>/),
     ].join(' ');
-    expect(visible).not.toMatch(new RegExp(exercise.patternId.replace('-', '.'), 'i'));
+    expect(visible).not.toMatch(new RegExp(exercise.motifId.replace('-', '.'), 'i'));
     expect(visible).not.toContain(pattern?.name.replaceAll("'", '&#39;'));
     expect(html).not.toContain(exercise.id);
+  });
+
+  it.each(posts)('publishes the post "$title" as a blog article', (post) => {
+    const html = read(`blog/${post.slug}/index.html`);
+    expect(html).toContain('"@type":"BlogPosting"');
+    expect(read('blog/index.html')).toContain(`href="/blog/${post.slug}"`);
   });
 
   it('lists every page in the sitemap, and not the 404 page', () => {

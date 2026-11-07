@@ -1,8 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { exercises, practicePatternIds, type Exercise } from '../../lib/exercises';
+import { exercises, practiceMotifIds, type Exercise } from '../../lib/exercises';
 import { shuffle } from '../../lib/helpers';
-import { patterns } from '../../lib/patterns';
-import { depthOptions, filterExercises, type Depth } from '../../lib/practice';
+import { motifById, motifs } from '../../lib/motifs';
+import {
+  depthOptions,
+  filterExercises,
+  noFilter,
+  type Depth,
+  type PracticeFilter,
+} from '../../lib/practice';
+import { topicById, type TopicId } from '../../lib/topics';
 import { exerciseByCode } from '../../lib/share';
 import { Board } from './Board';
 import { Feedback } from './Feedback';
@@ -14,7 +21,6 @@ import { PracticeInfo } from './PracticeInfo';
 import { usePuzzle } from './usePuzzle';
 import { useSolved } from './useSolved';
 
-const practicePatterns = patterns.filter((p) => practicePatternIds.includes(p.id));
 
 /** Moves the exercise with `id` (if any) to the front, keeping the rest in order. */
 function withFirst(list: Exercise[], id: string | undefined): Exercise[] {
@@ -23,18 +29,23 @@ function withFirst(list: Exercise[], id: string | undefined): Exercise[] {
 }
 
 export type Props = {
+  topic: TopicId;
   /** Share code of the exercise to start with, when opened from a shared link. */
   initialCode?: string;
 };
 
-export function PracticeTrainer({ initialCode }: Props) {
+export function PracticeTrainer({ topic, initialCode }: Props) {
+  const topicExercises = useMemo(() => exercises.filter((ex) => ex.topic === topic), [topic]);
+  const practiceMotifs = useMemo(
+    () => motifs.filter((m) => m.topic === topic && practiceMotifIds.includes(m.id)),
+    [topic],
+  );
   // The share code, not the exercise id, is passed in so the page source doesn't name the pattern.
   const initialExerciseId = initialCode ? exerciseByCode(initialCode)?.id : undefined;
   // The server can't know the random order, so it renders the original order (with any
   // shared exercise first) and the shuffle happens right after hydration.
-  const [order, setOrder] = useState(() => withFirst(exercises, initialExerciseId));
-  const [selectedPatternIds, setSelectedPatternIds] = useState<string[]>([]);
-  const [depth, setDepth] = useState<Depth>('any');
+  const [order, setOrder] = useState(() => withFirst(topicExercises, initialExerciseId));
+  const [filter, setFilter] = useState<PracticeFilter>(noFilter);
   const [exerciseIndex, setExerciseIndex] = useState(0);
   const [revealPattern, setRevealPattern] = useState(false);
 
@@ -43,13 +54,10 @@ export function PracticeTrainer({ initialCode }: Props) {
   const puzzle = usePuzzle(order[0], markSolved);
   const { load } = puzzle;
 
-  const filteredExercises = useMemo(
-    () => filterExercises(order, selectedPatternIds, depth),
-    [order, selectedPatternIds, depth],
-  );
+  const filteredExercises = useMemo(() => filterExercises(order, filter), [order, filter]);
   const exercise = filteredExercises[exerciseIndex] ?? filteredExercises[0];
   const exercisePattern = useMemo(
-    () => (exercise ? patterns.find((p) => p.id === exercise.patternId) : undefined),
+    () => (exercise ? motifById(exercise.motifId) : undefined),
     [exercise],
   );
 
@@ -63,33 +71,33 @@ export function PracticeTrainer({ initialCode }: Props) {
   );
 
   useEffect(() => {
-    const shuffled = withFirst(shuffle(exercises), initialExerciseId);
+    const shuffled = withFirst(shuffle(topicExercises), initialExerciseId);
     setOrder(shuffled);
+    setFilter(noFilter);
     goTo(0, shuffled);
-  }, [goTo, initialExerciseId]);
+  }, [goTo, initialExerciseId, topicExercises]);
 
-  const togglePatternFilter = (id: string) => {
-    const nextIds = selectedPatternIds.includes(id)
-      ? selectedPatternIds.filter((item) => item !== id)
-      : [...selectedPatternIds, id];
-    setSelectedPatternIds(nextIds);
-    goTo(0, filterExercises(order, nextIds, depth));
+  const applyFilter = (next: PracticeFilter) => {
+    setFilter(next);
+    goTo(0, filterExercises(order, next));
   };
 
-  const selectAllPatterns = () => {
-    setSelectedPatternIds([]);
-    goTo(0, filterExercises(order, [], depth));
-  };
+  const toggleMotifFilter = (id: string) =>
+    applyFilter({
+      ...filter,
+      motifIds: filter.motifIds.includes(id)
+        ? filter.motifIds.filter((item) => item !== id)
+        : [...filter.motifIds, id],
+    });
 
-  const selectDepth = (next: Depth) => {
-    setDepth(next);
-    goTo(0, filterExercises(order, selectedPatternIds, next));
-  };
+  const selectAllMotifs = () => applyFilter({ ...filter, motifIds: [] });
 
-  // Lengths with no exercises for the current pattern selection are greyed out.
+  const selectDepth = (depth: Depth) => applyFilter({ ...filter, depth });
+
+  // Lengths with no exercises for the current selection are greyed out.
   const depthChoices = depthOptions.map((option) => ({
     ...option,
-    available: filterExercises(exercises, selectedPatternIds, option.value).length > 0,
+    available: filterExercises(topicExercises, { ...filter, depth: option.value }).length > 0,
   }));
 
   const solvedExercisesCount = filteredExercises.filter((ex) => solved.includes(ex.id)).length;
@@ -97,7 +105,8 @@ export function PracticeTrainer({ initialCode }: Props) {
   return (
     <div className="app">
       <Header
-        section="practice"
+        topic={topic}
+        mode="practice"
         progress={`${solvedExercisesCount} / ${filteredExercises.length} solved`}
         menu={{
           label: 'Filters',
@@ -109,12 +118,13 @@ export function PracticeTrainer({ initialCode }: Props) {
       <div className="layout">
         <MenuPanel open={menuOpen} onClose={() => setMenuOpen(false)}>
           <PracticeFilters
-            patterns={practicePatterns}
-            selectedIds={selectedPatternIds}
-            onSelectAll={selectAllPatterns}
-            onToggle={togglePatternFilter}
+            motifs={practiceMotifs}
+            topicName={topicById(topic).name}
+            selectedIds={filter.motifIds}
+            onSelectAll={selectAllMotifs}
+            onToggle={toggleMotifFilter}
             depths={depthChoices}
-            selectedDepth={depth}
+            selectedDepth={filter.depth}
             onSelectDepth={selectDepth}
           />
         </MenuPanel>
@@ -126,8 +136,8 @@ export function PracticeTrainer({ initialCode }: Props) {
             <div className="empty-state">
               <h2>No exercises yet</h2>
               <p>
-                Practice exercises will appear here. By default, the checkmate pattern will be
-                hidden so you have to find the right motif on your own.
+                Practice exercises will appear here. By default, the motif is hidden so you
+                have to find it on your own.
               </p>
             </div>
           )}
@@ -165,6 +175,7 @@ export function PracticeTrainer({ initialCode }: Props) {
           played={puzzle.played}
           feedback={
             <Feedback
+              puzzle={puzzle.puzzle}
               attempt={puzzle.attempt}
               moves={puzzle.moves}
               ply={puzzle.ply}

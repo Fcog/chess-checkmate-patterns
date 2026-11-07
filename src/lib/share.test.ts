@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { exercises } from './exercises';
-import { patterns } from './patterns';
+import { motifs } from './motifs';
 import { exerciseByCode, shareCode } from './share';
 
 describe('share codes', () => {
@@ -20,7 +20,7 @@ describe('share codes', () => {
 
   it('do not give away the pattern', () => {
     for (const code of codes) {
-      for (const pattern of patterns) expect(code).not.toContain(pattern.id);
+      for (const motif of motifs) expect(code).not.toContain(motif.id);
     }
   });
 

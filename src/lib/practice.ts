@@ -1,7 +1,7 @@
 import type { Exercise } from './exercises';
-import { mateIn } from './patterns';
+import { movesToFind } from './motifs';
 
-/** Mate-length filter for Practice. `5` stands for "5 or more" so the long tail stays one choice. */
+/** Length filter for Practice. `5` stands for "5 or more" so the long tail stays one choice. */
 export type Depth = 'any' | 1 | 2 | 3 | 4 | 5;
 
 export const depthOptions: { value: Depth; label: string }[] = [
@@ -15,14 +15,24 @@ export const depthOptions: { value: Depth; label: string }[] = [
 
 export function matchesDepth(exercise: Exercise, depth: Depth): boolean {
   if (depth === 'any') return true;
-  const moves = mateIn(exercise);
+  const moves = movesToFind(exercise);
   return depth === 5 ? moves >= 5 : moves === depth;
 }
 
-/** Exercises matching the selected patterns (none selected = all) and mate length. */
-export function filterExercises(list: Exercise[], patternIds: string[], depth: Depth): Exercise[] {
+export type PracticeFilter = {
+  /** Selected motifs; none selected = every motif. */
+  motifIds: string[];
+  depth: Depth;
+};
+
+export const noFilter: PracticeFilter = { motifIds: [], depth: 'any' };
+
+/** Exercises matching the selected motifs and the length. */
+export function filterExercises(list: Exercise[], filter: PracticeFilter): Exercise[] {
+  const { motifIds, depth } = filter;
   return list.filter(
     (ex) =>
-      (patternIds.length === 0 || patternIds.includes(ex.patternId)) && matchesDepth(ex, depth),
+      (motifIds.length === 0 || motifIds.includes(ex.motifId)) &&
+      matchesDepth(ex, depth),
   );
 }

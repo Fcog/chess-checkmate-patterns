@@ -1,0 +1,63 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { MotifTrainer } from '../../components/react/MotifTrainer';
+import Base from '../../layouts/Base.astro';
+import { motifPath, motifsOf, taskBadge } from '../../lib/motifs';
+import { site } from '../../lib/site';
+import { practicePath, topics } from '../../lib/topics';
+
+// One page per topic: /checkmates, /tactics.
+export const getStaticPaths = (() =>
+  topics.map((topic) => ({ params: { topic: topic.id }, props: { topic } }))) satisfies GetStaticPaths;
+
+const { topic } = Astro.props;
+const list = motifsOf(topic.id);
+---
+
+<Base
+  title={`${topic.seoTitle} | ${site.name}`}
+  description={topic.seoDescription}
+  path={topic.path}
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: topic.name,
+    description: topic.seoDescription,
+    url: new URL(topic.path, Astro.site).href,
+    inLanguage: 'en',
+    isPartOf: { '@type': 'WebSite', name: site.name, url: Astro.site?.href },
+  }}
+>
+  <MotifTrainer
+    client:load
+    topic={topic.id}
+    motifId={list[0].id}
+    transition:persist="motif-trainer"
+  />
+
+  <article class="page-text">
+    <h1>{topic.seoTitle}</h1>
+    <p>{topic.intro}</p>
+    <p>
+      When you know them, test yourself in <a href={practicePath(topic.id)}>Practice</a>: random positions
+      where the motif is hidden, so you have to spot it on your own.
+    </p>
+
+    {
+      topic.groups.map((group) => (
+        <section>
+          <h2>{group}</h2>
+          <ul class="link-list">
+            {list
+              .filter((m) => m.group === group)
+              .map((m) => (
+                <li>
+                  <a href={motifPath(m)}>{m.name}</a> <span class="badge">{taskBadge(m)}</span>
+                </li>
+              ))}
+          </ul>
+        </section>
+      ))
+    }
+  </article>
+</Base>

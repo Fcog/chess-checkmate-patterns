@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { patterns } from './patterns';
+import { motifs } from './motifs';
 import { Chess } from 'chess.js';
 import { checkMove, playSan, refutation } from './puzzle';
 
 const byId = (id: string) => {
-  const pattern = patterns.find((p) => p.id === id);
+  const pattern = motifs.find((p) => p.id === id);
   if (!pattern) throw new Error(`missing pattern ${id}`);
   return pattern;
 };
@@ -30,7 +30,12 @@ describe('checkMove', () => {
 
   it('accepts a checkmate that comes earlier than the solution', () => {
     // Back-rank: Re8 mates at once, even though the stored line is longer.
-    const puzzle = { id: 'test', fen: '6k1/5ppp/8/8/8/8/8/4R1K1 w - - 0 1', solution: ['Kf1', 'h6', 'Re8#'] };
+    const puzzle = {
+      id: 'test',
+      goal: { kind: 'mate' } as const,
+      fen: '6k1/5ppp/8/8/8/8/8/4R1K1 w - - 0 1',
+      solution: ['Kf1', 'h6', 'Re8#'],
+    };
     expect(checkMove(puzzle, puzzle.fen, [], 'e1', 'e8')).toMatchObject({
       kind: 'correct',
       san: 'Re8#',
@@ -66,6 +71,7 @@ describe('checkMove with alternative lines', () => {
   // Fool's mate exercise: 2.Qxg6+ (main line) and 2.Bxg6+ (alternative) both mate.
   const puzzle = {
     id: 'alt',
+    goal: { kind: 'mate' } as const,
     fen: 'r1bqkb1r/ppppp1pp/8/3n4/8/3B4/PPP2PPP/R1BQK1NR w KQkq - 0 1',
     solution: ['Qh5+', 'g6', 'Qxg6+', 'hxg6', 'Bxg6#'],
     alternatives: [['Qh5+', 'g6', 'Bxg6+', 'hxg6', 'Qxg6#']],
@@ -93,6 +99,44 @@ describe('checkMove with alternative lines', () => {
     // Bxg6 would be right after Qh5+ g6, but not as the very first move.
     const result = checkMove(puzzle, puzzle.fen, [], 'd3', 'g6');
     expect(result.kind).toBe('wrong');
+  });
+});
+
+describe('checkMove with a non-mate goal', () => {
+  const fork = byId('fork'); // Nc7+ Kd8 Nxa8
+
+  it('does not solve the puzzle on the fork itself', () => {
+    expect(checkMove(fork, fork.fen, [], 'b5', 'c7')).toMatchObject({
+      kind: 'correct',
+      san: 'Nc7+',
+      solved: false,
+    });
+  });
+
+  it('solves it on the last move of the line', () => {
+    const after = playSan(playSan(fork.fen, 'Nc7+').fen, 'Kd8').fen;
+    expect(checkMove(fork, after, ['Nc7+', 'Kd8'], 'c7', 'a8')).toMatchObject({
+      kind: 'correct',
+      san: 'Nxa8',
+      solved: true,
+    });
+  });
+
+  it('rejects a move off the line', () => {
+    expect(checkMove(fork, fork.fen, [], 'b5', 'd6')).toMatchObject({ kind: 'wrong' });
+  });
+
+  it('still counts a checkmate off the line as solved', () => {
+    const puzzle = {
+      id: 'line-mate',
+      goal: { kind: 'line', label: 'Win material', done: 'Done.' } as const,
+      fen: '6k1/5ppp/8/8/8/8/8/4R1K1 w - - 0 1',
+      solution: ['Kf1', 'h6', 'Re7'],
+    };
+    expect(checkMove(puzzle, puzzle.fen, [], 'e1', 'e8')).toMatchObject({
+      kind: 'correct',
+      solved: true,
+    });
   });
 });
 
