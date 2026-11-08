@@ -3,9 +3,9 @@
   <defs>
     <clipPath id="tile"><rect width="64" height="64" rx="14"/></clipPath>
     <clipPath id="glass"><circle cx="26" cy="26" r="15"/></clipPath>
-    <pattern id="board" width="16" height="16" patternUnits="userSpaceOnUse">
-      <rect width="16" height="16" fill="#262019"/>
-      <path d="M0 0h8v8H0zM8 8h8v8H8z" fill="#43372b"/>
+    <pattern id="board" width="32" height="32" patternUnits="userSpaceOnUse">
+      <rect width="32" height="32" fill="#262019"/>
+      <path d="M0 0h16v16H0zM16 16h16v16H16z" fill="#43372b"/>
     </pattern>
   </defs>
   <g clip-path="url(#tile)">
@@ -15,7 +15,7 @@
     <circle cx="26" cy="26" r="17.5" fill="#211c17"/>
     <g clip-path="url(#glass)">
       <rect width="64" height="64" fill="#2f271f"/>
-      <path d="M-2 -2h14v14h-14zM-2 26h14v14h-14zM12 12h14v14h-14zM12 40h14v14h-14zM26 -2h14v14h-14zM26 26h14v14h-14zM40 12h14v14h-14zM40 40h14v14h-14z" fill="#5c4b38"/>
+      <path d="M4 4h22v22H4zM26 26h22v22H26z" fill="#5c4b38"/>
       <g fill="#d2a15a" transform="translate(14.5 14.4) scale(1.15)">
         <circle cx="10" cy="5.5" r="4.2"/>
         <path d="M6.5 17 8.2 9.5h3.6l1.7 7.5z"/>
