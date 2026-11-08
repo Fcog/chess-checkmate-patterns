@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { Chess, validateFen } from 'chess.js';
 import { exercises, practiceMotifIds, type Exercise } from './exercises';
+import { bestMoves, gainsAtLeast } from './material-search';
 import {
   motifById,
   motifs,
@@ -92,6 +93,44 @@ function expectForcedReplies(fen: string, line: string[]) {
   });
 }
 
+/** A tactic must win at least a minor piece, net. */
+const WIN = 3;
+/** The material search takes a few seconds on a full middlegame board. */
+const SEARCH_TIMEOUT = 30_000;
+
+/**
+ * Checks a "win material" line with the material search, against every defence rather than
+ * only the stored one:
+ * - the first move wins at least `WIN`, and no other first move does, so the app may call
+ *   any other move wrong;
+ * - each auto-played defender reply is a best defence, so the app never plays a silly one;
+ * - each later move of the player is the best move, and any move just as good is the start
+ *   of an alternative line.
+ */
+function expectSoundTactic(puzzle: { fen: string; solution: string[]; alternatives?: string[][] }) {
+  const { fen, solution } = puzzle;
+  const lines = [solution, ...(puzzle.alternatives ?? [])];
+  const rest = solution.length - 1;
+
+  const winning = new Chess(fen).moves().filter((san) => gainsAtLeast(fen, san, rest, WIN));
+  expect(winning, 'moves that win material').toEqual([solution[0]]);
+
+  const chess = new Chess(fen);
+  chess.move(solution[0]);
+  for (let ply = 1; ply < solution.length; ply++) {
+    const best = bestMoves(chess.fen(), solution.length - 1 - ply);
+    if (ply % 2 === 1) {
+      expect(best, `defence at ply ${ply}`).toContain(solution[ply]);
+    } else {
+      const played = solution.slice(0, ply);
+      const allowed = lines.filter((l) => played.every((m, i) => l[i] === m)).map((l) => l[ply]);
+      expect(best, `best move at ply ${ply}`).toContain(solution[ply]);
+      for (const san of best) expect(allowed, `${san} at ply ${ply} is just as good`).toContain(san);
+    }
+    chess.move(solution[ply]);
+  }
+}
+
 describe('motif library', () => {
   it('has no duplicate ids, across motifs and exercises', () => {
     // Solved progress is one list of ids, so they must not clash between topics.
@@ -168,9 +207,15 @@ describe.each(motifs.map((m): [string, Motif] => [m.name, m]))('%s', (_name, mot
     expectGoalReached(motif, motif.solution);
   });
 
-  it('only auto-plays defender replies that are forced', () => {
+  it.runIf(motif.goal.kind === 'mate')('only auto-plays defender replies that are forced', () => {
     expectForcedReplies(motif.fen, motif.solution);
   });
+
+  it.runIf(motif.goal.kind === 'line')(
+    'wins material against every defence',
+    () => expectSoundTactic(motif),
+    SEARCH_TIMEOUT,
+  );
 
   it.runIf(motif.goal.kind === 'mate')('has exactly one move that forces the mate', () => {
     // Uniqueness is what lets the app tell the player their move was wrong.
@@ -202,10 +247,11 @@ describe.each(exercises.map((ex): [string, Exercise] => [ex.id, ex]))('exercise 
     expectGoalReached(ex, ex.solution);
   });
 
-  it.runIf(ex.goal.kind === 'line')('only auto-plays forced defender replies', () => {
-    // Mate exercises may pick the main defence; a tactic's line must not be dodgeable.
-    expectForcedReplies(ex.fen, ex.solution);
-  });
+  it.runIf(ex.goal.kind === 'line')(
+    'wins material against every defence',
+    () => expectSoundTactic(ex),
+    SEARCH_TIMEOUT,
+  );
 });
 
 describe('practice filters', () => {

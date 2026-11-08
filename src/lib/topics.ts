@@ -65,12 +65,13 @@ export const topics: Topic[] = [
     noun: 'chess tactic',
     path: '/tactics',
     intro:
-      'The tactical motifs that win material: forks, and more to come. Each one is a short ' +
-      'puzzle: find the winning line, then read how the tactic works.',
-    seoTitle: 'Learn Chess Tactics – Forks and More',
+      'The tactics that win material: forks, pins and skewers, discovered and double checks, ' +
+      'deflections, decoys and removing the guard. Each one is a short puzzle: find the ' +
+      'winning line, then read how the tactic works.',
+    seoTitle: 'Learn Chess Tactics – Forks, Pins, Skewers and More',
     seoDescription:
-      'Learn the chess tactics that win material, starting with the fork, on an interactive ' +
-      'board, then test yourself with blind practice puzzles.',
+      'Learn the chess tactics that win material — forks, pins, skewers, discovered and double ' +
+      'checks, deflection, decoy and removing the guard — on an interactive board.',
     practiceTitle: 'Chess Tactics Practice Puzzles – Spot the Winning Tactic',
     practiceIntro:
       'Knowing a tactic is one thing; spotting it in a real position is another. These ' +
