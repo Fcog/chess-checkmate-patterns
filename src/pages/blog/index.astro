@@ -1,0 +1,34 @@
+---
+import { site } from '../../lib/site';
+import Page from '../../layouts/Page.astro';
+import { formatDate, posts } from '../../lib/posts';
+
+const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
+---
+
+<Page
+  title={`Blog – Opening Traps and Chess Tactics | ${site.name}`}
+  description="Articles on opening traps and tactics, with interactive boards you can step through move by move."
+  path="/blog"
+>
+  <h1>Blog</h1>
+  <p>
+    Opening traps and tactical ideas, explained with boards you can step through move by move.
+  </p>
+
+  <ul class="post-list">
+    {
+      sorted.map((post) => (
+        <li>
+          <p class="meta">
+            {post.category} · {formatDate(post.date)}
+          </p>
+          <h2>
+            <a href={`/blog/${post.slug}`}>{post.title}</a>
+          </h2>
+          <p>{post.description}</p>
+        </li>
+      ))
+    }
+  </ul>
+</Page>

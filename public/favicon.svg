@@ -1,11 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#211c17"/>
-  <path d="M32 0h18a14 14 0 0 1 14 14v18H32zM0 32h32v32H14A14 14 0 0 1 0 50z" fill="#2e2720"/>
-  <g fill="#d2a15a" transform="rotate(16 32 34)">
-    <path d="M30 6h4v4h4v4h-4v4h-4v-4h-4v-4h4z"/>
-    <path d="M20 20h24l-3.5 7h-17z"/>
-    <path d="M25 29h14l2 14H23z"/>
-    <rect x="20" y="45" width="24" height="4" rx="1.5"/>
-    <rect x="17" y="51" width="30" height="6" rx="2"/>
+  <!-- Chess Patterns logo: a magnifying glass finding a pawn on a chessboard. -->
+  <defs>
+    <clipPath id="tile"><rect width="64" height="64" rx="14"/></clipPath>
+    <clipPath id="glass"><circle cx="26" cy="26" r="15"/></clipPath>
+    <pattern id="board" width="32" height="32" patternUnits="userSpaceOnUse">
+      <rect width="32" height="32" fill="#262019"/>
+      <path d="M0 0h16v16H0zM16 16h16v16H16z" fill="#43372b"/>
+    </pattern>
+  </defs>
+  <g clip-path="url(#tile)">
+    <rect width="64" height="64" fill="url(#board)"/>
+    <path d="M36.6 36.6l13 13" stroke="#211c17" stroke-width="11" stroke-linecap="round"/>
+    <path d="M36.6 36.6l13 13" stroke="#d2a15a" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="26" cy="26" r="17.5" fill="#211c17"/>
+    <g clip-path="url(#glass)">
+      <rect width="64" height="64" fill="#2f271f"/>
+      <path d="M4 4h22v22H4zM26 26h22v22H26z" fill="#5c4b38"/>
+      <g fill="#d2a15a" transform="translate(14.5 14.4) scale(1.15)">
+        <circle cx="10" cy="5.5" r="4.2"/>
+        <path d="M6.5 17 8.2 9.5h3.6l1.7 7.5z"/>
+        <rect x="4" y="16" width="12" height="4" rx="1.5"/>
+      </g>
+    </g>
+    <circle cx="26" cy="26" r="15" fill="none" stroke="#d2a15a" stroke-width="4"/>
+    <path d="M16.7 23a9.75 9.75 0 0 1 6.3-6.3" fill="none" stroke="#f3ece0" stroke-width="1.6" stroke-linecap="round" opacity=".45"/>
   </g>
 </svg>

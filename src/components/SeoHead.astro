@@ -1,8 +1,10 @@
 ---
+import { site } from '../lib/site';
+
 export interface Props {
   title: string;
   description: string;
-  /** Path of this page, e.g. "/patterns/arabian". Used for the canonical URL. */
+  /** Path of this page, e.g. "/checkmates/arabian". Used for the canonical URL. */
   path: string;
   image?: string;
   imageAlt?: string;
@@ -17,7 +19,7 @@ const {
   description,
   path,
   image = '/og-image.png',
-  imageAlt = 'Checkmate Patterns logo with a golden chess king',
+  imageAlt = `${site.name} logo: a magnifying glass finding a golden pawn on a chessboard`,
   jsonLd,
   noindex = false,
 } = Astro.props;
@@ -33,7 +35,7 @@ const imageUrl = new URL(image, Astro.site).href;
 
 <!-- Open Graph / social previews -->
 <meta property="og:type" content="website" />
-<meta property="og:site_name" content="Checkmate Patterns" />
+<meta property="og:site_name" content={site.name} />
 <meta property="og:url" content={canonical} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />

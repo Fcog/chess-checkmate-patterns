@@ -1,5 +1,4 @@
 import { Chess } from 'chess.js';
-import type { Pattern } from './patterns';
 import { playSan } from './puzzle';
 
 export type Side = 'white' | 'black';
@@ -35,22 +34,54 @@ export function mirrorFen(fen: string): string {
 }
 
 /**
- * Every position of a pattern's mating line, from the setup to the checkmate. Patterns are
- * stored with White mating; for `side === 'black'` the frames are mirrored so the pattern
+ * Every position of a motif's demo line, from the setup to the final move. Motifs are
+ * stored with White to play; for `side === 'black'` the frames are mirrored so the pattern
  * matches a puzzle the player solves with Black.
  */
-export function patternFrames(pattern: Pattern, side: Side): Frame[] {
-  const frames: Frame[] = [{ fen: pattern.fen, check: new Chess(pattern.fen).inCheck() }];
-  let fen = pattern.fen;
-  for (const san of pattern.solution) {
-    const move = playSan(fen, san);
-    fen = move.fen;
-    frames.push({ fen, lastMove: [move.from, move.to], check: new Chess(fen).inCheck() });
-  }
+export function patternFrames(
+  pattern: { fen: string; solution: string[] },
+  side: Side,
+): Frame[] {
+  const frames = lineFrames(pattern.fen, pattern.solution);
   if (side === 'white') return frames;
   return frames.map((frame) => ({
     fen: mirrorFen(frame.fen),
     lastMove: frame.lastMove && [mirrorSquare(frame.lastMove[0]), mirrorSquare(frame.lastMove[1])],
     check: frame.check,
   }));
+}
+
+/** Every position along a line of moves, starting with `fen` itself. */
+export function lineFrames(fen: string, moves: string[]): Frame[] {
+  const frames: Frame[] = [{ fen, check: new Chess(fen).inCheck() }];
+  let current = fen;
+  for (const san of moves) {
+    const move = playSan(current, san);
+    current = move.fen;
+    frames.push({ fen: current, lastMove: [move.from, move.to], check: new Chess(current).inCheck() });
+  }
+  return frames;
+}
+
+export type MoveLabel = {
+  /** Position index after this move (1 = after the first move). */
+  ply: number;
+  /** "5." before White's moves, "5..." before a line that starts with Black. */
+  number?: string;
+  san: string;
+};
+
+/** Moves labelled with their move numbers, counted from the FEN, for a clickable move list. */
+export function numberedMoves(fen: string, moves: string[]): MoveLabel[] {
+  const [, turn, , , , fullmove] = fen.split(' ');
+  let number = Number(fullmove) || 1;
+  let whiteToMove = turn === 'w';
+  return moves.map((san, i) => {
+    const label: MoveLabel = { ply: i + 1, san };
+    if (whiteToMove) label.number = `${number}.`;
+    else if (i === 0) label.number = `${number}...`;
+    if (!whiteToMove) number += 1;
+    whiteToMove = !whiteToMove;
+    return label;
+  });
 }

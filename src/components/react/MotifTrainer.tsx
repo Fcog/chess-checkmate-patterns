@@ -1,44 +1,49 @@
 import { useEffect, useState } from 'react';
 import { navigate } from 'astro:transitions/client';
-import { nextPatternIndex, patterns } from '../../lib/patterns';
+import { motifPath, motifsOf, nextMotifIndex } from '../../lib/motifs';
+import type { TopicId } from '../../lib/topics';
 import { Board } from './Board';
 import { Feedback } from './Feedback';
 import { Header } from './Header';
 import { MenuPanel } from './Menu';
+import { MotifInfo } from './MotifInfo';
+import { MotifList } from './MotifList';
 import { PatternControls } from './PatternControls';
-import { PatternInfo } from './PatternInfo';
-import { PatternList } from './PatternList';
 import { usePuzzle } from './usePuzzle';
 import { useSolved } from './useSolved';
 
 export type Props = {
-  patternId: string;
+  topic: TopicId;
+  motifId: string;
 };
 
-export function PatternTrainer({ patternId }: Props) {
+/** Learn one topic's motifs one by one, e.g. the checkmate patterns or the tactics. */
+export function MotifTrainer({ topic, motifId }: Props) {
+  const list = motifsOf(topic);
   const index = Math.max(
     0,
-    patterns.findIndex((p) => p.id === patternId),
+    list.findIndex((m) => m.id === motifId),
   );
-  const pattern = patterns[index];
+  const motif = list[index];
   const { solved, markSolved } = useSolved();
   const [menuOpen, setMenuOpen] = useState(false);
-  const puzzle = usePuzzle(pattern, markSolved);
+  const puzzle = usePuzzle(motif, markSolved);
   const { load } = puzzle;
 
-  // The island is kept across page navigations, so a new page only changes the prop.
+  // The island is kept across page navigations, so a new page only changes the props.
   useEffect(() => {
-    load(patterns[index]);
-  }, [index, load]);
+    load(motif);
+  }, [motif, load]);
 
-  const next = patterns[nextPatternIndex(patterns, index, solved)];
-  const solvedCount = solved.filter((id) => patterns.some((p) => p.id === id)).length;
+  const next = list[nextMotifIndex(list, index, solved)];
+  const solvedCount = solved.filter((id) => list.some((m) => m.id === id)).length;
 
   return (
     <div className="app">
       <Header
-        section="patterns"
-        progress={`${solvedCount} / ${patterns.length} solved`}
+        topic={topic}
+        mode="learn"
+        progress={`${solvedCount} / ${list.length} solved`}
         menu={{
           label: 'List',
           open: menuOpen,
@@ -48,30 +53,30 @@ export function PatternTrainer({ patternId }: Props) {
 
       <div className="layout">
         <MenuPanel open={menuOpen} onClose={() => setMenuOpen(false)}>
-          <PatternList activeId={pattern.id} solved={solved} />
+          <MotifList topic={topic} activeId={motif.id} solved={solved} />
         </MenuPanel>
 
         <main>
           <Board {...puzzle.boardProps} />
           <PatternControls
             canReset={puzzle.canReset}
-            canGoNext={patterns.length >= 2}
+            canGoNext={list.length >= 2}
             isDone={puzzle.isDone}
             busy={puzzle.busy}
             showHint={puzzle.showHint}
             onReset={puzzle.reset}
             onShowHint={() => puzzle.setShowHint(true)}
             onShowSolution={puzzle.reveal}
-            onNext={() => navigate(`/patterns/${next.id}`)}
+            onNext={() => navigate(motifPath(next))}
           />
         </main>
 
-        <PatternInfo
-          pattern={pattern}
-          moves={puzzle.moves}
+        <MotifInfo
+          motif={motif}
           played={puzzle.played}
           feedback={
             <Feedback
+              puzzle={puzzle.puzzle}
               attempt={puzzle.attempt}
               moves={puzzle.moves}
               ply={puzzle.ply}

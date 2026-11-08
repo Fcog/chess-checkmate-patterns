@@ -1,9 +1,10 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
+import { site } from './src/lib/site.ts';
 
 export default defineConfig({
-  site: 'https://www.checkmate-patterns.com',
+  site: site.url,
   trailingSlash: 'never',
   integrations: [
     react(),

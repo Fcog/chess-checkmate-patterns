@@ -1,0 +1,47 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { PracticeTrainer } from '../../components/react/PracticeTrainer';
+import Base from '../../layouts/Base.astro';
+import { exercises, practiceMotifIds } from '../../lib/exercises';
+import { motifPath, motifsOf } from '../../lib/motifs';
+import { site } from '../../lib/site';
+import { practicePath, topics } from '../../lib/topics';
+
+// One practice page per topic: /checkmates/practice, /tactics/practice.
+export const getStaticPaths = (() =>
+  topics.map((topic) => ({ params: { topic: topic.id }, props: { topic } }))) satisfies GetStaticPaths;
+
+const { topic } = Astro.props;
+const count = exercises.filter((ex) => ex.topic === topic.id).length;
+const covered = motifsOf(topic.id).filter((m) => practiceMotifIds.includes(m.id));
+---
+
+<Base
+  title={`${topic.practiceTitle} | ${site.name}`}
+  description={`${count} free ${topic.name.toLowerCase()} puzzles where the motif is hidden. Solve them on an interactive board and train yourself to recognise each ${topic.noun} in real games.`}
+  path={practicePath(topic.id)}
+>
+  <PracticeTrainer client:load topic={topic.id} />
+
+  <article class="page-text">
+    <h1>{topic.practiceTitle}</h1>
+    <p>
+      {topic.practiceIntro} Filter by motif on the left to focus on the ones you find hardest, or
+      go back to <a href={topic.path}>Learn</a> to study them one by one.
+    </p>
+    {
+      covered.length > 0 && (
+        <>
+          <p>Covered in practice:</p>
+          <ul class="link-list">
+            {covered.map((m) => (
+              <li>
+                <a href={motifPath(m)}>{m.name}</a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
+  </article>
+</Base>

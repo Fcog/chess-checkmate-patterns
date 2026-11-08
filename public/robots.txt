@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.checkmate-patterns.com/sitemap-index.xml
+Sitemap: https://www.chess-patterns.com/sitemap-index.xml

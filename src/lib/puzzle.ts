@@ -1,8 +1,10 @@
 import { Chess, type Move, type PieceSymbol } from 'chess.js';
+import type { Goal } from './topics';
 
-/** Anything the trainer can play through: a pattern or a practice exercise. */
+/** Anything the trainer can play through: a motif or a practice exercise. */
 export type Puzzle = {
   id: string;
+  goal: Goal;
   fen: string;
   solution: string[];
   /** Other winning lines, the same length as `solution`. */

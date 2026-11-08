@@ -1,20 +1,23 @@
 ---
-import { PatternTrainer } from '../components/react/PatternTrainer';
+import { Header } from '../components/react/Header';
 import Base from '../layouts/Base.astro';
-import { families, mateIn, patterns } from '../lib/patterns';
+import { exercises } from '../lib/exercises';
+import { motifPath, motifsOf } from '../lib/motifs';
+import { site } from '../lib/site';
+import { practicePath, topics } from '../lib/topics';
 ---
 
 <Base
-  title="Checkmate Patterns – Learn & Practice Chess Mating Patterns"
-  description="Learn the classic chess checkmate patterns — Anastasia's, Arabian, Boden's, back-rank, Epaulette and more — then test yourself with interactive mate-in-N practice puzzles."
+  title={`${site.name} – Learn & Practice Checkmates, Tactics and Attacks`}
+  description="Learn the classic chess checkmate patterns, tactics like forks and pins, and attacks like the Greek gift on an interactive board, then test yourself with blind practice puzzles."
   path="/"
   jsonLd={{
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
-    name: 'Checkmate Patterns',
+    name: site.name,
     url: Astro.site?.href,
     description:
-      'Learn the classic chess checkmate patterns and practice them with interactive mate-in-N puzzles.',
+      'Learn chess checkmate patterns, tactics and attacking ideas, and practice them with interactive puzzles.',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     inLanguage: 'en',
@@ -22,37 +25,52 @@ import { families, mateIn, patterns } from '../lib/patterns';
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   }}
 >
-  <PatternTrainer client:load patternId={patterns[0].id} transition:persist="pattern-trainer" />
+  <div class="app">
+    <Header />
+  </div>
 
-  <article class="page-text">
-    <h1>Learn the classic chess checkmate patterns</h1>
+  <article class="page-text legal">
+    <h1>Learn chess patterns you can spot in a real game</h1>
     <p>
-      Strong players don’t calculate every mate from scratch — they recognise the pattern. This
-      site teaches {patterns.length} classic checkmate patterns, from the back-rank mate to Anastasia’s,
-      Boden’s and the Arabian mate. Each pattern is a short puzzle on an interactive board: find the
-      mating move, get a hint if you need one, and read how the pattern works once you’ve solved it.
-    </p>
-    <p>
-      When you know the patterns, test yourself in <a href="/practice">Practice</a>: random positions
-      where the pattern is hidden, so you have to spot it on your own.
+      Strong players don’t calculate everything from scratch — they recognise the pattern. Each
+      motif here is a short puzzle on an interactive board: find the move, get a hint if you need
+      one, and read how it works once you’ve solved it. Every topic also has a Practice section,
+      where {exercises.length} positions hide which motif you’re looking at.
     </p>
 
-    {
-      families.map((family) => (
-        <section>
-          <h2>{family}</h2>
-          <ul class="link-list">
-            {patterns
-              .filter((p) => p.family === family)
-              .map((p) => (
-                <li>
-                  <a href={`/patterns/${p.id}`}>{p.name}</a>{' '}
-                  <span class="badge">M{mateIn(p)}</span>
-                </li>
-              ))}
-          </ul>
-        </section>
-      ))
-    }
+    <ul class="topic-cards">
+      {
+        topics.map((topic) => {
+          const list = motifsOf(topic.id);
+          return (
+            <li>
+              <h2>
+                <a href={topic.path}>{topic.name}</a>{' '}
+                <span class="badge">{list.length}</span>
+              </h2>
+              <p>{topic.intro}</p>
+              <p class="modes topic-actions">
+                <a class="mode" href={topic.path}>Learn</a>
+                <a class="mode" href={practicePath(topic.id)}>
+                  Practice ({exercises.filter((ex) => ex.topic === topic.id).length})
+                </a>
+              </p>
+              <ul class="link-list">
+                {list.slice(0, 8).map((m) => (
+                  <li>
+                    <a href={motifPath(m)}>{m.name}</a>
+                  </li>
+                ))}
+                {list.length > 8 && (
+                  <li>
+                    <a href={topic.path}>All {list.length} →</a>
+                  </li>
+                )}
+              </ul>
+            </li>
+          );
+        })
+      }
+    </ul>
   </article>
 </Base>

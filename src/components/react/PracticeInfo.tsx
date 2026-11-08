@@ -1,14 +1,16 @@
 import type { ReactNode } from 'react';
 import type { Exercise } from '../../lib/exercises';
 import { formatLine } from '../../lib/helpers';
-import type { Pattern } from '../../lib/patterns';
+import { taskLabel, type Motif } from '../../lib/motifs';
+import { site } from '../../lib/site';
+import { sharePath } from '../../lib/topics';
 import { shareCode } from '../../lib/share';
 import { PatternPreview } from './PatternPreview';
 import { ShareButton } from './ShareButton';
 
 export type Props = {
   exercise: Exercise | undefined;
-  exercisePattern: Pattern | undefined;
+  exercisePattern: Motif | undefined;
   exerciseIndex: number;
   moves: number;
   played: string[];
@@ -37,11 +39,11 @@ export function PracticeInfo({
             {revealPattern || isDone ? (
               <>
                 {exercisePattern?.name ?? 'Exercise'}{' '}
-                <span className="badge">Mate in {moves}</span>
+                <span className="badge">{taskLabel(exercise)}</span>
               </>
             ) : (
               <>
-                Exercise {exerciseIndex + 1} <span className="badge">Mate in {moves}</span>
+                Exercise {exerciseIndex + 1} <span className="badge">{taskLabel(exercise)}</span>
               </>
             )}
           </h2>
@@ -50,9 +52,15 @@ export function PracticeInfo({
           {(showHint || isDone) && exercise.hint && <p className="hint">{exercise.hint}</p>}
           <ShareButton
             label="Share puzzle"
-            path={`/practice/${shareCode(exercise.id)}`}
-            title="Checkmate puzzle – Checkmate Patterns"
-            text={`Can you find the mate in ${moves}?`}
+            path={sharePath(exercise.topic, shareCode(exercise.id))}
+            title={`Chess puzzle – ${site.name}`}
+            text={
+              exercise.goal.kind === 'mate'
+                ? `Can you find the mate in ${moves}?`
+                : exercise.goal.kind === 'quiz'
+                  ? 'Does the sacrifice work here?'
+                  : `Can you ${exercise.goal.label.toLowerCase()}?`
+            }
           />
           {(revealPattern || isDone) && exercisePattern && (
             <>
@@ -68,7 +76,7 @@ export function PracticeInfo({
       ) : (
         <>
           <h2>
-            Pattern: <span className="badge">Hidden by default</span>
+            Motif: <span className="badge">Hidden by default</span>
           </h2>
           <p className="feedback">No exercises match the current filter.</p>
         </>

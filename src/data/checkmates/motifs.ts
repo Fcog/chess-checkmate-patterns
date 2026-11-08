@@ -1,57 +1,14 @@
-export type Family = 'Queen mates' | 'Rook mates' | 'Minor-piece mates' | 'Pawn mates';
+import type { MotifData } from '../../lib/motifs';
 
-export type Pattern = {
-  id: string;
-  name: string;
-  family: Family;
-  /** Spoiler-free summary for the pattern's page text and meta description. */
-  intro: string;
-  /** Position with the mating side to move. */
-  fen: string;
-  /**
-   * The forced line in SAN, starting with the mating side. Even plies are the moves
-   * the player has to find; odd plies are the defender's reply and get played
-   * automatically, so each one must be the defender's *only* legal move.
-   */
-  solution: string[];
-  idea: string;
-  hint: string;
-};
+/** Checkmate patterns, grouped by the piece that delivers mate. Stored with White mating. */
+export const groups = ['Queen mates', 'Rook mates', 'Minor-piece mates', 'Pawn mates'];
 
-/** How many moves the player actually has to find. */
-export function mateIn(puzzle: { solution: string[] }): number {
-  return Math.ceil(puzzle.solution.length / 2);
-}
-
-/**
- * The pattern "Next pattern" should go to: the first unsolved one after `index`, wrapping
- * round the list. When everything else is solved, simply the next one in order.
- */
-export function nextPatternIndex(
-  list: { id: string }[],
-  index: number,
-  solved: string[],
-): number {
-  for (let step = 1; step < list.length; step++) {
-    const candidate = (index + step) % list.length;
-    if (!solved.includes(list[candidate].id)) return candidate;
-  }
-  return (index + 1) % list.length;
-}
-
-export const families: Family[] = [
-  'Queen mates',
-  'Rook mates',
-  'Minor-piece mates',
-  'Pawn mates',
-];
-
-export const patterns: Pattern[] = [
+export const motifs: MotifData[] = [
   // ---------- Queen mates ----------
   {
     id: 'epaulette',
     name: 'Epaulette mate',
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'A queen mate against a king flanked by its own rooks. Learn to spot when the ' +
       'defender’s pieces become the walls of its own prison.',
@@ -65,7 +22,7 @@ export const patterns: Pattern[] = [
   {
     id: 'swallow-tail',
     name: "Swallow's tail mate",
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'Also known as the guéridon mate. A queen and a supporting pawn trap a king whose own ' +
       'pieces block its retreat.',
@@ -79,7 +36,7 @@ export const patterns: Pattern[] = [
   {
     id: 'cozio',
     name: "Cozio's mate",
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'Also known as the dovetail mate. A queen-and-pawn finish against a king hemmed in by ' +
       'its own pawns.',
@@ -93,7 +50,7 @@ export const patterns: Pattern[] = [
   {
     id: 'kill-box',
     name: 'Kill box mate',
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'A queen-and-rook mate where the queen boxes in the king from a distance. A key ' +
       'technique for converting a queen-and-rook ending quickly.',
@@ -107,7 +64,7 @@ export const patterns: Pattern[] = [
   {
     id: 'triangle',
     name: 'Triangle mate',
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'Queen and rook team up with a contact check: the king, queen and rook form a triangle ' +
       'that leaves the enemy king nowhere to go.',
@@ -123,7 +80,7 @@ export const patterns: Pattern[] = [
   {
     id: 'max-lange',
     name: "Max Lange's mate",
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'Named after the German master Max Lange. A queen-and-bishop mate against a king ' +
       'trapped by its own pawn structure.',
@@ -137,7 +94,7 @@ export const patterns: Pattern[] = [
   {
     id: 'balestra',
     name: 'Balestra mate',
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'A long-range queen-and-bishop mate that works like a pair of scissors, closing in on ' +
       'the king from a distance.',
@@ -151,7 +108,7 @@ export const patterns: Pattern[] = [
   {
     id: 'bronco',
     name: 'Bucking bronco mate',
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'A queen-and-knight mate against a king near the corner. Learn how the two pieces split ' +
       'the work of covering and checking.',
@@ -165,7 +122,7 @@ export const patterns: Pattern[] = [
   {
     id: 'stallion',
     name: 'Sneaky stallion mate',
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'A queen-and-knight mate against a king on the edge, blocked in by its own rook and ' +
       'pawn.',
@@ -179,7 +136,7 @@ export const patterns: Pattern[] = [
   {
     id: 'damiano',
     name: "Damiano's mate",
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'Named after Pedro Damiano, who published it in 1512. A queen-and-pawn attack on the ' +
       'castled king.',
@@ -193,7 +150,7 @@ export const patterns: Pattern[] = [
   {
     id: 'lolli',
     name: "Lolli's mate",
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'Named after Giambattista Lolli. An advanced pawn supports the queen in a decisive ' +
       'strike against the castled king.',
@@ -207,7 +164,7 @@ export const patterns: Pattern[] = [
   {
     id: 'greco',
     name: "Greco's mate",
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'Named after the 17th-century Italian player Gioachino Greco. A bishop and a queen or ' +
       'rook mate a castled king down the open h-file.',
@@ -222,7 +179,7 @@ export const patterns: Pattern[] = [
   {
     id: 'scholars',
     name: "Scholar's mate",
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'The famous beginner’s trap. Learn how queen and bishop combine against the weak f7 ' +
       'square, and how to recognise it in your own games.',
@@ -236,7 +193,7 @@ export const patterns: Pattern[] = [
   {
     id: 'fools',
     name: "Fool's mate",
-    family: 'Queen mates',
+    group: 'Queen mates',
     intro:
       'The fastest checkmate in chess. Pushing the f- and g-pawns early opens a diagonal ' +
       'straight to the king — learn to punish it, and never to allow it yourself.',
@@ -253,7 +210,7 @@ export const patterns: Pattern[] = [
   {
     id: 'back-rank',
     name: 'Back-rank mate',
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'The most common checkmate in practical play: a king trapped behind its own pawns on ' +
       'the back rank.',
@@ -267,7 +224,7 @@ export const patterns: Pattern[] = [
   {
     id: 'blind-swine',
     name: 'Blind swine mate',
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'Two rooks on the seventh rank — the “pigs” — combine against the castled king.',
     fen: '5rk1/R6R/8/8/8/8/8/K7 w - - 0 1',
@@ -280,7 +237,7 @@ export const patterns: Pattern[] = [
   {
     id: 'lawnmower',
     name: 'Lawnmower mate',
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'Also called the ladder mate. Two heavy pieces drive the king to the edge rank by rank. ' +
       'A basic technique every player should know.',
@@ -294,7 +251,7 @@ export const patterns: Pattern[] = [
   {
     id: 'opera',
     name: 'Opera mate',
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'From Paul Morphy’s famous 1858 game at the Paris opera. A rook-and-bishop mate on the ' +
       'back rank.',
@@ -308,7 +265,7 @@ export const patterns: Pattern[] = [
   {
     id: 'mayet',
     name: "Mayet's mate",
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'A rook-and-bishop mate on the back rank: the rook checks right beside the king and a ' +
       'bishop keeps it safe from a distance. Also known as the h-file mate.',
@@ -323,7 +280,7 @@ export const patterns: Pattern[] = [
   {
     id: 'reti',
     name: "Réti's mate",
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'Named after Richard Réti, who finished his famous game against Tartakower (Vienna, ' +
       '1910) with it. A bishop checks right beside the king, with a rook guarding it.',
@@ -339,7 +296,7 @@ export const patterns: Pattern[] = [
   {
     id: 'pillsbury',
     name: "Pillsbury's mate",
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'Named after Harry Nelson Pillsbury. Rook and bishop combine against a castled king ' +
       'whose pawn shield has a gap.',
@@ -353,7 +310,7 @@ export const patterns: Pattern[] = [
   {
     id: 'morphy',
     name: "Morphy's mate",
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'Named after Paul Morphy. A rook-and-bishop mate against the castled king along the ' +
       'long diagonal.',
@@ -367,7 +324,7 @@ export const patterns: Pattern[] = [
   {
     id: 'corner',
     name: 'Corner mate',
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'A rook-and-knight mate against a king stuck in the corner.',
     fen: '7k/7p/3N4/8/8/8/8/K5R1 w - - 0 1',
@@ -380,7 +337,7 @@ export const patterns: Pattern[] = [
   {
     id: 'anastasia',
     name: "Anastasia's mate",
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'Named after the 1803 novel “Anastasia und das Schachspiel”. A knight-and-rook attack ' +
       'that traps the king on the edge of the board.',
@@ -394,7 +351,7 @@ export const patterns: Pattern[] = [
   {
     id: 'arabian',
     name: 'Arabian mate',
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'One of the oldest recorded checkmates, dating back to early Arabic chess manuscripts. ' +
       'Rook and knight team up against a cornered king.',
@@ -408,7 +365,7 @@ export const patterns: Pattern[] = [
   {
     id: 'vukovic',
     name: "Vuković's mate",
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'Named after Vladimir Vuković. Rook, knight and pawn each play a part in trapping the ' +
       'king on the edge.',
@@ -422,7 +379,7 @@ export const patterns: Pattern[] = [
   {
     id: 'hook',
     name: 'Hook mate',
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'A rook, knight and pawn form a chain of defenders shaped like a hook around the enemy ' +
       'king.',
@@ -438,7 +395,7 @@ export const patterns: Pattern[] = [
   {
     id: 'anderssen',
     name: "Anderssen's mate",
-    family: 'Rook mates',
+    group: 'Rook mates',
     intro:
       'Named after Adolf Anderssen. A rook supported by an advanced pawn finishes off a king ' +
       'in the corner.',
@@ -454,7 +411,7 @@ export const patterns: Pattern[] = [
   {
     id: 'corridor',
     name: 'Diagonal corridor mate',
-    family: 'Minor-piece mates',
+    group: 'Minor-piece mates',
     intro:
       'Sometimes a single bishop is enough. Learn to spot when a boxed-in king can be mated ' +
       'along a long diagonal.',
@@ -468,7 +425,7 @@ export const patterns: Pattern[] = [
   {
     id: 'bombardiers',
     name: "Bombardiers' mate",
-    family: 'Minor-piece mates',
+    group: 'Minor-piece mates',
     intro:
       'Two bishops bombard the corner down parallel diagonals against a trapped king.',
     fen: '7k/7p/8/3B4/8/8/6K1/4B3 w - - 0 1',
@@ -481,7 +438,7 @@ export const patterns: Pattern[] = [
   {
     id: 'bodens',
     name: "Boden's mate",
-    family: 'Minor-piece mates',
+    group: 'Minor-piece mates',
     intro:
       'Named after Samuel Boden. Two bishops on crossing diagonals mate a king that has ' +
       'castled queenside.',
@@ -495,7 +452,7 @@ export const patterns: Pattern[] = [
   {
     id: 'smothered',
     name: 'Smothered mate',
-    family: 'Minor-piece mates',
+    group: 'Minor-piece mates',
     intro:
       'One of the most beautiful mates in chess: a king smothered by its own pieces, attacked ' +
       'by the one piece that can jump the wall.',
@@ -509,7 +466,7 @@ export const patterns: Pattern[] = [
   {
     id: 'philidor',
     name: "Philidor's legacy",
-    family: 'Minor-piece mates',
+    group: 'Minor-piece mates',
     intro:
       'Named after François-André Danican Philidor. The classic two-move combination that ' +
       'sets up a smothered mate with a queen sacrifice.',
@@ -524,7 +481,7 @@ export const patterns: Pattern[] = [
   {
     id: 'two-knights',
     name: 'Two knights mate',
-    family: 'Minor-piece mates',
+    group: 'Minor-piece mates',
     intro:
       'Two knights cannot force mate on their own, but they can when the king’s own pawns ' +
       'have boxed it in.',
@@ -538,7 +495,7 @@ export const patterns: Pattern[] = [
   {
     id: 'suffocation',
     name: 'Suffocation mate',
-    family: 'Minor-piece mates',
+    group: 'Minor-piece mates',
     intro:
       'A knight-and-bishop mate against a castled king that cannot breathe behind its own ' +
       'pieces.',
@@ -552,7 +509,7 @@ export const patterns: Pattern[] = [
   {
     id: 'collaboration',
     name: 'Collaboration mate',
-    family: 'Minor-piece mates',
+    group: 'Minor-piece mates',
     intro:
       'A knight-and-bishop mate against the castled king — the suffocation mate with the ' +
       'roles reversed.',
@@ -566,7 +523,7 @@ export const patterns: Pattern[] = [
   {
     id: 'blackburne',
     name: "Blackburne's mate",
-    family: 'Minor-piece mates',
+    group: 'Minor-piece mates',
     intro:
       'Named after Joseph Henry Blackburne. Three minor pieces and no heavy artillery combine ' +
       'against the castled king.',
@@ -580,7 +537,7 @@ export const patterns: Pattern[] = [
   {
     id: 'legal',
     name: "Légal's mate",
-    family: 'Minor-piece mates',
+    group: 'Minor-piece mates',
     intro:
       'Named after the 18th-century French master Kermur Sire de Légal. Three minor pieces ' +
       'combine against a king that has been drawn out into the centre.',
@@ -597,7 +554,7 @@ export const patterns: Pattern[] = [
   {
     id: 'david',
     name: 'David and Goliath mate',
-    family: 'Pawn mates',
+    group: 'Pawn mates',
     intro:
       'Named after the biblical story. The smallest piece on the board delivers the final ' +
       'blow to the king.',

@@ -73,6 +73,33 @@ header {
   color: var(--accent);
 }
 
+/* Learn / Practice switch of the current topic. */
+.modes {
+  display: flex;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.mode {
+  padding: 4px 12px;
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.mode:hover {
+  color: var(--text);
+}
+
+.mode.active {
+  background: var(--panel-hover);
+  color: var(--accent);
+}
+
 .empty-state {
   width: 100%;
   max-width: 480px;
@@ -387,6 +414,12 @@ main {
   cursor: default;
 }
 
+/* "Sound or not?" answers stand out from the navigation. */
+.controls button.answer {
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
 .label-short {
   display: none;
 }
@@ -669,6 +702,116 @@ a {
   font-size: 13px;
 }
 
+.breadcrumb {
+  margin: 0 0 8px;
+  font-size: 13px;
+}
+
+.line-viewer {
+  max-width: 360px;
+  margin: 20px 0 28px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+/* Caption above a line viewer in an article. */
+.page-text .example-caption {
+  margin: 20px 0 -12px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.line-viewer:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.board.viewer {
+  max-width: 336px;
+}
+
+.viewer-controls {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.viewer-controls button {
+  flex: 1 1 0;
+  padding: 5px 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.viewer-controls button:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.viewer-controls button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.page-text .viewer-moves {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 4px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+}
+
+.viewer-moves .move-number {
+  margin-right: 2px;
+  color: var(--muted);
+}
+
+.viewer-moves button {
+  padding: 1px 4px;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.viewer-moves button:hover {
+  background: var(--panel-hover);
+}
+
+.viewer-moves button.current {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.page-text .post-list {
+  padding: 0;
+  list-style: none;
+}
+
+.post-list li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.post-list h2 {
+  margin: 4px 0 6px;
+}
+
+.post-list .meta {
+  margin: 0;
+}
+
 .site-footer {
   display: flex;
   flex-wrap: wrap;
@@ -762,8 +905,19 @@ a {
     order: 4;
   }
 
-  .menu-toggle {
+  /* With a Learn / Practice switch: topics on one row, then the switch and the menu button. */
+  header:has(.modes)::before {
+    content: '';
     order: 5;
+    flex-basis: 100%;
+  }
+
+  .modes {
+    order: 6;
+  }
+
+  .menu-toggle {
+    order: 7;
     margin-left: auto;
   }
 }
@@ -792,5 +946,53 @@ a {
   .brand .logo {
     width: 24px;
     height: 24px;
+  }
+}
+
+/* Home page: one card per topic. */
+.page-text .topic-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topic-cards > li {
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.page-text .topic-cards h2 {
+  margin: 0 0 6px;
+  padding: 0;
+  border: none;
+}
+
+.topic-cards p {
+  margin: 0 0 10px;
+}
+
+.page-text .topic-actions {
+  display: inline-flex;
+  margin-bottom: 12px;
+}
+
+.page-text .topic-actions .mode {
+  color: var(--accent);
+}
+
+/* Three tabs and the menu button share one row on phones. */
+@media (max-width: 400px) {
+  .tabs {
+    gap: 2px;
+  }
+
+  .tab {
+    padding: 6px 8px;
+    font-size: 13px;
   }
 }

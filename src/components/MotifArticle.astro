@@ -1,0 +1,75 @@
+---
+import { LineViewer } from './react/LineViewer';
+import { motifPath, motifsOf, taskLabel, type Motif } from '../lib/motifs';
+
+export interface Props {
+  motif: Motif;
+}
+
+const { motif } = Astro.props;
+const list = motifsOf(motif.topic);
+const index = list.findIndex((m) => m.id === motif.id);
+const prev = list[(index - 1 + list.length) % list.length];
+const next = list[(index + 1) % list.length];
+const related = list.filter((m) => m.group === motif.group && m.id !== motif.id);
+---
+
+<article class="page-text">
+  <h1>{motif.name}</h1>
+  <p class="meta">{motif.group} · {taskLabel(motif)}</p>
+  <p>{motif.intro}</p>
+  <details>
+    <summary>How it works (spoiler)</summary>
+    <p>{motif.idea}</p>
+  </details>
+
+  {
+    motif.sections?.map((section) => (
+      <section>
+        <h2>{section.heading}</h2>
+        {section.paragraphs.map((text) => (
+          <p>{text}</p>
+        ))}
+        {section.examples?.map((example) => (
+          <>
+            <p class="example-caption">{example.caption}</p>
+            <LineViewer
+              client:visible
+              fen={example.fen}
+              moves={example.moves}
+              label={example.caption}
+            />
+          </>
+        ))}
+      </section>
+    ))
+  }
+
+  {
+    related.length > 0 && (
+      <>
+        <h2>More {motif.group.toLowerCase()}</h2>
+        <ul class="link-list">
+          {related.map((m) => (
+            <li>
+              <a href={motifPath(m)}>{m.name}</a>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+
+  {
+    list.length > 1 && (
+      <nav class="pager" aria-label="Motif navigation">
+        <a href={motifPath(prev)} rel="prev">
+          ← {prev.name}
+        </a>
+        <a href={motifPath(next)} rel="next">
+          {next.name} →
+        </a>
+      </nav>
+    )
+  }
+</article>
