@@ -1,4 +1,5 @@
 ---
+import { LineViewer } from './react/LineViewer';
 import { motifPath, motifsOf, taskLabel, type Motif } from '../lib/motifs';
 
 export interface Props {
@@ -21,6 +22,28 @@ const related = list.filter((m) => m.group === motif.group && m.id !== motif.id)
     <summary>How it works (spoiler)</summary>
     <p>{motif.idea}</p>
   </details>
+
+  {
+    motif.sections?.map((section) => (
+      <section>
+        <h2>{section.heading}</h2>
+        {section.paragraphs.map((text) => (
+          <p>{text}</p>
+        ))}
+        {section.examples?.map((example) => (
+          <>
+            <p class="example-caption">{example.caption}</p>
+            <LineViewer
+              client:visible
+              fen={example.fen}
+              moves={example.moves}
+              label={example.caption}
+            />
+          </>
+        ))}
+      </section>
+    ))
+  }
 
   {
     related.length > 0 && (

@@ -74,6 +74,16 @@ function expectGoalReached(puzzle: { fen: string; goal: Motif['goal'] }, line: s
   const end = playLine(puzzle.fen, line);
   if (puzzle.goal.kind === 'mate') {
     expect(end.isCheckmate()).toBe(true);
+  } else if (puzzle.goal.kind === 'attack') {
+    // An attack is checked with an engine when written (see src/data/attacks); here it
+    // must at least start with a check and not fizzle out on a quiet move.
+    const moves = end.history({ verbose: true });
+    expect(moves[0].san, 'starts with a check').toMatch(/[+#]$/);
+    const last = moves.at(-1)!;
+    expect(
+      end.isCheckmate() || !!last.captured || last.san.includes('+'),
+      'ends in mate, a capture or a check',
+    ).toBe(true);
   } else {
     // A minor piece or more, net of what the defender took back on the way.
     expect(hero * (balance(end) - balance(start))).toBeGreaterThanOrEqual(3);
@@ -173,6 +183,15 @@ describe('task texts', () => {
     expect(taskPrompt(mate, 'white')).toBe('Find the mate in 1 for white.');
   });
 
+  it('describe an attack and a quiz', () => {
+    const greek = motifById('greek-gift')!;
+    expect(taskPrompt(greek, 'white')).toBe('White to play and break through.');
+    const quiz = exercises.find((ex) => ex.goal.kind === 'quiz')!;
+    expect(taskLabel(quiz)).toBe('Sound or not?');
+    expect(taskBadge(quiz)).toBe('?');
+    expect(taskPrompt(quiz, 'white')).toBe('Does the sacrifice Bxh7+ work here?');
+  });
+
   it('describe a tactic', () => {
     expect(taskLabel(fork)).toBe('Win material');
     expect(taskBadge(fork)).toBe('2 mv');
@@ -206,6 +225,14 @@ describe.each(motifs.map((m): [string, Motif] => [m.name, m]))('%s', (_name, mot
   it('plays out legally and reaches its goal', () => {
     expectGoalReached(motif, motif.solution);
   });
+
+  it.each(motif.sections?.flatMap((s) => s.examples ?? []) ?? [])(
+    'has a legal article line: $caption',
+    (example) => {
+      expect(validateFen(example.fen).ok).toBe(true);
+      playLine(example.fen, example.moves);
+    },
+  );
 
   it.runIf(motif.goal.kind === 'mate')('only auto-plays defender replies that are forced', () => {
     expectForcedReplies(motif.fen, motif.solution);
@@ -242,9 +269,26 @@ describe.each(exercises.map((ex): [string, Exercise] => [ex.id, ex]))('exercise 
     expectGoalReached(ex, line);
   });
 
-  it('plays out legally and reaches its goal', () => {
+  it.runIf(ex.goal.kind !== 'quiz')('plays out legally and reaches its goal', () => {
     expect(ex.solution.length % 2).toBe(1);
     expectGoalReached(ex, ex.solution);
+  });
+
+  it.runIf(ex.goal.kind === 'quiz')('asks a fair "sound or not?" question', () => {
+    expect(typeof ex.sound, 'says whether the sacrifice works').toBe('boolean');
+    expect(ex.hint, 'explains the answer').toBeTruthy();
+    const start = new Chess(ex.fen);
+    const hero = start.turn() === 'w' ? 1 : -1;
+    const end = playLine(ex.fen, ex.solution);
+    expect(end.history()[0], 'starts with the sacrifice').toMatch(/^[BN]x.*\+$/);
+    if (!ex.sound) {
+      // The refutation shown really leaves the attacker material down.
+      expect(hero * (balance(end) - balance(start))).toBeLessThanOrEqual(-2);
+    }
+  });
+
+  it.runIf(ex.goal.kind !== 'quiz')('has no "sound" flag, which only quizzes use', () => {
+    expect(ex.sound).toBeUndefined();
   });
 
   it.runIf(ex.goal.kind === 'line')(

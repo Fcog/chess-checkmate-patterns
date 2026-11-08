@@ -3,6 +3,7 @@ import {
   practiceIds as checkmatePracticeIds,
 } from '../data/checkmates/exercises';
 import { exercises as tacticExercises, practiceIds as tacticPracticeIds } from '../data/tactics/exercises';
+import { exercises as attackExercises, practiceIds as attackPracticeIds } from '../data/attacks/exercises';
 import { motifById } from './motifs';
 import type { Goal, TopicId } from './topics';
 
@@ -17,6 +18,8 @@ export type ExerciseData = {
   hint?: string;
   /** Overrides the motif's goal. */
   goal?: Goal;
+  /** Quiz exercises only: does the sacrifice (the first move of `solution`) work? */
+  sound?: boolean;
 };
 
 /** An exercise with the topic and goal of its motif filled in. */
@@ -31,7 +34,15 @@ function resolve(list: ExerciseData[]): Exercise[] {
 }
 
 /** Practice exercises, every topic. */
-export const exercises: Exercise[] = resolve([...checkmateExercises, ...tacticExercises]);
+export const exercises: Exercise[] = resolve([
+  ...checkmateExercises,
+  ...tacticExercises,
+  ...attackExercises,
+]);
 
 /** Motifs currently available in the Practice section filter. */
-export const practiceMotifIds: string[] = [...checkmatePracticeIds, ...tacticPracticeIds];
+export const practiceMotifIds: string[] = [
+  ...checkmatePracticeIds,
+  ...tacticPracticeIds,
+  ...attackPracticeIds,
+];

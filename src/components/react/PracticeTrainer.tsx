@@ -12,12 +12,13 @@ import {
 import { topicById, type TopicId } from '../../lib/topics';
 import { exerciseByCode } from '../../lib/share';
 import { Board } from './Board';
-import { Feedback } from './Feedback';
+import { Feedback, QuizFeedback } from './Feedback';
 import { Header } from './Header';
 import { MenuPanel } from './Menu';
 import { PracticeControls } from './PracticeControls';
 import { PracticeFilters } from './PracticeFilters';
 import { PracticeInfo } from './PracticeInfo';
+import { QuizBoard } from './QuizBoard';
 import { usePuzzle } from './usePuzzle';
 import { useSolved } from './useSolved';
 
@@ -48,6 +49,8 @@ export function PracticeTrainer({ topic, initialCode }: Props) {
   const [filter, setFilter] = useState<PracticeFilter>(noFilter);
   const [exerciseIndex, setExerciseIndex] = useState(0);
   const [revealPattern, setRevealPattern] = useState(false);
+  /** Answer to the current "sound or not?" exercise, once given. */
+  const [quizAnswer, setQuizAnswer] = useState<boolean | null>(null);
 
   const { solved, markSolved } = useSolved();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -65,6 +68,7 @@ export function PracticeTrainer({ topic, initialCode }: Props) {
     (next: number, list: Exercise[]) => {
       setExerciseIndex(next);
       setRevealPattern(false);
+      setQuizAnswer(null);
       load(list[next]);
     },
     [load],
@@ -100,6 +104,16 @@ export function PracticeTrainer({ topic, initialCode }: Props) {
     available: filterExercises(topicExercises, { ...filter, depth: option.value }).length > 0,
   }));
 
+  const isQuiz = exercise?.goal.kind === 'quiz';
+  const answerQuiz = (sound: boolean) => {
+    if (!exercise || quizAnswer !== null) return;
+    setQuizAnswer(sound);
+    if (sound === exercise.sound) markSolved(exercise.id);
+  };
+  const goPrevious = () =>
+    goTo((exerciseIndex - 1 + filteredExercises.length) % filteredExercises.length, filteredExercises);
+  const goNext = () => goTo((exerciseIndex + 1) % filteredExercises.length, filteredExercises);
+
   const solvedExercisesCount = filteredExercises.filter((ex) => solved.includes(ex.id)).length;
 
   return (
@@ -130,7 +144,16 @@ export function PracticeTrainer({ topic, initialCode }: Props) {
         </MenuPanel>
 
         <main>
-          {exercise ? (
+          {exercise && isQuiz ? (
+            <QuizBoard
+              exercise={exercise}
+              answer={quizAnswer}
+              onAnswer={answerQuiz}
+              canGoNext={filteredExercises.length >= 2}
+              onPrevious={goPrevious}
+              onNext={goNext}
+            />
+          ) : exercise ? (
             <Board {...puzzle.boardProps} />
           ) : (
             <div className="empty-state">
@@ -141,30 +164,25 @@ export function PracticeTrainer({ topic, initialCode }: Props) {
               </p>
             </div>
           )}
-          <PracticeControls
-            hasExercise={!!exercise}
-            hasHint={!!exercise?.hint}
-            canReset={puzzle.canReset}
-            canGoNext={filteredExercises.length >= 2}
-            canGoPrevious={filteredExercises.length >= 2}
-            isDone={puzzle.isDone}
-            busy={puzzle.busy}
-            showHint={puzzle.showHint}
-            revealPattern={revealPattern}
-            onReset={puzzle.reset}
-            onTogglePattern={() => setRevealPattern((prev) => !prev)}
-            onShowHint={() => puzzle.setShowHint(true)}
-            onShowSolution={puzzle.reveal}
-            onPrevious={() =>
-              goTo(
-                (exerciseIndex - 1 + filteredExercises.length) % filteredExercises.length,
-                filteredExercises,
-              )
-            }
-            onNext={() =>
-              goTo((exerciseIndex + 1) % filteredExercises.length, filteredExercises)
-            }
-          />
+          {!isQuiz && (
+            <PracticeControls
+              hasExercise={!!exercise}
+              hasHint={!!exercise?.hint}
+              canReset={puzzle.canReset}
+              canGoNext={filteredExercises.length >= 2}
+              canGoPrevious={filteredExercises.length >= 2}
+              isDone={puzzle.isDone}
+              busy={puzzle.busy}
+              showHint={puzzle.showHint}
+              revealPattern={revealPattern}
+              onReset={puzzle.reset}
+              onTogglePattern={() => setRevealPattern((prev) => !prev)}
+              onShowHint={() => puzzle.setShowHint(true)}
+              onShowSolution={puzzle.reveal}
+              onPrevious={goPrevious}
+              onNext={goNext}
+            />
+          )}
         </main>
 
         <PracticeInfo
@@ -172,18 +190,22 @@ export function PracticeTrainer({ topic, initialCode }: Props) {
           exercisePattern={exercisePattern}
           exerciseIndex={exerciseIndex}
           moves={puzzle.moves}
-          played={puzzle.played}
+          played={isQuiz && quizAnswer !== null ? (exercise?.solution ?? []) : puzzle.played}
           feedback={
-            <Feedback
-              puzzle={puzzle.puzzle}
-              attempt={puzzle.attempt}
-              moves={puzzle.moves}
-              ply={puzzle.ply}
-              heroColor={puzzle.heroColor}
-            />
+            isQuiz ? (
+              exercise && <QuizFeedback exercise={exercise} answer={quizAnswer} />
+            ) : (
+              <Feedback
+                puzzle={puzzle.puzzle}
+                attempt={puzzle.attempt}
+                moves={puzzle.moves}
+                ply={puzzle.ply}
+                heroColor={puzzle.heroColor}
+              />
+            )
           }
-          showHint={puzzle.showHint}
-          isDone={puzzle.isDone}
+          showHint={isQuiz ? false : puzzle.showHint}
+          isDone={isQuiz ? quizAnswer !== null : puzzle.isDone}
           revealPattern={revealPattern}
         />
       </div>

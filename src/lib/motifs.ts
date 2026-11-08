@@ -1,5 +1,6 @@
 import { motifs as checkmateMotifs } from '../data/checkmates/motifs';
 import { motifs as tacticMotifs } from '../data/tactics/motifs';
+import { motifs as attackMotifs } from '../data/attacks/motifs';
 import { topicById, type Goal, type TopicId } from './topics';
 
 /** A motif as written in `src/data/<topic>/motifs.ts`; topic and goal come from its topic. */
@@ -14,14 +15,23 @@ export type MotifData = {
   fen: string;
   /**
    * The line in SAN, starting with the hero. Even plies are the moves the player has to
-   * find; odd plies are the defender's reply and get played automatically, so each one must
-   * be the defender's *only* legal move.
+   * find; odd plies are the defender's reply and get played automatically (for mates each
+   * must be the defender's only legal move; see the tests for the other goals).
    */
   solution: string[];
   idea: string;
   hint: string;
   /** Overrides the topic's goal. */
   goal?: Goal;
+  /** Extra article sections for the Learn page, each with lines to step through. */
+  sections?: ArticleSection[];
+};
+
+/** A section of a motif's article, e.g. "When the sacrifice fails". */
+export type ArticleSection = {
+  heading: string;
+  paragraphs: string[];
+  examples?: { fen: string; moves: string[]; caption: string }[];
 };
 
 export type Motif = MotifData & { topic: TopicId; goal: Goal };
@@ -34,6 +44,7 @@ function withTopic(list: MotifData[], topic: TopicId): Motif[] {
 export const motifs: Motif[] = [
   ...withTopic(checkmateMotifs, 'checkmates'),
   ...withTopic(tacticMotifs, 'tactics'),
+  ...withTopic(attackMotifs, 'attacks'),
 ];
 
 export function motifsOf(topic: TopicId): Motif[] {
@@ -55,29 +66,36 @@ export function movesToFind(puzzle: { solution: string[] }): number {
   return Math.ceil(puzzle.solution.length / 2);
 }
 
-/** "Mate in 2", "Win material". */
+/** "Mate in 2", "Win material", "Sound or not?". */
 export function taskLabel(puzzle: Task): string {
-  const moves = movesToFind(puzzle);
-  return puzzle.goal.kind === 'mate' ? `Mate in ${moves}` : puzzle.goal.label;
+  const { goal } = puzzle;
+  if (goal.kind === 'mate') return `Mate in ${movesToFind(puzzle)}`;
+  if (goal.kind === 'quiz') return 'Sound or not?';
+  return goal.label;
 }
 
 /** Sidebar badge: "M2" for a mate in 2; the move count for other goals. */
 export function taskBadge(puzzle: Task): string {
   const moves = movesToFind(puzzle);
+  if (puzzle.goal.kind === 'quiz') return '?';
   return puzzle.goal.kind === 'mate' ? `M${moves}` : `${moves} mv`;
 }
 
 /** "Find the mate in 2 for white." / "White to play and win material." */
 export function taskPrompt(puzzle: Task, hero: 'white' | 'black'): string {
-  const moves = movesToFind(puzzle);
-  if (puzzle.goal.kind === 'mate') return `Find the mate in ${moves} for ${hero}.`;
+  const { goal } = puzzle;
+  if (goal.kind === 'mate') return `Find the mate in ${movesToFind(puzzle)} for ${hero}.`;
+  if (goal.kind === 'quiz') return `Does the sacrifice ${puzzle.solution[0]} work here?`;
   const side = hero === 'white' ? 'White' : 'Black';
-  return `${side} to play and ${puzzle.goal.label.toLowerCase()}.`;
+  return `${side} to play and ${goal.label.toLowerCase()}.`;
 }
 
 /** Shown once the puzzle is solved by the player. */
 export function taskDone(puzzle: Task): string {
-  return puzzle.goal.kind === 'mate' ? 'Checkmate. Well done.' : puzzle.goal.done;
+  const { goal } = puzzle;
+  if (goal.kind === 'mate') return 'Checkmate. Well done.';
+  if (goal.kind === 'quiz') return 'Correct.';
+  return goal.done;
 }
 
 /**

@@ -78,7 +78,9 @@ describe.skipIf(!existsSync(new URL('../dist', import.meta.url)))('built site', 
     expect(title).toMatch(
       exercise.goal.kind === 'mate'
         ? /^Checkmate puzzle: (White|Black) to mate in \d+ \| /
-        : /^Chess puzzle: (White|Black) to play and [a-z ]+ \| /,
+        : exercise.goal.kind === 'quiz'
+          ? /^Chess puzzle: does the sacrifice work\? \| /
+          : /^Chess puzzle: (White|Black) to play and [a-z ]+ \| /,
     );
     expect(html).toContain(`<link rel="canonical" href="${SITE}${path}"`);
     expect(html).toContain('<meta name="robots" content="noindex"');

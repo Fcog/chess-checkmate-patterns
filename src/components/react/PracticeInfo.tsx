@@ -57,7 +57,9 @@ export function PracticeInfo({
             text={
               exercise.goal.kind === 'mate'
                 ? `Can you find the mate in ${moves}?`
-                : `Can you ${exercise.goal.label.toLowerCase()}?`
+                : exercise.goal.kind === 'quiz'
+                  ? 'Does the sacrifice work here?'
+                  : `Can you ${exercise.goal.label.toLowerCase()}?`
             }
           />
           {(revealPattern || isDone) && exercisePattern && (

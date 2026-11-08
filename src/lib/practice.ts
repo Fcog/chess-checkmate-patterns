@@ -15,6 +15,8 @@ export const depthOptions: { value: Depth; label: string }[] = [
 
 export function matchesDepth(exercise: Exercise, depth: Depth): boolean {
   if (depth === 'any') return true;
+  // "Sound or not?" questions have no moves to find.
+  if (exercise.goal.kind === 'quiz') return false;
   const moves = movesToFind(exercise);
   return depth === 5 ? moves >= 5 : moves === depth;
 }

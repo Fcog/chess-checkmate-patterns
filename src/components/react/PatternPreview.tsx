@@ -6,6 +6,12 @@ import { Board } from './Board';
 
 /** Stable identity so the board effect does not re-run on every render. */
 const NO_DESTS = new Map<Key, Key[]>();
+const caption = {
+  mate: 'How the pattern mates',
+  line: 'How the tactic works',
+  attack: 'How the attack works',
+  quiz: 'How the pattern works',
+} as const;
 const noop = () => {};
 const FIRST_MOVE_DELAY = 700;
 const MOVE_STEP = 900;
@@ -61,7 +67,7 @@ export function PatternPreview({ pattern, side }: Props) {
         syncKey={index}
       />
       <figcaption>
-        <span>{pattern.goal.kind === 'mate' ? 'How the pattern mates' : 'How the tactic works'}</span>
+        <span>{caption[pattern.goal.kind]}</span>
         <button type="button" className="replay-button" onClick={play}>
           ↻ Replay
         </button>

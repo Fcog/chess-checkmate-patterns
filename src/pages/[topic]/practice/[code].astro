@@ -24,9 +24,15 @@ const goal = exercise.goal;
 const heading =
   goal.kind === 'mate'
     ? `Checkmate puzzle: ${side} to mate in ${moves}`
-    : `Chess puzzle: ${side} to play and ${goal.label.toLowerCase()}`;
+    : goal.kind === 'quiz'
+      ? `Chess puzzle: does the sacrifice work?`
+      : `Chess puzzle: ${side} to play and ${goal.label.toLowerCase()}`;
 const question =
-  goal.kind === 'mate' ? `Can you find the mate in ${moves}?` : `Can you find the winning line?`;
+  goal.kind === 'mate'
+    ? `Can you find the mate in ${moves}?`
+    : goal.kind === 'quiz'
+      ? `Is the sacrifice sound or not?`
+      : `Can you find the winning line?`;
 ---
 
 <Base

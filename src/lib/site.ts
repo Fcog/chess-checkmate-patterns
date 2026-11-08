@@ -7,10 +7,10 @@
  * placeholder is left.
  */
 export const site = {
-  name: 'Checkmate Patterns',
-  url: 'https://www.checkmate-patterns.com',
+  name: 'Chess Patterns',
+  url: 'https://www.chess-patterns.com',
   operator: 'FcoG',
   email: 'fcog111@gmail.com',
   country: 'The Netherlands',
-  legalUpdated: '30 October 2026',
+  legalUpdated: '8 November 2026',
 };

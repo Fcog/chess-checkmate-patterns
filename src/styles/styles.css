@@ -414,6 +414,12 @@ main {
   cursor: default;
 }
 
+/* "Sound or not?" answers stand out from the navigation. */
+.controls button.answer {
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
 .label-short {
   display: none;
 }
@@ -708,6 +714,13 @@ a {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--panel);
+}
+
+/* Caption above a line viewer in an article. */
+.page-text .example-caption {
+  margin: 20px 0 -12px;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 .line-viewer:focus-visible {

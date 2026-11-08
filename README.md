@@ -1,28 +1,30 @@
-# Chess Checkmate Patterns
+# Chess Patterns
 
-An interactive chess tactics trainer for learning and practicing **39 classic checkmate patterns**. Players solve forced-mate puzzles directly on an interactive board, organized by piece family, with hints, animated solution reveals, and tactical explanations for each motif.
+Live at **[chess-patterns.com](https://www.chess-patterns.com)**.
+
+An interactive trainer for the chess patterns strong players recognise at a glance. Each topic has a **Learn** section (one motif at a time, with explanations) and a **Practice** section (blind puzzles that hide which motif you're looking at):
+
+- **Checkmates** (`/checkmates`): 39 classic mating patterns — Anastasia's, Arabian, Boden's, back-rank, Epaulette and more.
+- **Tactics** (`/tactics`): forks, pins, skewers, discovered and double checks, deflection, decoy and removing the guard.
+- **Attacks** (`/attacks`): the Greek gift sacrifice (Bxh7+) and its h-pawn version — the set-up, when it works and when it fails, every main defence, and "Sound or not?" quiz positions.
 
 ---
 
 ## Tech Stack
 
-- **Site framework:** [Astro](https://astro.build/) — a static HTML page per pattern (`/patterns/<id>`), plus `/` and `/practice`, with per-page SEO tags and a generated sitemap
-- **Interactive UI:** [React 18](https://react.dev/) islands with [TypeScript](https://www.typescriptlang.org/)
+- **Site framework:** [Astro](https://astro.build/) — a static HTML page per motif (`/<topic>/<id>`), a practice page per topic (`/<topic>/practice`) and a share page per exercise, with per-page SEO tags and a generated sitemap
+- **Interactive UI:** [React](https://react.dev/) islands with [TypeScript](https://www.typescriptlang.org/)
 - **Chess Logic & Validation:** [`chess.js`](https://github.com/jhlywa/chess.js) — FEN parsing, legal move generation, SAN formatting, and check/checkmate detection
-- **Chessboard UI:** [`chessground`](https://github.com/lichess-org/chessground) — Lichess's interactive board library providing drag-and-drop movement, legal destination indicators, check/last-move highlights, and smooth piece animations
-- **Testing:** [Vitest](https://vitest.dev/) — automated verification of the entire puzzle library
-- **Persistence:** Browser `localStorage` (`checkmate-patterns:solved`)
+- **Chessboard UI:** [`chessground`](https://github.com/lichess-org/chessground) — Lichess's interactive board library
+- **Testing:** [Vitest](https://vitest.dev/) — automated verification of the entire puzzle library, plus build checks of every generated page
+- **Persistence:** Browser `localStorage` (`checkmate-patterns:solved`, the original key, kept so existing progress survives the rename)
+- **Hosting:** [Vercel](https://vercel.com/) (`vercel.json` holds the redirects, including the old `checkmate-patterns.com` domain)
+
+The site name and URL live in `src/lib/site.ts`; topics in `src/lib/topics.ts`; content in `src/data/<topic>/`.
 
 ---
 
 ## Features
-
-### Curated Library of 39 Checkmate Patterns
-Puzzles are grouped into four piece families in the sidebar navigation, each badged with its mate depth (`M1`, `M2`, etc.):
-- **Queen mates (14):** Epaulette, Swallow's tail, Cozio's, Kill box, Triangle, Max Lange's, Balestra, Bucking bronco, Sneaky stallion, Damiano's, Lolli's, Greco's (queen or rook), Scholar's, and Fool's mate.
-- **Rook mates (14):** Back-rank, Blind swine, Lawnmower, Opera, Mayet's, Réti's, Pillsbury's, Morphy's, Corner, Anastasia's, Arabian, Vuković's, Hook, and Anderssen's mate.
-- **Minor-piece mates (10):** Diagonal corridor, Bombardiers', Boden's, Smothered, Philidor's legacy (Mate in 2), Two knights, Suffocation, Collaboration, Blackburne's, and Légal's mate.
-- **Pawn mates (1):** David and Goliath mate.
 
 ### Interactive Puzzle Board
 - **Legal Move Enforcement:** Computes legal destinations from the current FEN via `chess.js` and feeds them into `chessground` so only valid moves can be played.

@@ -1,6 +1,12 @@
 {
   "trailingSlash": false,
   "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "(www\\.)?checkmate-patterns\\.com" }],
+      "destination": "https://www.chess-patterns.com/:path*",
+      "permanent": true
+    },
     { "source": "/patterns/railroad", "destination": "/checkmates/triangle", "permanent": true },
     { "source": "/patterns/h-file", "destination": "/checkmates/greco", "permanent": true },
     { "source": "/patterns/:id", "destination": "/checkmates/:id", "permanent": true },

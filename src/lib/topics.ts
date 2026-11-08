@@ -1,16 +1,21 @@
 import { groups as checkmateGroups } from '../data/checkmates/motifs';
 import { groups as tacticGroups } from '../data/tactics/motifs';
+import { groups as attackGroups } from '../data/attacks/motifs';
 
-export type TopicId = 'checkmates' | 'tactics';
+export type TopicId = 'checkmates' | 'tactics' | 'attacks';
 
 /**
  * What a puzzle asks for. `mate`: deliver checkmate (any mate solves it, even one off the
  * stored line). `line`: play the stored line to its end, e.g. a fork that wins material.
+ * `attack`: the same in the app, but the line is a king attack that need not win material
+ * on the board (the tests check it differently). `quiz`: no moves to find; the player
+ * answers whether the sacrifice works, then sees the stored line.
  */
 export type Goal =
   | { kind: 'mate' }
+  | { kind: 'quiz' }
   | {
-      kind: 'line';
+      kind: 'line' | 'attack';
       /** Task in a few words, e.g. "Win material". */
       label: string;
       /** Shown once solved. */
@@ -79,6 +84,26 @@ export const topics: Topic[] = [
       'recognise it yourself.',
     goal: { kind: 'line', label: 'Win material', done: 'That wins material. Well done.' },
     groups: tacticGroups,
+  },
+  {
+    id: 'attacks',
+    name: 'Attacks',
+    noun: 'attacking pattern',
+    path: '/attacks',
+    intro:
+      'Classic sacrificial attacks on the castled king, starting with the Greek gift (Bxh7+). ' +
+      'Learn the set-up, the conditions that make the sacrifice work and the main defences, ' +
+      'then drill every variation.',
+    seoTitle: 'Learn the Greek Gift Sacrifice and Other Chess Attacks',
+    seoDescription:
+      'Learn the Greek gift sacrifice (Bxh7+, Ng5+, Qh5): when it works, when it fails, and ' +
+      'how to answer every defence, on an interactive board.',
+    practiceTitle: 'Greek Gift Practice – Attack the Castled King',
+    practiceIntro:
+      'Play the attack against every defence, and decide whether the sacrifice works at all. ' +
+      'Some positions only ask the question: is Bxh7+ sound here?',
+    goal: { kind: 'attack', label: 'Break through', done: 'The attack breaks through. Well done.' },
+    groups: attackGroups,
   },
 ];
 

@@ -1,5 +1,6 @@
 import type { Color } from 'chessground/types';
 import { taskDone, taskPrompt } from '../../lib/motifs';
+import type { Exercise } from '../../lib/exercises';
 import type { Puzzle } from '../../lib/puzzle';
 import type { Attempt } from './usePuzzle';
 
@@ -44,4 +45,15 @@ export function Feedback({ puzzle, attempt, moves, ply, heroColor }: Props) {
     default:
       return <p className="feedback">{puzzle && taskPrompt(puzzle, heroColor)}</p>;
   }
+}
+
+/** Feedback for a "sound or not?" exercise. The explanation is shown as the hint. */
+export function QuizFeedback({ exercise, answer }: { exercise: Exercise; answer: boolean | null }) {
+  if (answer === null) return <p className="feedback">{taskPrompt(exercise, 'white')}</p>;
+  const verdict = exercise.sound ? 'works' : 'fails';
+  return answer === exercise.sound ? (
+    <p className="feedback right">Correct: the sacrifice {verdict} here.</p>
+  ) : (
+    <p className="feedback wrong">Not this time: the sacrifice {verdict} here.</p>
+  );
 }
