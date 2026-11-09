@@ -76,9 +76,10 @@ function expectGoalReached(puzzle: { fen: string; goal: Motif['goal'] }, line: s
     expect(end.isCheckmate()).toBe(true);
   } else if (puzzle.goal.kind === 'attack') {
     // An attack is checked with an engine when written (see src/data/attacks); here it
-    // must at least start with a check and not fizzle out on a quiet move.
+    // must at least start with a check or a capture (Bxh6 is not a check) and not fizzle
+    // out on a quiet move.
     const moves = end.history({ verbose: true });
-    expect(moves[0].san, 'starts with a check').toMatch(/[+#]$/);
+    expect(moves[0].san, 'starts with a check or a capture').toMatch(/[+#]$|x/);
     const last = moves.at(-1)!;
     expect(
       end.isCheckmate() || !!last.captured || last.san.includes('+'),
@@ -280,7 +281,7 @@ describe.each(exercises.map((ex): [string, Exercise] => [ex.id, ex]))('exercise 
     const start = new Chess(ex.fen);
     const hero = start.turn() === 'w' ? 1 : -1;
     const end = playLine(ex.fen, ex.solution);
-    expect(end.history()[0], 'starts with the sacrifice').toMatch(/^[BN]x.*\+$/);
+    expect(end.history()[0], 'starts with the sacrifice').toMatch(/^[BN]x/);
     if (!ex.sound) {
       // The refutation shown really leaves the attacker material down.
       expect(hero * (balance(end) - balance(start))).toBeLessThanOrEqual(-2);

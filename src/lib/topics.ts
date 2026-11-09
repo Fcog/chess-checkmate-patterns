@@ -91,17 +91,18 @@ export const topics: Topic[] = [
     noun: 'attacking pattern',
     path: '/attacks',
     intro:
-      'Classic sacrificial attacks on the castled king, starting with the Greek gift (Bxh7+). ' +
-      'Learn the set-up, the conditions that make the sacrifice work and the main defences, ' +
-      'then drill every variation.',
-    seoTitle: 'Learn the Greek Gift Sacrifice and Other Chess Attacks',
+      'Classic sacrificial attacks on the king: the Greek gift, the double bishop sacrifice, ' +
+      'Bxh6 and the sacrifice on f7. Learn the set-up, the conditions that make each sacrifice ' +
+      'work and the main defences, then drill every variation.',
+    seoTitle: 'Learn the Greek Gift, Double Bishop and Other Chess Sacrifices',
     seoDescription:
-      'Learn the Greek gift sacrifice (Bxh7+, Ng5+, Qh5): when it works, when it fails, and ' +
-      'how to answer every defence, on an interactive board.',
-    practiceTitle: 'Greek Gift Practice – Attack the Castled King',
+      'Learn the classic attacking sacrifices — the Greek gift, the double bishop sacrifice, ' +
+      'Bxh6 and the sacrifice on f7 — when they work, when they fail, and how to answer every ' +
+      'defence, on an interactive board.',
+    practiceTitle: 'Attack Practice – Sacrifice Against the King',
     practiceIntro:
       'Play the attack against every defence, and decide whether the sacrifice works at all. ' +
-      'Some positions only ask the question: is Bxh7+ sound here?',
+      'Some positions only ask the question: is the sacrifice sound here?',
     goal: { kind: 'attack', label: 'Break through', done: 'The attack breaks through. Well done.' },
     groups: attackGroups,
   },

@@ -6,7 +6,7 @@ An interactive trainer for the chess patterns strong players recognise at a glan
 
 - **Checkmates** (`/checkmates`): 39 classic mating patterns — Anastasia's, Arabian, Boden's, back-rank, Epaulette and more.
 - **Tactics** (`/tactics`): forks, pins, skewers, discovered and double checks, deflection, decoy and removing the guard.
-- **Attacks** (`/attacks`): the Greek gift sacrifice (Bxh7+) and its h-pawn version — the set-up, when it works and when it fails, every main defence, and "Sound or not?" quiz positions.
+- **Attacks** (`/attacks`): the Greek gift sacrifice (Bxh7+) and its h-pawn version, the double bishop sacrifice, the Bxh6 sacrifice and the sacrifice on f7 — the set-up, when each works and when it fails, the main defences, and "Sound or not?" quiz positions.
 
 ---
 
