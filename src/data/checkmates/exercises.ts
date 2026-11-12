@@ -882,6 +882,13 @@ export const exercises: ExerciseData[] = [
     hint: 'Black’s king is walled in by its own pawns and rook. Keep checking with the knight, then a queen sacrifice on c8 seals the last square.',
   },
   {
+    id: 'philidor-3',
+    motifId: 'philidor',
+    fen: 'rn1qr1k1/ppp3pp/3b1p2/4N3/3PpP2/2P5/PP2Q1PP/R1B2RK1 w - - 0 1',
+    solution: ['Qc4+', 'Kh8', 'Nf7+', 'Kg8', 'Nh6+', 'Kh8', 'Qg8+', 'Rxg8', 'Nf7#'],
+    hint: 'Start with a check on the a2–g8 diagonal. Once the king is in the corner, your knight and queen can set up Philidor’s legacy.',
+  },
+  {
     id: 'suffocation-1',
     motifId: 'suffocation',
     fen: 'k1rr4/p2p2b1/1p2p2p/2pN1pp1/2PP1B2/6P1/PP3PBP/6K1 w - - 0 1',
