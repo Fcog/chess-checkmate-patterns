@@ -9,9 +9,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "typecheck": "astro check",
-    "test": "vitest run src",
+    "test": "vitest run src supabase/functions/_shared",
     "test:build": "astro build && vitest run tests",
-    "test:watch": "vitest src"
+    "test:watch": "vitest src supabase/functions/_shared"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.2",
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "typescript": "^6.0.3",

@@ -1,4 +1,5 @@
 import { existsSync, readFileSync } from 'node:fs';
+import { renderDailyEmail, type CataloguePuzzle } from '../supabase/functions/_shared/email';
 import { describe, expect, it } from 'vitest';
 import { exercises } from '../src/lib/exercises';
 import { motifById, motifPath, motifs } from '../src/lib/motifs';
@@ -110,5 +111,70 @@ describe.skipIf(!existsSync(new URL('../dist', import.meta.url)))('built site', 
     expect(locs.sort()).toEqual(
       pages.map((p) => (p.path === '/' ? `${SITE}/` : `${SITE}${p.path}`)).sort(),
     );
+  });
+
+  describe('newsletter', () => {
+    const catalogue = JSON.parse(read('newsletter/puzzles.json')) as {
+      version: number;
+      puzzles: CataloguePuzzle[];
+    };
+    const byCode = new Map(catalogue.puzzles.map((p) => [p.code, p]));
+    const groupNames = topics.flatMap((t) => t.groups);
+
+    /** Text that must never show up in a puzzle's catalogue entry or email (FR-011). */
+    function spoilers(exercise: (typeof exercises)[number]): RegExp[] {
+      const motif = motifById(exercise.motifId);
+      const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const list = [exercise.id, exercise.motifId, motif?.name ?? '', exercise.hint ?? '', ...groupNames]
+        .filter(Boolean)
+        .map((s) => new RegExp(escape(s), 'i'));
+      // Solution moves as whole words, e.g. "Qxh7+". A bare pawn push ("e5") is just a square
+      // name, which the board description lists anyway, so it can't be checked this way.
+      for (const san of exercise.solution.filter((m) => !/^[a-h][1-8]$/.test(m))) {
+        list.push(new RegExp(`(^|[^A-Za-z0-9])${escape(san)}(?![A-Za-z0-9])`));
+      }
+      return list;
+    }
+
+    it('lists every exercise once in the puzzle catalogue', () => {
+      expect(catalogue.version).toBe(1);
+      expect(catalogue.puzzles).toHaveLength(exercises.length);
+      for (const exercise of exercises) expect(byCode.has(shareCode(exercise.id))).toBe(true);
+    });
+
+    it.each(exercises)('has a board picture and a share page for $id', (exercise) => {
+      const entry = byCode.get(shareCode(exercise.id))!;
+      const png = readFileSync(new URL(`../dist${new URL(entry.image).pathname}`, import.meta.url));
+      expect([...png.subarray(0, 4)]).toEqual([0x89, 0x50, 0x4e, 0x47]);
+      expect(entry.url).toBe(`${SITE}${sharePath(exercise.topic, entry.code)}`);
+      expect(existsSync(new URL(`../dist${new URL(entry.url).pathname}/index.html`, import.meta.url))).toBe(true);
+    });
+
+    it.each(exercises)('keeps the catalogue entry and email for $id spoiler-free', (exercise) => {
+      const entry = byCode.get(shareCode(exercise.id))!;
+      expect(Object.keys(entry).sort()).toEqual(['alt', 'code', 'fen', 'image', 'side', 'task', 'topic', 'url']);
+      const email = renderDailyEmail({
+        puzzle: entry,
+        unsubscribeUrl: `${SITE}/newsletter/unsubscribe?token=t`,
+        oneClickUrl: 'https://ref.supabase.co/functions/v1/newsletter-unsubscribe?token=t',
+        siteUrl: SITE,
+        day: '2026-11-12',
+      });
+      const texts = [JSON.stringify(entry), email.subject, email.html, email.text];
+      for (const pattern of spoilers(exercise)) {
+        for (const text of texts) expect(text).not.toMatch(pattern);
+      }
+    });
+
+    it('explains the newsletter on the privacy page', () => {
+      const html = read('privacy/index.html');
+      expect(html).toContain('newsletter');
+      expect(html).toContain('Resend');
+      expect(html).not.toContain('never ask for your name, email');
+    });
+
+    it('puts the sign-up form on the homepage', () => {
+      expect(read('index.html')).toMatch(/<astro-island[^>]*component-url="[^"]*NewsletterSignup/);
+    });
   });
 });

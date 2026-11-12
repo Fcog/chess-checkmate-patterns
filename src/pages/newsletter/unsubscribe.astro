@@ -1,0 +1,56 @@
+---
+import Page from '../../layouts/Page.astro';
+import { site } from '../../lib/site';
+---
+
+<!-- Opened from the Unsubscribe link in every email (spec User Story 3, FR-013). -->
+<Page
+  title={`Unsubscribe | ${site.name}`}
+  description="Unsubscribe from the daily chess puzzle email."
+  path="/newsletter/unsubscribe"
+  noindex
+>
+  <h1>Unsubscribe</h1>
+  <div id="newsletter-result" aria-live="polite">
+    <p>Unsubscribing…</p>
+  </div>
+</Page>
+
+<script>
+  import { clearSubscribed, newsletterApi } from '../../lib/newsletter';
+
+  async function unsubscribe() {
+    const box = document.getElementById('newsletter-result');
+    if (!box) return;
+    const show = (html: string) => (box.innerHTML = html);
+    const token = new URLSearchParams(location.search).get('token') ?? '';
+    try {
+      // POST only: opening the link is enough, but a scanner's GET can't unsubscribe anyone.
+      const res = await fetch(`${newsletterApi()}/newsletter-unsubscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      const data = await res.json();
+      if (data.result === 'unsubscribed') {
+        clearSubscribed();
+        show(
+          '<p>You’re unsubscribed. You won’t get any more puzzle emails.</p>' +
+            '<p>Changed your mind? Subscribe again from the <a href="/">homepage</a>.</p>',
+        );
+      } else {
+        show(
+          '<p>This unsubscribe link isn’t valid.</p>' +
+            '<p>If you’re still getting emails, contact us (details on the <a href="/privacy">privacy page</a>) and we’ll remove you.</p>',
+        );
+      }
+    } catch {
+      show('<p>Something went wrong – reload the page to try again.</p>');
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    if (location.pathname === '/newsletter/unsubscribe') void unsubscribe();
+  });
+</script>

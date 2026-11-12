@@ -12,5 +12,5 @@ export const site = {
   operator: 'FcoG',
   email: 'fcog111@gmail.com',
   country: 'The Netherlands',
-  legalUpdated: '8 November 2026',
+  legalUpdated: '12 November 2026',
 };

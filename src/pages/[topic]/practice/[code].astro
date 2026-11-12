@@ -3,7 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { PracticeTrainer } from '../../../components/react/PracticeTrainer';
 import Base from '../../../layouts/Base.astro';
 import { exercises } from '../../../lib/exercises';
-import { movesToFind } from '../../../lib/motifs';
+import { puzzleTask } from '../../../lib/puzzle-task';
 import { shareCode } from '../../../lib/share';
 import { site } from '../../../lib/site';
 import { practicePath, sharePath, topicById } from '../../../lib/topics';
@@ -18,21 +18,7 @@ export const getStaticPaths = (() =>
 
 const { exercise } = Astro.props;
 const topic = topicById(exercise.topic);
-const side = exercise.fen.split(' ')[1] === 'w' ? 'White' : 'Black';
-const moves = movesToFind(exercise);
-const goal = exercise.goal;
-const heading =
-  goal.kind === 'mate'
-    ? `Checkmate puzzle: ${side} to mate in ${moves}`
-    : goal.kind === 'quiz'
-      ? `Chess puzzle: does the sacrifice work?`
-      : `Chess puzzle: ${side} to play and ${goal.label.toLowerCase()}`;
-const question =
-  goal.kind === 'mate'
-    ? `Can you find the mate in ${moves}?`
-    : goal.kind === 'quiz'
-      ? `Is the sacrifice sound or not?`
-      : `Can you find the winning line?`;
+const { heading, question } = puzzleTask(exercise);
 ---
 
 <Base

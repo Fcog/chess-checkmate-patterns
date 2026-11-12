@@ -51,6 +51,44 @@ The test suite (`src/lib/patterns.test.ts`) validates every pattern in the catal
 
 ---
 
+## Daily puzzle newsletter
+
+Visitors can sign up on the homepage for one practice puzzle a day by email (spec and design: `specs/001-daily-puzzle-newsletter/`).
+
+- **Site (static):** the homepage form (`NewsletterSignup.tsx`), `/newsletter/confirm` and `/newsletter/unsubscribe`, a board PNG per practice puzzle (`/newsletter/board/<code>.png`) and the spoiler-free puzzle list the backend reads (`/newsletter/puzzles.json`). The form only shows when `PUBLIC_NEWSLETTER_API` is set (see `.env.example`).
+- **Backend:** Supabase (EU region). Postgres tables and the clean-up job in `supabase/migrations/`, the send schedule in `supabase/sql/schedule-daily.sql`, and five Edge Functions in `supabase/functions/`: `newsletter-subscribe`, `newsletter-confirm`, `newsletter-unsubscribe`, `daily-newsletter` and `resend-webhook`. The pure logic lives in `supabase/functions/_shared/` and is tested by `npm test`.
+- **Email:** Resend, sending from `mail.chess-patterns.com`.
+
+### Deploy
+
+```bash
+supabase link --project-ref <ref>
+supabase db push
+supabase secrets set --env-file supabase/functions/.env.production   # names: supabase/functions/.env.example
+for f in newsletter-subscribe newsletter-confirm newsletter-unsubscribe daily-newsletter resend-webhook; do
+  supabase functions deploy "$f" --no-verify-jwt
+done
+# Then, in the SQL editor: store CRON_SECRET in Vault and run supabase/sql/schedule-daily.sql
+# (instructions at the top of the file). Finally set PUBLIC_NEWSLETTER_API on Vercel and redeploy.
+```
+
+Resend setup: verify `mail.chess-patterns.com` (SPF, DKIM, plus a DMARC record), use the EU region, keep open and click tracking **off**, and add a webhook for `email.bounced` and `email.complained` pointing to `https://<ref>.supabase.co/functions/v1/resend-webhook` (its signing secret is `RESEND_WEBHOOK_SECRET`). The local end-to-end checks and the launch checklist are in `specs/001-daily-puzzle-newsletter/quickstart.md`.
+
+### Running it
+
+```sql
+-- Active subscribers (FR-020)
+select count(*) from newsletter_subscribers where status = 'active';
+-- The last week's sends: puzzle, start/finish times, sent and failed counts
+select * from newsletter_days order by day desc limit 7;
+-- Delete a subscriber completely on request (FR-019)
+delete from newsletter_subscribers where email = lower('<address>');
+```
+
+To re-send today's failed batches by hand: `curl -X POST "https://<ref>.supabase.co/functions/v1/daily-newsletter?force=1" -H "Authorization: Bearer $CRON_SECRET"` (never re-sends emails that went out).
+
+---
+
 ## Getting Started
 
 ```bash

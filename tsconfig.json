@@ -1,7 +1,13 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"],
+  "exclude": [
+    "dist",
+    // Deno-only code (Edge Function entry points and the Supabase client); the pure
+    // modules in supabase/functions/_shared are type-checked and tested with the site.
+    "supabase/functions/*/index.ts",
+    "supabase/functions/_shared/db.ts"
+  ],
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",

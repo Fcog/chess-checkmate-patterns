@@ -1,5 +1,6 @@
 ---
 import { Header } from '../components/react/Header';
+import { NewsletterSignup } from '../components/react/NewsletterSignup';
 import Base from '../layouts/Base.astro';
 import { exercises } from '../lib/exercises';
 import { motifPath, motifsOf } from '../lib/motifs';
@@ -37,6 +38,8 @@ import { practicePath, topics } from '../lib/topics';
       one, and read how it works once you’ve solved it. Every topic also has a Practice section,
       where {exercises.length} positions hide which motif you’re looking at.
     </p>
+
+    <NewsletterSignup client:load />
 
     <ul class="topic-cards">
       {

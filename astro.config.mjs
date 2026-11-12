@@ -8,7 +8,10 @@ export default defineConfig({
   trailingSlash: 'never',
   integrations: [
     react(),
-    // Shared exercise pages (/practice/<code>) are for links, not search.
-    sitemap({ filter: (page) => !/\/practice\/[a-z0-9]+$/.test(page) }),
+    // Shared exercise pages (/practice/<code>) are for links, not search, and so are the
+    // newsletter's confirm and unsubscribe pages.
+    sitemap({
+      filter: (page) => !/\/practice\/[a-z0-9]+$/.test(page) && !/\/newsletter\//.test(page),
+    }),
   ],
 });

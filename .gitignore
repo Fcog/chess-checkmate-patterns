@@ -3,3 +3,9 @@ dist
 .astro
 *.local
 .DS_Store
+.env
+.env.*
+!.env.example
+supabase/functions/.env.local
+supabase/.temp
+supabase/.branches

@@ -1,0 +1,67 @@
+---
+import Page from '../../layouts/Page.astro';
+import { site } from '../../lib/site';
+---
+
+<!-- Opened from the confirmation email (spec User Story 1, FR-004). -->
+<Page
+  title={`Confirm your subscription | ${site.name}`}
+  description="Confirm your subscription to the daily chess puzzle email."
+  path="/newsletter/confirm"
+  noindex
+>
+  <h1>Confirm your subscription</h1>
+  <div id="newsletter-result" aria-live="polite">
+    <p>Confirming…</p>
+  </div>
+</Page>
+
+<script>
+  import {
+    clearSubscribed,
+    formatLocalTime,
+    markConfirmed,
+    newsletterApi,
+  } from '../../lib/newsletter';
+
+  const escape = (s: string) =>
+    s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+  async function confirm() {
+    const box = document.getElementById('newsletter-result');
+    if (!box) return;
+    const show = (html: string) => (box.innerHTML = html);
+    const token = new URLSearchParams(location.search).get('token') ?? '';
+    try {
+      const res = await fetch(`${newsletterApi()}/newsletter-confirm`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      const data = await res.json();
+      if (data.result === 'confirmed') {
+        markConfirmed();
+        show(
+          `<p>You’re subscribed. Your first puzzle arrives ${escape(formatLocalTime(data.firstSend))}.</p>` +
+            '<p>Can’t wait? <a href="/checkmates/practice">Try a practice puzzle now</a>.</p>',
+        );
+      } else if (data.result === 'already') {
+        markConfirmed();
+        show('<p>You’re already subscribed. See you in your inbox.</p>');
+      } else {
+        clearSubscribed();
+        show(
+          '<p>This link has expired or was already used.</p>' +
+            '<p>Subscribe again from the <a href="/">homepage</a>.</p>',
+        );
+      }
+    } catch {
+      show('<p>Something went wrong – reload the page to try again.</p>');
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    if (location.pathname === '/newsletter/confirm') void confirm();
+  });
+</script>

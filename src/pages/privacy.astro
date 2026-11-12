@@ -19,7 +19,10 @@ import { site } from '../lib/site';
 
   <h2>In short</h2>
   <ul>
-    <li>You don’t need an account and we never ask for your name, email or any other details.</li>
+    <li>
+      You don’t need an account. The only personal detail we ever ask for is your email address,
+      and only if you sign up for the daily puzzle email.
+    </li>
     <li>Your puzzle progress is stored only in your own browser and is never sent to us.</li>
     <li>
       We use analytics to see how many people visit and which pages they use. Google Analytics only
@@ -42,6 +45,37 @@ import { site } from '../lib/site';
     stays on your device and is never sent to us or anyone else. Because it is strictly necessary
     for a feature you use, no consent is required. You can delete it at any time by clearing your
     browser’s site data for {site.url}.
+  </p>
+
+  <h3>Daily puzzle newsletter</h3>
+  <p>
+    If you sign up for the daily puzzle email, we store your email address, whether your
+    subscription is waiting for confirmation, active or ended, the dates you subscribed,
+    confirmed and unsubscribed, and why a subscription ended (you unsubscribed, the address
+    bounced or an email was reported as spam). We also store the codes in your confirmation and
+    unsubscribe links, when we last sent you a confirmation email, and, for 7 days, which day’s
+    email was sent to you, so a send that is interrupted never emails you twice.
+  </p>
+  <p>
+    To stop automated sign-ups, we keep a scrambled, one-way copy of the IP address a sign-up
+    came from for 24 hours. It cannot be turned back into your IP address.
+  </p>
+  <p>
+    The emails contain no tracking pixel, so we don’t know whether you open them. The “Solve it”
+    link carries a tag (<code>utm_source=newsletter</code>) so our analytics can count how many
+    visits come from the newsletter; this is counted like any other visit, as described below.
+  </p>
+  <p>
+    Legal basis: your consent (GDPR article 6(1)(a)), which you give by signing up and confirming
+    your address. You can withdraw it at any time with the unsubscribe link in every email, or
+    by contacting us.
+  </p>
+  <p>
+    Your subscription is stored by Supabase Inc. in the EU (Frankfurt), and the emails are sent
+    by Resend, both of which process the data only on our behalf, under a
+    data processing agreement. Your browser also remembers that you signed up (under the key
+    <code>checkmate-patterns:newsletter</code> in local storage) so the sign-up form isn’t shown
+    again; this stays on your device.
   </p>
 
   <h3>Hosting and server logs</h3>
@@ -94,6 +128,13 @@ import { site } from '../lib/site';
   <h2>How long we keep data</h2>
   <ul>
     <li>Progress in your browser: until you clear it.</li>
+    <li>
+      Newsletter: an address that is never confirmed is deleted 7 days after the last
+      confirmation email. An active subscription is kept until you unsubscribe. After you
+      unsubscribe we keep your address, marked as unsubscribed, so we never email you again by
+      mistake; ask us and we will delete it completely.
+    </li>
+    <li>Newsletter delivery records: 7 days. Scrambled IP addresses from sign-ups: 24 hours.</li>
     <li>Server logs: a short period, as set by our hosting provider.</li>
     <li>Vercel Web Analytics: only aggregated, anonymous statistics are kept.</li>
     <li>Google Analytics: event data is deleted automatically after at most 14 months.</li>
@@ -101,8 +142,9 @@ import { site } from '../lib/site';
 
   <h2>Who we share data with</h2>
   <p>
-    Only with the service providers named above (Vercel and Google), who process data on our
-    behalf to host the site and provide statistics. We don’t sell or rent personal data, and we
+    Only with the service providers named above (Vercel, Google, and for the newsletter
+    Supabase and Resend), who process data on our behalf to host the site, provide statistics,
+    and store and send the newsletter. We don’t sell or rent personal data, and we
     don’t share it with anyone else unless the law requires us to.
   </p>
 
@@ -124,8 +166,9 @@ import { site } from '../lib/site';
     <li>withdraw your consent at any time.</li>
   </ul>
   <p>
-    Because we don’t ask for your name or contact details, we usually cannot link data to you. To
-    exercise your rights, email <a href={`mailto:${site.email}`}>{site.email}</a> and we will
+    Apart from a newsletter subscription, we don’t ask for your name or contact details, so we
+    usually cannot link data to you. To unsubscribe, use the link in any newsletter email; to
+    have your address deleted completely, or to exercise any other right, email <a href={`mailto:${site.email}`}>{site.email}</a> and we will
     respond within one month. You also have the right to file a complaint with the Dutch Data
     Protection Authority (<a href="https://autoriteitpersoonsgegevens.nl" rel="noopener">Autoriteit
     Persoonsgegevens</a>) or the data protection authority in your own country.
