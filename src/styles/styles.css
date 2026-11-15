@@ -507,6 +507,29 @@ main {
   color: var(--accent);
 }
 
+/* Under the hint text: reveals the piece to move, then the move itself. */
+.hint-reveal {
+  margin-top: 8px;
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.hint-reveal:hover:not(:disabled) {
+  background: var(--panel-hover);
+  border-color: var(--accent);
+}
+
+.hint-reveal:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
 .pattern-preview {
   margin: 12px 0 0;
   padding-top: 12px;

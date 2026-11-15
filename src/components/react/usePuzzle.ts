@@ -1,9 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Chess } from 'chess.js';
+import type { DrawShape } from 'chessground/draw';
 import type { Color, Key } from 'chessground/types';
 import { legalDests } from '../../lib/helpers';
 import { movesToFind } from '../../lib/motifs';
-import { checkMove, playSan, refutation, type Puzzle } from '../../lib/puzzle';
+import {
+  checkMove,
+  hintShapes,
+  nextHintMove,
+  playSan,
+  refutation,
+  type HintStep,
+  type Puzzle,
+} from '../../lib/puzzle';
 import { playBadMove, playGoodMove } from '../../lib/sounds';
 
 /** Stable identity so the board effect does not re-run on every render. */
@@ -36,6 +45,8 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
   const [busy, setBusy] = useState(false);
   const [lastMove, setLastMove] = useState<Key[] | undefined>(undefined);
   const [showHint, setShowHint] = useState(false);
+  /** How far the hint button has revealed the next move; reset whenever that move changes. */
+  const [hintStep, setHintStep] = useState<HintStep>(0);
   const [syncKey, setSyncKey] = useState(0);
   /** Temporary position while a wrong move and its answer are shown; `fen` stays the real one. */
   const [displayFen, setDisplayFen] = useState<string | undefined>(undefined);
@@ -63,6 +74,7 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
       setLastMove(undefined);
       setDisplayFen(undefined);
       setShowHint(false);
+      setHintStep(0);
       setSyncKey((k) => k + 1);
     },
     [clearTimers],
@@ -78,6 +90,17 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
   const isDone = attempt.kind === 'solved';
   const locked = isDone || busy;
   const moves = puzzle ? movesToFind(puzzle) : 1;
+
+  // Only point at a move while the player can actually play it.
+  const hintMove = useMemo(
+    () => (showHint && !locked && !displayFen ? nextHintMove(fen, line, ply) : null),
+    [showHint, locked, displayFen, fen, line, ply],
+  );
+  const shapes = useMemo(() => hintShapes(hintMove, hintStep) as DrawShape[], [hintMove, hintStep]);
+  const canAdvanceHint = hintMove !== null && hintStep < 2;
+  const advanceHint = useCallback(() => {
+    if (canAdvanceHint) setHintStep((step) => (step + 1) as HintStep);
+  }, [canAdvanceHint]);
 
   const onMove = useCallback(
     (from: Key, to: Key) => {
@@ -116,6 +139,7 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
       }
 
       playGoodMove();
+      setHintStep(0);
       const nextPly = ply + 1;
       setPlayed((prev) => [...prev, result.san]);
       setFen(result.fen);
@@ -149,6 +173,7 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
     if (!puzzle) return;
     clearTimers();
     setDisplayFen(undefined);
+    setHintStep(0);
     setBusy(true);
     let cursor = fen;
     const remaining = line.slice(ply);
@@ -182,6 +207,9 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
     heroColor,
     showHint,
     setShowHint,
+    hintStep,
+    canAdvanceHint,
+    advanceHint,
     canReset: !(ply === 0 && attempt.kind === 'idle'),
     boardProps: {
       fen: displayFen ?? fen,
@@ -193,6 +221,7 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
       viewOnly: locked,
       onMove,
       syncKey,
+      shapes,
     },
   };
 }
