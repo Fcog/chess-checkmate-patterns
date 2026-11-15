@@ -209,6 +209,20 @@ export const exercises: ExerciseData[] = [
     hint: 'Put a knight on e7 to take g8 and g6, then give up your queen to open the h-file for your rook.',
   },
   {
+    id: 'anastasia-9',
+    motifId: 'anastasia',
+    fen: 'rn2nrk1/pbp1qppp/1p2p3/7Q/3PN3/3B2b1/PPP2PPP/R1B1K2R w KQ - 0 1',
+    solution: ['Qxh7+', 'Kxh7', 'Nf6+', 'Kh8', 'hxg3#'],
+    hint: 'Your h1 rook is hiding behind the h2 pawn. Rip open the king’s shelter, check with the knight, and let the pawn capture unleash the rook.',
+  },
+  {
+    id: 'anastasia-10',
+    motifId: 'anastasia',
+    fen: '1k1r3r/1ppq2pp/3bbpn1/1p6/3NP3/4B2P/2PN1PP1/R2Q1RK1 w - - 0 1',
+    solution: ['Ra8+', 'Kxa8', 'Qa1+', 'Kb8', 'Qa7+', 'Kxa7', 'Nc6+', 'Ka8', 'Ra1+', 'Ba2', 'Rxa2+', 'Ba3', 'Rxa3#'],
+    hint: 'Sacrifice your rook and then your queen to drag the king into the a-file. A knight on c6 takes away a7 and b8, and your other rook finishes the job on the a-file.',
+  },
+  {
     id: 'max-lange-1',
     motifId: 'max-lange',
     fen: '3r3r/8/k7/p3p2q/1p3p2/6P1/2Q2PBP/6K1 w - - 0 1',
@@ -482,6 +496,27 @@ export const exercises: ExerciseData[] = [
     hint: 'Drag the king to h7 with a queen sacrifice. Then both knights join in: one takes away g8 and h7, the other gives the final check.',
   },
   {
+    id: 'two-knights-2',
+    motifId: 'two-knights',
+    fen: 'rn3rk1/pbppq1pp/1p2pb2/4N2Q/3PN3/3B4/PPP2PPP/R3K2R w KQ - 0 1',
+    solution: ['Qxh7+', 'Kxh7', 'Nxf6+', 'Kh8', 'Ng6#'],
+    hint: 'Sacrifice the queen to pull the king onto h7. One knight then takes away g8 and h7, and the other lands on a square your d3 bishop guards.',
+  },
+  {
+    id: 'two-knights-3',
+    motifId: 'two-knights',
+    fen: 'r4rk1/ppb2ppp/6b1/3pn3/3BnqP1/1NP2P1P/PPN3B1/R2Q1RK1 b - - 0 1',
+    solution: ['Qh2+', 'Kxh2', 'Nxf3+', 'Kh1', 'Ng3#'],
+    hint: 'Give up the queen to drag the king to h2. Then a knight check from f3 sends it back to the corner, and your c7 bishop guards the square for the other knight.',
+  },
+  {
+    id: 'two-knights-4',
+    motifId: 'two-knights',
+    fen: '4k2r/1brp3p/p2bp1p1/4np2/Np1Nn2q/1P3B2/PBP1Q1PP/4RRK1 b k - 0 1',
+    solution: ['Qxh2+', 'Kxh2', 'Nxf3+', 'Kh1', 'Ng3#'],
+    hint: 'The h2 pawn is the only thing shielding White’s king. Trade your queen for it, chase the king back to the corner with a knight check, and let your d6 bishop cover the mating square.',
+  },
+  {
     id: 'collaboration-1',
     motifId: 'collaboration',
     fen: '7r/4Rpk1/6p1/q2p4/P3b3/5NPn/2B1QP1P/7K b - - 0 1',
@@ -537,6 +572,13 @@ export const exercises: ExerciseData[] = [
     fen: 'r4rk1/p4pp1/1p1b1n1p/7q/1P4bN/P3P1P1/2BB1P1P/1Q2RR1K b - - 0 1',
     solution: ['Qxh4', 'gxh4', 'Bf3+', 'Kg1', 'Ng4', 'h3', 'Bh2#'],
     hint: 'Give up the queen to open White’s kingside. Then a bishop on the long diagonal, a knight and your other bishop can do the rest.',
+  },
+  {
+    id: 'blackburne-3',
+    motifId: 'blackburne',
+    fen: 'r4rk1/pbp2p2/1pn1pBp1/3q2Np/3P3Q/P1PB4/2P3PP/R4RK1 w - - 0 1',
+    solution: ['Qxh5', 'gxh5', 'Bh7#'],
+    hint: 'Your f6 bishop seals g7 and h8, and the knight eyes h7. Remove the h5 pawn with your queen — if g6 recaptures, the d3 bishop’s diagonal to h7 opens.',
   },
   {
     id: 'legal-1',
