@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react';
 import { formatLine } from '../../lib/helpers';
 import { motifPath, taskLabel, type Motif } from '../../lib/motifs';
+import type { HintStep } from '../../lib/puzzle';
 import { site } from '../../lib/site';
 import { topicById } from '../../lib/topics';
+import { HintReveal } from './HintReveal';
 import { ShareButton } from './ShareButton';
 
 export type Props = {
@@ -11,9 +13,21 @@ export type Props = {
   feedback: ReactNode;
   showHint: boolean;
   isDone: boolean;
+  hintStep: HintStep;
+  canAdvanceHint: boolean;
+  onAdvanceHint: () => void;
 };
 
-export function MotifInfo({ motif, played, feedback, showHint, isDone }: Props) {
+export function MotifInfo({
+  motif,
+  played,
+  feedback,
+  showHint,
+  isDone,
+  hintStep,
+  canAdvanceHint,
+  onAdvanceHint,
+}: Props) {
   const task = taskLabel(motif);
   return (
     <aside className="info">
@@ -23,6 +37,9 @@ export function MotifInfo({ motif, played, feedback, showHint, isDone }: Props) 
       <div aria-live="polite">{feedback}</div>
       {played.length > 0 && <p className="line">{formatLine(motif.fen, played)}</p>}
       {(showHint || isDone) && <p className="hint">{motif.hint}</p>}
+      {showHint && !isDone && (
+        <HintReveal step={hintStep} disabled={!canAdvanceHint} onReveal={onAdvanceHint} />
+      )}
       {isDone && <p className="idea">{motif.idea}</p>}
       <ShareButton
         label="Share"

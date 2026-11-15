@@ -61,6 +61,33 @@ export function playSan(fen: string, san: string) {
   return { san: move.san, from: move.from, to: move.to, fen: chess.fen() };
 }
 
+/** How much of the next move the hint has revealed: nothing, the piece, or the full move. */
+export type HintStep = 0 | 1 | 2;
+
+export type HintMove = { from: string; to: string };
+
+/** The move the player is expected to play next, or null if the line has ended. */
+export function nextHintMove(fen: string, line: string[], ply: number): HintMove | null {
+  const san = line[ply];
+  if (!san) return null;
+  try {
+    const { from, to } = playSan(fen, san);
+    return { from, to };
+  } catch {
+    return null;
+  }
+}
+
+/** Board shapes for a hint: a circle on the piece, then an arrow for the whole move. */
+export function hintShapes(
+  move: HintMove | null,
+  step: HintStep,
+): { orig: string; dest?: string; brush: string }[] {
+  if (!move || step === 0) return [];
+  if (step === 1) return [{ orig: move.from, brush: 'green' }];
+  return [{ orig: move.from, dest: move.to, brush: 'green' }];
+}
+
 export type Reply = { san: string; from: string; to: string; fen: string };
 
 const PIECE_VALUE: Record<PieceSymbol, number> = { p: 1, n: 3, b: 3, r: 5, q: 9, k: 0 };

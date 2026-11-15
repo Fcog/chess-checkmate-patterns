@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { motifs } from './motifs';
 import { Chess } from 'chess.js';
-import { checkMove, playSan, refutation } from './puzzle';
+import { checkMove, hintShapes, nextHintMove, playSan, refutation } from './puzzle';
 
 const byId = (id: string) => {
   const pattern = motifs.find((p) => p.id === id);
@@ -183,5 +183,49 @@ describe('refutation', () => {
 
   it('returns null when the defender is stalemated', () => {
     expect(refutation('k7/2Q5/1K6/8/8/8/8/8 b - - 0 1', 'c7')).toBeNull();
+  });
+});
+
+describe('nextHintMove', () => {
+  it('returns the squares of the first solution move', () => {
+    const epaulette = byId('epaulette');
+    expect(nextHintMove(epaulette.fen, epaulette.solution, 0)).toEqual({ from: 'b6', to: 'e6' });
+  });
+
+  it('follows the line to the current ply', () => {
+    const start = '6k1/5ppp/8/8/8/8/8/4R1K1 w - - 0 1';
+    const line = ['Kf1', 'h6', 'Re8#'];
+    const fen = playSan(playSan(start, 'Kf1').fen, 'h6').fen;
+    expect(nextHintMove(fen, line, 2)).toEqual({ from: 'e1', to: 'e8' });
+  });
+
+  it('returns null past the end of the line', () => {
+    const epaulette = byId('epaulette');
+    expect(nextHintMove(epaulette.fen, epaulette.solution, 1)).toBeNull();
+  });
+
+  it('returns null for a move that is not legal in the position', () => {
+    expect(nextHintMove('6k1/5ppp/8/8/8/8/8/4R1K1 w - - 0 1', ['Qh7#'], 0)).toBeNull();
+  });
+});
+
+describe('hintShapes', () => {
+  const move = { from: 'b6', to: 'e6' };
+
+  it('draws nothing before anything is revealed', () => {
+    expect(hintShapes(move, 0)).toEqual([]);
+  });
+
+  it('circles the piece on the first step', () => {
+    expect(hintShapes(move, 1)).toEqual([{ orig: 'b6', brush: 'green' }]);
+  });
+
+  it('draws an arrow for the whole move on the second step', () => {
+    expect(hintShapes(move, 2)).toEqual([{ orig: 'b6', dest: 'e6', brush: 'green' }]);
+  });
+
+  it('draws nothing without a move', () => {
+    expect(hintShapes(null, 1)).toEqual([]);
+    expect(hintShapes(null, 2)).toEqual([]);
   });
 });

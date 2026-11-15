@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Chessground } from 'chessground';
 import type { Api } from 'chessground/api';
+import type { DrawShape } from 'chessground/draw';
 import type { Color, Key } from 'chessground/types';
 
 export type Props = {
@@ -17,6 +18,8 @@ export type Props = {
   /** Show rank and file labels. Read once when the board mounts. */
   coordinates?: boolean;
   className?: string;
+  /** Hint arrows and circles drawn on top of the board. */
+  shapes?: DrawShape[];
 };
 
 export function Board(props: Props) {
@@ -82,6 +85,11 @@ export function Board(props: Props) {
     props.dests,
     props.syncKey,
   ]);
+
+  // After the sync above, so a re-sync never leaves stale hint shapes behind.
+  useEffect(() => {
+    api.current?.setAutoShapes(props.shapes ?? []);
+  }, [props.shapes, props.fen, props.syncKey]);
 
   return <div className={props.className ? `board ${props.className}` : 'board'} ref={el} />;
 }

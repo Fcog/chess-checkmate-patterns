@@ -85,6 +85,9 @@ export function MotifTrainer({ topic, motifId }: Props) {
           }
           showHint={puzzle.showHint}
           isDone={puzzle.isDone}
+          hintStep={puzzle.hintStep}
+          canAdvanceHint={puzzle.canAdvanceHint}
+          onAdvanceHint={puzzle.advanceHint}
         />
       </div>
     </div>

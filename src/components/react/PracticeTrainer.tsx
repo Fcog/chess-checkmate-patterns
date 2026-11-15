@@ -207,6 +207,9 @@ export function PracticeTrainer({ topic, initialCode }: Props) {
           showHint={isQuiz ? false : puzzle.showHint}
           isDone={isQuiz ? quizAnswer !== null : puzzle.isDone}
           revealPattern={revealPattern}
+          hintStep={puzzle.hintStep}
+          canAdvanceHint={isQuiz ? false : puzzle.canAdvanceHint}
+          onAdvanceHint={puzzle.advanceHint}
         />
       </div>
     </div>
