@@ -88,6 +88,14 @@ export function hintShapes(
   return [{ orig: move.from, dest: move.to, brush: 'green' }];
 }
 
+/** What the hint button offers next: the text hint, then the piece, then the move. */
+export type HintButtonState = 'hint' | 'piece' | 'move' | 'done';
+
+export function hintButtonState(showHint: boolean, step: HintStep): HintButtonState {
+  if (!showHint) return 'hint';
+  return (['piece', 'move', 'done'] as const)[step];
+}
+
 export type Reply = { san: string; from: string; to: string; fen: string };
 
 const PIECE_VALUE: Record<PieceSymbol, number> = { p: 1, n: 3, b: 3, r: 5, q: 9, k: 0 };

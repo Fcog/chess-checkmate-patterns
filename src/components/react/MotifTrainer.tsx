@@ -63,9 +63,10 @@ export function MotifTrainer({ topic, motifId }: Props) {
             canGoNext={list.length >= 2}
             isDone={puzzle.isDone}
             busy={puzzle.busy}
-            showHint={puzzle.showHint}
+            hintState={puzzle.hintButton}
+            canAdvanceHint={puzzle.canAdvanceHint}
             onReset={puzzle.reset}
-            onShowHint={() => puzzle.setShowHint(true)}
+            onPressHint={puzzle.pressHint}
             onShowSolution={puzzle.reveal}
             onNext={() => navigate(motifPath(next))}
           />
@@ -85,9 +86,6 @@ export function MotifTrainer({ topic, motifId }: Props) {
           }
           showHint={puzzle.showHint}
           isDone={puzzle.isDone}
-          hintStep={puzzle.hintStep}
-          canAdvanceHint={puzzle.canAdvanceHint}
-          onAdvanceHint={puzzle.advanceHint}
         />
       </div>
     </div>

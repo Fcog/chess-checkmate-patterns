@@ -6,6 +6,7 @@ import { legalDests } from '../../lib/helpers';
 import { movesToFind } from '../../lib/motifs';
 import {
   checkMove,
+  hintButtonState,
   hintShapes,
   nextHintMove,
   playSan,
@@ -101,6 +102,12 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
   const advanceHint = useCallback(() => {
     if (canAdvanceHint) setHintStep((step) => (step + 1) as HintStep);
   }, [canAdvanceHint]);
+  // One button for every step: the first press shows the text, later ones reveal the move.
+  const hintButton = hintButtonState(showHint, hintStep);
+  const pressHint = useCallback(() => {
+    if (!showHint) setShowHint(true);
+    else advanceHint();
+  }, [showHint, advanceHint]);
 
   const onMove = useCallback(
     (from: Key, to: Key) => {
@@ -210,6 +217,8 @@ export function usePuzzle(initial: Puzzle | undefined, onSolved: (id: string) =>
     hintStep,
     canAdvanceHint,
     advanceHint,
+    hintButton,
+    pressHint,
     canReset: !(ply === 0 && attempt.kind === 'idle'),
     boardProps: {
       fen: displayFen ?? fen,
