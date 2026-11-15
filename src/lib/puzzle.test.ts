@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { motifs } from './motifs';
 import { Chess } from 'chess.js';
-import { checkMove, hintShapes, nextHintMove, playSan, refutation } from './puzzle';
+import {
+  checkMove,
+  hintButtonState,
+  hintShapes,
+  nextHintMove,
+  playSan,
+  refutation,
+} from './puzzle';
 
 const byId = (id: string) => {
   const pattern = motifs.find((p) => p.id === id);
@@ -227,5 +234,18 @@ describe('hintShapes', () => {
   it('draws nothing without a move', () => {
     expect(hintShapes(null, 1)).toEqual([]);
     expect(hintShapes(null, 2)).toEqual([]);
+  });
+});
+
+describe('hintButtonState', () => {
+  it('offers the text hint until it is shown', () => {
+    expect(hintButtonState(false, 0)).toBe('hint');
+    expect(hintButtonState(false, 2)).toBe('hint');
+  });
+
+  it('then offers the piece, the move, and finally nothing', () => {
+    expect(hintButtonState(true, 0)).toBe('piece');
+    expect(hintButtonState(true, 1)).toBe('move');
+    expect(hintButtonState(true, 2)).toBe('done');
   });
 });

@@ -1,4 +1,6 @@
+import type { HintButtonState } from '../../lib/puzzle';
 import { ButtonLabel } from './ButtonLabel';
+import { HintButton } from './HintButton';
 
 export type Props = {
   hasExercise: boolean;
@@ -8,11 +10,12 @@ export type Props = {
   canGoPrevious: boolean;
   isDone: boolean;
   busy: boolean;
-  showHint: boolean;
+  hintState: HintButtonState;
+  canAdvanceHint: boolean;
   revealPattern: boolean;
   onReset: () => void;
   onTogglePattern: () => void;
-  onShowHint: () => void;
+  onPressHint: () => void;
   onShowSolution: () => void;
   onPrevious: () => void;
   onNext: () => void;
@@ -26,11 +29,12 @@ export function PracticeControls({
   canGoPrevious,
   isDone,
   busy,
-  showHint,
+  hintState,
+  canAdvanceHint,
   revealPattern,
   onReset,
   onTogglePattern,
-  onShowHint,
+  onPressHint,
   onShowSolution,
   onPrevious,
   onNext,
@@ -52,9 +56,11 @@ export function PracticeControls({
         )}
       </button>
       {hasHint && (
-        <button onClick={onShowHint} disabled={showHint || isDone}>
-          Hint
-        </button>
+        <HintButton
+          state={hintState}
+          disabled={isDone || busy || ((hintState === 'piece' || hintState === 'move') && !canAdvanceHint)}
+          onPress={onPressHint}
+        />
       )}
       <button
         onClick={onShowSolution}

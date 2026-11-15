@@ -1,13 +1,16 @@
+import type { HintButtonState } from '../../lib/puzzle';
 import { ButtonLabel } from './ButtonLabel';
+import { HintButton } from './HintButton';
 
 export type Props = {
   canReset: boolean;
   canGoNext: boolean;
   isDone: boolean;
   busy: boolean;
-  showHint: boolean;
+  hintState: HintButtonState;
+  canAdvanceHint: boolean;
   onReset: () => void;
-  onShowHint: () => void;
+  onPressHint: () => void;
   onShowSolution: () => void;
   onNext: () => void;
 };
@@ -17,9 +20,10 @@ export function PatternControls({
   canGoNext,
   isDone,
   busy,
-  showHint,
+  hintState,
+  canAdvanceHint,
   onReset,
-  onShowHint,
+  onPressHint,
   onShowSolution,
   onNext,
 }: Props) {
@@ -28,9 +32,11 @@ export function PatternControls({
       <button onClick={onReset} disabled={!canReset}>
         Reset
       </button>
-      <button onClick={onShowHint} disabled={showHint || isDone}>
-        Hint
-      </button>
+      <HintButton
+        state={hintState}
+        disabled={isDone || busy || ((hintState === 'piece' || hintState === 'move') && !canAdvanceHint)}
+        onPress={onPressHint}
+      />
       <button onClick={onShowSolution} disabled={isDone || busy} aria-label="Show solution">
         <ButtonLabel full="Show solution" short="Solution" />
       </button>

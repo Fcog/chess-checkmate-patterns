@@ -404,7 +404,7 @@ main {
   cursor: pointer;
 }
 
-.controls button:hover:not(:disabled) {
+.controls button:hover:not(:disabled):not([aria-disabled='true']) {
   background: var(--panel-hover);
   border-color: var(--accent);
 }
@@ -412,6 +412,29 @@ main {
 .controls button:disabled {
   opacity: 0.4;
   cursor: default;
+}
+
+/* The hint button's last step stays focusable, so it is faded via aria-disabled. */
+.controls button[aria-disabled='true'] {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/*
+ * The hint button's labels (Hint, Reveal piece, Reveal move, Move revealed) share one grid
+ * cell: the button always has the width of the longest, so nothing in the row shifts.
+ */
+.hint-labels {
+  display: inline-grid;
+}
+
+.hint-labels > span {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+
+.hint-labels > span.is-active {
+  visibility: visible;
 }
 
 /* "Sound or not?" answers stand out from the navigation. */
@@ -505,29 +528,6 @@ main {
 
 .hint {
   color: var(--accent);
-}
-
-/* Under the hint text: reveals the piece to move, then the move itself. */
-.hint-reveal {
-  margin-top: 8px;
-  padding: 7px 14px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: var(--panel);
-  color: var(--text);
-  font: inherit;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.hint-reveal:hover:not(:disabled) {
-  background: var(--panel-hover);
-  border-color: var(--accent);
-}
-
-.hint-reveal:disabled {
-  opacity: 0.4;
-  cursor: default;
 }
 
 .pattern-preview {

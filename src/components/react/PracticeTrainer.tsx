@@ -173,11 +173,12 @@ export function PracticeTrainer({ topic, initialCode }: Props) {
               canGoPrevious={filteredExercises.length >= 2}
               isDone={puzzle.isDone}
               busy={puzzle.busy}
-              showHint={puzzle.showHint}
+              hintState={puzzle.hintButton}
+              canAdvanceHint={puzzle.canAdvanceHint}
               revealPattern={revealPattern}
               onReset={puzzle.reset}
               onTogglePattern={() => setRevealPattern((prev) => !prev)}
-              onShowHint={() => puzzle.setShowHint(true)}
+              onPressHint={puzzle.pressHint}
               onShowSolution={puzzle.reveal}
               onPrevious={goPrevious}
               onNext={goNext}
@@ -207,9 +208,6 @@ export function PracticeTrainer({ topic, initialCode }: Props) {
           showHint={isQuiz ? false : puzzle.showHint}
           isDone={isQuiz ? quizAnswer !== null : puzzle.isDone}
           revealPattern={revealPattern}
-          hintStep={puzzle.hintStep}
-          canAdvanceHint={isQuiz ? false : puzzle.canAdvanceHint}
-          onAdvanceHint={puzzle.advanceHint}
         />
       </div>
     </div>

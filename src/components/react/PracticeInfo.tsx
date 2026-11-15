@@ -2,11 +2,9 @@ import type { ReactNode } from 'react';
 import type { Exercise } from '../../lib/exercises';
 import { formatLine } from '../../lib/helpers';
 import { taskLabel, type Motif } from '../../lib/motifs';
-import type { HintStep } from '../../lib/puzzle';
 import { site } from '../../lib/site';
 import { sharePath } from '../../lib/topics';
 import { shareCode } from '../../lib/share';
-import { HintReveal } from './HintReveal';
 import { PatternPreview } from './PatternPreview';
 import { ShareButton } from './ShareButton';
 
@@ -20,9 +18,6 @@ export type Props = {
   showHint: boolean;
   isDone: boolean;
   revealPattern: boolean;
-  hintStep: HintStep;
-  canAdvanceHint: boolean;
-  onAdvanceHint: () => void;
 };
 
 export function PracticeInfo({
@@ -35,9 +30,6 @@ export function PracticeInfo({
   showHint,
   isDone,
   revealPattern,
-  hintStep,
-  canAdvanceHint,
-  onAdvanceHint,
 }: Props) {
   return (
     <aside className="info">
@@ -58,9 +50,6 @@ export function PracticeInfo({
           <div aria-live="polite">{feedback}</div>
           {played.length > 0 && <p className="line">{formatLine(exercise.fen, played)}</p>}
           {(showHint || isDone) && exercise.hint && <p className="hint">{exercise.hint}</p>}
-          {showHint && !isDone && exercise.hint && (
-            <HintReveal step={hintStep} disabled={!canAdvanceHint} onReveal={onAdvanceHint} />
-          )}
           <ShareButton
             label="Share puzzle"
             path={sharePath(exercise.topic, shareCode(exercise.id))}
