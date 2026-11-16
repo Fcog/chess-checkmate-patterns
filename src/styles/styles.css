@@ -8,6 +8,12 @@
   --accent: #d2a15a;
   --good: #7fbf6a;
   --bad: #d97b6c;
+  /* Layout (specs/005-full-width-layout): one frame shared by every page. */
+  --frame-max: 2400px;
+  --frame-pad: clamp(20px, 2vw, 32px);
+  /* Height taken by the header and controls; the board gets the rest of the window. */
+  --board-chrome: 190px;
+  --prose-max: 720px;
   color-scheme: dark;
 }
 
@@ -23,9 +29,9 @@ body {
 }
 
 .app {
-  max-width: 1100px;
+  max-width: var(--frame-max);
   margin: 0 auto;
-  padding: 24px 20px 48px;
+  padding: 24px var(--frame-pad) 48px;
 }
 
 header {
@@ -155,7 +161,7 @@ header {
 
 .layout {
   display: grid;
-  grid-template-columns: 230px minmax(0, 1fr) 260px;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) minmax(240px, 340px);
   gap: 24px;
   padding-top: 24px;
   align-items: start;
@@ -615,15 +621,15 @@ a {
 }
 
 .page-text {
-  max-width: 1100px;
+  max-width: var(--frame-max);
   margin: 0 auto;
-  padding: 0 20px 64px;
+  padding: 0 var(--frame-pad) 64px;
   color: var(--muted);
   font-size: 15px;
 }
 
 .page-text > * {
-  max-width: 720px;
+  max-width: var(--prose-max);
 }
 
 .page-text h1 {
@@ -840,9 +846,9 @@ a {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 8px 24px;
-  max-width: 1100px;
+  max-width: var(--frame-max);
   margin: 0 auto;
-  padding: 20px 20px 32px;
+  padding: 20px var(--frame-pad) 32px;
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 13px;
@@ -859,6 +865,22 @@ a {
 
 .site-footer a:hover {
   color: var(--text);
+}
+
+/*
+ * Desktop: the trainer board grows into the wider centre column, but never so tall that the
+ * controls under it leave the window. Phones and tablets keep the 480px cap above.
+ */
+@media (min-width: 861px) {
+  main > .board,
+  main > .empty-state {
+    max-width: min(100%, calc(100svh - var(--board-chrome)));
+  }
+
+  /* Card grids aren't reading text: let them add columns as the window widens. */
+  .page-text > .topic-cards {
+    max-width: none;
+  }
 }
 
 @media (max-width: 860px) {
