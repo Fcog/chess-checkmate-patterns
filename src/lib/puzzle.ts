@@ -7,7 +7,7 @@ export type Puzzle = {
   goal: Goal;
   fen: string;
   solution: string[];
-  /** Other winning lines, the same length as `solution`. */
+  /** Other winning lines. Each ends on the player's move and may be longer than `solution`. */
   alternatives?: string[][];
   hint?: string;
 };

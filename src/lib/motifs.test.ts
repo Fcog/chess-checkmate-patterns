@@ -265,7 +265,9 @@ describe.each(exercises.map((ex): [string, Exercise] => [ex.id, ex]))('exercise 
   });
 
   it.each(ex.alternatives ?? [])('has a valid alternative line %#', (...line) => {
-    expect(line).toHaveLength(ex.solution.length);
+    // Ends on the player's move; it may be longer than the solution (a slower win).
+    expect(line.length % 2).toBe(1);
+    expect(line).not.toEqual(ex.solution);
     expect(line).not.toEqual(ex.solution);
     expectGoalReached(ex, line);
   });

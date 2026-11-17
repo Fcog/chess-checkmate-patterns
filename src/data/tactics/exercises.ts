@@ -55,6 +55,28 @@ export const exercises: ExerciseData[] = [
     hint: 'The a1 rook is undefended. Which check also lines up with it?',
   },
   {
+    id: 'fork-6',
+    motifId: 'fork',
+    fen: '6k1/2p1q1p1/5p2/8/8/2R2B1P/P5P1/7K b - - 0 1',
+    solution: ['Qe1+', 'Kh2', 'Qxc3'],
+    alternatives: [['Qe1+', 'Kh2', 'Qe5+', 'g3', 'Qxc3']],
+    hint: 'The c3 rook has no defender. A queen check on the back rank can line up with it.',
+  },
+  {
+    id: 'fork-7',
+    motifId: 'fork',
+    fen: '3rk3/4bpp1/3p4/1n2p3/4P3/5N1P/2Q3PK/8 w - - 0 1',
+    solution: ['Qc6+', 'Kf8', 'Qxb5'],
+    hint: 'The b5 knight is loose, and Black’s king sits on the e8–a4 diagonal.',
+  },
+  {
+    id: 'fork-8',
+    motifId: 'fork',
+    fen: '1k6/1p4q1/6p1/7p/7P/PB4P1/6K1/5R2 b - - 0 1',
+    solution: ['Qb2+', 'Rf2', 'Qxb3'],
+    hint: 'Nothing guards the b3 bishop. Find a check on the second rank that also hits it.',
+  },
+  {
     // Lichess puzzle hUL3N
     id: 'pin-1',
     motifId: 'pin',
