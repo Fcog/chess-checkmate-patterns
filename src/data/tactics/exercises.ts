@@ -317,6 +317,13 @@ export const exercises: ExerciseData[] = [
     hint: 'The f3 knight is guarded only by White’s king. Check the king away from it.',
   },
   {
+    id: 'deflection-6',
+    motifId: 'deflection',
+    fen: 'rnbqk1nr/pp2ppbp/6p1/4p3/2B5/2N2N2/PP3PPP/R1BQK2R w KQkq - 0 2',
+    solution: ['Bxf7+', 'Kxf7', 'Qxd8'],
+    hint: 'The d-file just opened. Black’s queen is guarded only by the king. Can a check pull it away?',
+  },
+  {
     // Lichess puzzle ATjKs
     id: 'decoy-1',
     motifId: 'decoy',
