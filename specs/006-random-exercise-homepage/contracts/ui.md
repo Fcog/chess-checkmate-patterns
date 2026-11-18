@@ -16,6 +16,8 @@ export function reshuffle<T extends { id: string }>(list: T[], avoidFirstId?: st
 
 ## `HomeTrainer` (new, `src/components/react/HomeTrainer.tsx`)
 
+> **Superseded in part by [specs/007-homepage-viewport-fit/contracts/ui.md](../../007-homepage-viewport-fit/contracts/ui.md).** `HomeTrainer` now takes `about` and `sections` slots, renders `.layout.home` (three columns) and the newsletter signup, and `.layout.no-menu` is gone. The puzzle wiring below is unchanged.
+
 ```ts
 export function HomeTrainer(): JSX.Element; // no props
 ```

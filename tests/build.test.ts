@@ -105,6 +105,39 @@ describe.skipIf(!existsSync(new URL('../dist', import.meta.url)))('built site', 
     expect(read('blog/index.html')).toContain(`href="/blog/${post.slug}"`);
   });
 
+  describe('homepage layout (specs/007-homepage-viewport-fit)', () => {
+    // Hydration templates repeat slot markup; only the rendered HTML counts.
+    const html = read('index.html').replace(/<template\b[\s\S]*?<\/template>/g, '');
+
+    it('renders the board, side column and sections regions', () => {
+      expect(html).toContain('class="layout home"');
+      expect(html).toContain('class="home-side"');
+      expect(html).toContain('class="home-sections"');
+    });
+
+    it('orders them board, info, intro, newsletter, sections (the phone order)', () => {
+      const at = (needle: string) => {
+        const i = html.indexOf(needle);
+        expect(i, needle).toBeGreaterThan(-1);
+        return i;
+      };
+      const order = [
+        '<main',
+        'class="info"',
+        '<h1>',
+        'class="home-newsletter"',
+        'class="home-sections"',
+      ].map(at);
+      expect(order).toEqual([...order].sort((a, b) => a - b));
+    });
+
+    it.each(topics)('links to $name Learn and Practice from the sections column', (topic) => {
+      const sections = html.slice(html.indexOf('class="home-sections"'));
+      expect(sections).toContain(`href="${topic.path}"`);
+      expect(sections).toContain(`href="${practicePath(topic.id)}"`);
+    });
+  });
+
   it('lists every page in the sitemap, and not the 404 page', () => {
     const sitemap = read('sitemap-0.xml');
     const locs = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
@@ -174,16 +207,22 @@ describe.skipIf(!existsSync(new URL('../dist', import.meta.url)))('built site', 
     });
 
     it('puts the sign-up form on the homepage', () => {
-      expect(read('index.html')).toMatch(/<astro-island[^>]*component-url="[^"]*NewsletterSignup/);
+      // Rendered by the HomeTrainer island since specs/007-homepage-viewport-fit.
+      const html = read('index.html');
+      const island = html.search(/<astro-island[^>]*component-url="[^"]*HomeTrainer/);
+      expect(island).toBeGreaterThan(-1);
+      expect(html.indexOf('class="home-newsletter"')).toBeGreaterThan(island);
     });
   });
 
   describe('homepage random exercise', () => {
-    it('renders the trainer before the existing homepage text', () => {
+    it('renders the homepage text inside the trainer layout', () => {
       const html = read('index.html');
       const island = html.search(/<astro-island[^>]*component-url="[^"]*HomeTrainer/);
       expect(island).toBeGreaterThan(-1);
-      expect(island).toBeLessThan(html.indexOf('class="page-text'));
+      const h1 = html.indexOf('<h1>');
+      expect(h1).toBeGreaterThan(island);
+      expect(h1).toBeLessThan(html.indexOf('<!--astro:end-->', island));
     });
 
     it('keeps the intro and topic cards', () => {

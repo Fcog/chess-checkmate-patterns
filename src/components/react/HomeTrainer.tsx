@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { exercises, type Exercise } from '../../lib/exercises';
 import { shuffle } from '../../lib/helpers';
 import { motifById } from '../../lib/motifs';
@@ -6,6 +6,7 @@ import { reshuffle } from '../../lib/practice';
 import { Board } from './Board';
 import { Feedback, QuizFeedback } from './Feedback';
 import { Header } from './Header';
+import { NewsletterSignup } from './NewsletterSignup';
 import { PracticeControls } from './PracticeControls';
 import { PracticeInfo } from './PracticeInfo';
 import { QuizBoard } from './QuizBoard';
@@ -15,11 +16,21 @@ import { useSolved } from './useSolved';
 /** Every practice exercise, from every topic. */
 const pool = exercises;
 
+export type Props = {
+  /** Server-rendered intro (h1 + paragraph), from the Astro `about` slot. */
+  about?: ReactNode;
+  /** Server-rendered topic cards, from the Astro `sections` slot. */
+  sections?: ReactNode;
+};
+
 /**
- * The homepage board: a random exercise from any topic, and Next for another. Walks a shuffled
+ * The homepage: a random exercise from any topic, and Next for another. Walks a shuffled
  * order of the whole pool so nothing repeats until every exercise has been shown.
+ *
+ * Three columns on desktop (sections | board | info, intro, newsletter); on phones they stack
+ * in DOM order: board, info, intro, newsletter, sections (specs/007-homepage-viewport-fit).
  */
-export function HomeTrainer() {
+export function HomeTrainer({ about, sections }: Props) {
   // The server can't know the random order, so it renders the original order and the shuffle
   // happens right after hydration.
   const [order, setOrder] = useState<Exercise[]>(pool);
@@ -86,7 +97,7 @@ export function HomeTrainer() {
     <div className="app">
       <Header progress={`${solvedCount} / ${pool.length} solved`} />
 
-      <div className="layout no-menu">
+      <div className="layout home">
         <main>
           {exercise && isQuiz ? (
             <QuizBoard
@@ -122,30 +133,41 @@ export function HomeTrainer() {
           )}
         </main>
 
-        <PracticeInfo
-          exercise={exercise}
-          exercisePattern={exercisePattern}
-          exerciseIndex={shown - 1}
-          moves={puzzle.moves}
-          played={isQuiz && quizAnswer !== null ? (exercise?.solution ?? []) : puzzle.played}
-          feedback={
-            isQuiz ? (
-              exercise && <QuizFeedback exercise={exercise} answer={quizAnswer} />
-            ) : (
-              <Feedback
-                puzzle={puzzle.puzzle}
-                attempt={puzzle.attempt}
-                moves={puzzle.moves}
-                ply={puzzle.ply}
-                heroColor={puzzle.heroColor}
-              />
-            )
-          }
-          showHint={isQuiz ? false : puzzle.showHint}
-          isDone={isQuiz ? quizAnswer !== null : puzzle.isDone}
-          revealPattern={revealPattern}
-          showLinks
-        />
+        <div className="home-side">
+          <PracticeInfo
+            exercise={exercise}
+            exercisePattern={exercisePattern}
+            exerciseIndex={shown - 1}
+            moves={puzzle.moves}
+            played={isQuiz && quizAnswer !== null ? (exercise?.solution ?? []) : puzzle.played}
+            feedback={
+              isQuiz ? (
+                exercise && <QuizFeedback exercise={exercise} answer={quizAnswer} />
+              ) : (
+                <Feedback
+                  puzzle={puzzle.puzzle}
+                  attempt={puzzle.attempt}
+                  moves={puzzle.moves}
+                  ply={puzzle.ply}
+                  heroColor={puzzle.heroColor}
+                />
+              )
+            }
+            showHint={isQuiz ? false : puzzle.showHint}
+            isDone={isQuiz ? quizAnswer !== null : puzzle.isDone}
+            revealPattern={revealPattern}
+            showLinks
+          />
+          <div className="home-about">{about}</div>
+          {/* The signup renders nothing until mounted; the wrapper keeps its place in the HTML. */}
+          <div className="home-newsletter">
+            <NewsletterSignup />
+          </div>
+        </div>
+
+        <nav className="home-sections" aria-label="Sections">
+          {sections}
+        </nav>
       </div>
     </div>
   );
