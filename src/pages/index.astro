@@ -1,5 +1,5 @@
 ---
-import { Header } from '../components/react/Header';
+import { HomeTrainer } from '../components/react/HomeTrainer';
 import { NewsletterSignup } from '../components/react/NewsletterSignup';
 import Base from '../layouts/Base.astro';
 import { exercises } from '../lib/exercises';
@@ -26,9 +26,7 @@ import { practicePath, topics } from '../lib/topics';
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   }}
 >
-  <div class="app">
-    <Header />
-  </div>
+  <HomeTrainer client:load />
 
   <article class="page-text legal">
     <h1>Learn chess patterns you can spot in a real game</h1>

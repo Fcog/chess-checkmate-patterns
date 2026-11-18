@@ -167,6 +167,11 @@ header {
   align-items: start;
 }
 
+/* Board pages without a menu column (the homepage): board + info. */
+.layout.no-menu {
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
+}
+
 .patterns {
   display: flex;
   flex-direction: column;
@@ -885,6 +890,10 @@ a {
 
 @media (max-width: 860px) {
   .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .layout.no-menu {
     grid-template-columns: minmax(0, 1fr);
   }
 

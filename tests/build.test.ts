@@ -177,4 +177,19 @@ describe.skipIf(!existsSync(new URL('../dist', import.meta.url)))('built site', 
       expect(read('index.html')).toMatch(/<astro-island[^>]*component-url="[^"]*NewsletterSignup/);
     });
   });
+
+  describe('homepage random exercise', () => {
+    it('renders the trainer before the existing homepage text', () => {
+      const html = read('index.html');
+      const island = html.search(/<astro-island[^>]*component-url="[^"]*HomeTrainer/);
+      expect(island).toBeGreaterThan(-1);
+      expect(island).toBeLessThan(html.indexOf('class="page-text'));
+    });
+
+    it('keeps the intro and topic cards', () => {
+      const html = read('index.html');
+      expect(html).toContain('<h1>Learn chess patterns you can spot in a real game</h1>');
+      expect(html).toContain('class="topic-cards"');
+    });
+  });
 });
