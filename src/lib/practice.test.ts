@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Exercise } from './exercises';
-import { depthOptions, filterExercises, noFilter, type PracticeFilter } from './practice';
+import { depthOptions, filterExercises, noFilter, reshuffle, type PracticeFilter } from './practice';
 
 const ex = (id: string, motifId: string, moves: number, topic: Exercise['topic'] = 'checkmates'): Exercise => ({
   id,
@@ -56,5 +56,35 @@ describe('depthOptions', () => {
   it('starts with Any and ends with 5+', () => {
     expect(depthOptions[0].label).toBe('Any');
     expect(depthOptions.at(-1)?.label).toBe('5+');
+  });
+});
+
+describe('reshuffle', () => {
+  it('returns a permutation of the list', () => {
+    expect(ids(reshuffle(list, 'a')).sort()).toEqual(ids(list).sort());
+  });
+
+  it('does not mutate the input', () => {
+    const before = ids(list);
+    reshuffle(list, 'a');
+    expect(ids(list)).toEqual(before);
+  });
+
+  it('never starts with the avoided exercise', () => {
+    for (let i = 0; i < 200; i++) expect(reshuffle(list, 'a')[0].id).not.toBe('a');
+  });
+
+  it('handles empty and single-item lists', () => {
+    expect(reshuffle([], 'a')).toEqual([]);
+    const single = [list[0]];
+    const result = reshuffle(single, single[0].id);
+    expect(result).toEqual(single);
+    expect(result).not.toBe(single);
+  });
+
+  it('can put any exercise first', () => {
+    const firsts = new Set<string>();
+    for (let i = 0; i < 600; i++) firsts.add(reshuffle(list)[0].id);
+    expect([...firsts].sort()).toEqual(ids(list).sort());
   });
 });

@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
 import type { Exercise } from '../../lib/exercises';
 import { formatLine } from '../../lib/helpers';
-import { taskLabel, type Motif } from '../../lib/motifs';
+import { motifPath, taskLabel, type Motif } from '../../lib/motifs';
 import { site } from '../../lib/site';
-import { sharePath } from '../../lib/topics';
+import { practicePath, sharePath, topicById } from '../../lib/topics';
 import { shareCode } from '../../lib/share';
 import { PatternPreview } from './PatternPreview';
 import { ShareButton } from './ShareButton';
@@ -18,6 +18,8 @@ export type Props = {
   showHint: boolean;
   isDone: boolean;
   revealPattern: boolean;
+  /** Once the pattern is shown, link to its Learn page and its topic's Practice page. */
+  showLinks?: boolean;
 };
 
 export function PracticeInfo({
@@ -30,6 +32,7 @@ export function PracticeInfo({
   showHint,
   isDone,
   revealPattern,
+  showLinks = false,
 }: Props) {
   return (
     <aside className="info">
@@ -70,6 +73,16 @@ export function PracticeInfo({
                 side={exercise.fen.split(' ')[1] === 'w' ? 'white' : 'black'}
               />
               <p className="idea">{exercisePattern.idea}</p>
+              {showLinks && (
+                <p className="modes topic-actions">
+                  <a className="mode" href={motifPath(exercisePattern)}>
+                    Learn {exercisePattern.name}
+                  </a>
+                  <a className="mode" href={practicePath(exercise.topic)}>
+                    Practise {topicById(exercise.topic).name}
+                  </a>
+                </p>
+              )}
             </>
           )}
         </>

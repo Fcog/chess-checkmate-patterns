@@ -9,10 +9,12 @@
   --good: #7fbf6a;
   --bad: #d97b6c;
   /* Layout (specs/005-full-width-layout): one frame shared by every page. */
-  --frame-max: 2400px;
+  --frame-max: 1780px;
   --frame-pad: clamp(20px, 2vw, 32px);
   /* Height taken by the header and controls; the board gets the rest of the window. */
   --board-chrome: 190px;
+  /* Homepage: frame padding + header + layout gap above the side columns. */
+  --home-chrome: 110px;
   --prose-max: 720px;
   color-scheme: dark;
 }
@@ -995,7 +997,8 @@ a {
 }
 
 /* Home page: one card per topic. */
-.page-text .topic-cards {
+.page-text .topic-cards,
+.home-sections .topic-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
@@ -1011,7 +1014,8 @@ a {
   background: var(--panel);
 }
 
-.page-text .topic-cards h2 {
+.page-text .topic-cards h2,
+.home-sections .topic-cards h2 {
   margin: 0 0 6px;
   padding: 0;
   border: none;
@@ -1021,12 +1025,14 @@ a {
   margin: 0 0 10px;
 }
 
-.page-text .topic-actions {
+.page-text .topic-actions,
+.home-sections .topic-actions {
   display: inline-flex;
   margin-bottom: 12px;
 }
 
-.page-text .topic-actions .mode {
+.page-text .topic-actions .mode,
+.home-sections .topic-actions .mode {
   color: var(--accent);
 }
 
@@ -1055,7 +1061,8 @@ a {
   border: 0;
 }
 
-.page-text .newsletter {
+.page-text .newsletter,
+.home-side .newsletter {
   margin: 24px 0 0;
   padding: 16px 18px;
   border: 1px solid var(--line);
@@ -1063,7 +1070,8 @@ a {
   background: var(--panel);
 }
 
-.page-text .newsletter h2 {
+.page-text .newsletter h2,
+.home-side .newsletter h2 {
   margin: 0 0 10px;
   padding: 0;
   border: none;
@@ -1129,4 +1137,148 @@ a {
   margin-top: 10px !important;
   color: var(--muted);
   font-size: 14px;
+}
+
+/*
+ * Homepage (specs/007-homepage-viewport-fit). DOM order is the phone order: board, side
+ * (info, intro, newsletter), sections. Desktop puts the sections in a left column so the
+ * intro, newsletter and topic cards fit in the first screen next to the board.
+ */
+.home-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.home-about {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.home-about h1 {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.home-about p {
+  margin: 0;
+}
+
+.home-side .newsletter {
+  margin: 0;
+}
+
+.home-side .newsletter h2 {
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* Subscribers get no call to action; don't leave the column gap behind. */
+.home-newsletter:empty {
+  display: none;
+}
+
+.home-sections {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.home-sections .topic-cards {
+  margin: 0;
+}
+
+.home-sections .topic-cards h2 {
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* Never squeeze the homepage board below a playable size; let the page scroll instead. */
+.layout.home main > .board,
+.layout.home main > .empty-state {
+  min-width: min(280px, 100%);
+}
+
+@media (min-width: 861px) {
+  .layout.home {
+    /* The home controls wrap to two rows at 1366px; leave room so they stay in the window. */
+    --board-chrome: 210px;
+    grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) minmax(240px, 340px);
+    grid-template-areas: 'sections board side';
+  }
+
+  /* Separate grid items: the side column growing during play never moves the others. */
+  .layout.home > main {
+    grid-area: board;
+    align-self: start;
+  }
+
+  .layout.home > .home-side {
+    grid-area: side;
+    align-self: start;
+  }
+
+  .layout.home > .home-sections {
+    grid-area: sections;
+    align-self: start;
+    max-height: calc(100svh - var(--home-chrome));
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+
+  .layout.home main > .board,
+  .layout.home main > .empty-state {
+    max-width: max(280px, min(100%, calc(100svh - var(--board-chrome))));
+  }
+
+  /* Compact cards: heading, Learn / Practice, a two-line intro. Motif lists live on the topic pages. */
+  .home-sections .topic-cards {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .home-sections .topic-cards > li {
+    padding: 12px 14px;
+  }
+
+  .home-sections .topic-cards h2 {
+    font-size: 16px;
+  }
+
+  .home-sections .topic-actions {
+    margin-bottom: 8px;
+  }
+
+  .home-sections .topic-cards p:not(.topic-actions) {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    font-size: 14px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .home-sections .topic-cards .link-list {
+    display: none;
+  }
+
+  .home-side .newsletter {
+    padding: 14px 16px;
+  }
+
+  .home-side .newsletter h2 {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 860px) {
+  .layout.home {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

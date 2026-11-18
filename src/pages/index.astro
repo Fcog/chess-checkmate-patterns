@@ -1,6 +1,5 @@
 ---
-import { Header } from '../components/react/Header';
-import { NewsletterSignup } from '../components/react/NewsletterSignup';
+import { HomeTrainer } from '../components/react/HomeTrainer';
 import Base from '../layouts/Base.astro';
 import { exercises } from '../lib/exercises';
 import { motifPath, motifsOf } from '../lib/motifs';
@@ -26,22 +25,17 @@ import { practicePath, topics } from '../lib/topics';
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   }}
 >
-  <div class="app">
-    <Header />
-  </div>
+  <HomeTrainer client:load>
+    <Fragment slot="about">
+      <h1>Learn chess patterns you can spot in a real game</h1>
+      <p>
+        Strong players recognise the pattern instead of calculating from scratch. Solve each motif
+        on the board, then test yourself on {exercises.length} practice positions that hide which
+        motif you’re looking at.
+      </p>
+    </Fragment>
 
-  <article class="page-text legal">
-    <h1>Learn chess patterns you can spot in a real game</h1>
-    <p>
-      Strong players don’t calculate everything from scratch — they recognise the pattern. Each
-      motif here is a short puzzle on an interactive board: find the move, get a hint if you need
-      one, and read how it works once you’ve solved it. Every topic also has a Practice section,
-      where {exercises.length} positions hide which motif you’re looking at.
-    </p>
-
-    <NewsletterSignup client:load />
-
-    <ul class="topic-cards">
+    <ul slot="sections" class="topic-cards">
       {
         topics.map((topic) => {
           const list = motifsOf(topic.id);
@@ -51,13 +45,13 @@ import { practicePath, topics } from '../lib/topics';
                 <a href={topic.path}>{topic.name}</a>{' '}
                 <span class="badge">{list.length}</span>
               </h2>
-              <p>{topic.intro}</p>
               <p class="modes topic-actions">
                 <a class="mode" href={topic.path}>Learn</a>
                 <a class="mode" href={practicePath(topic.id)}>
                   Practice ({exercises.filter((ex) => ex.topic === topic.id).length})
                 </a>
               </p>
+              <p>{topic.intro}</p>
               <ul class="link-list">
                 {list.slice(0, 8).map((m) => (
                   <li>
@@ -75,5 +69,5 @@ import { practicePath, topics } from '../lib/topics';
         })
       }
     </ul>
-  </article>
+  </HomeTrainer>
 </Base>

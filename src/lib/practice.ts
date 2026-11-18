@@ -1,4 +1,5 @@
 import type { Exercise } from './exercises';
+import { shuffle } from './helpers';
 import { movesToFind } from './motifs';
 
 /** Length filter for Practice. `5` stands for "5 or more" so the long tail stays one choice. */
@@ -37,4 +38,17 @@ export function filterExercises(list: Exercise[], filter: PracticeFilter): Exerc
       (motifIds.length === 0 || motifIds.includes(ex.motifId)) &&
       matchesDepth(ex, depth),
   );
+}
+
+/**
+ * A new random order of `list`. When `list` has 2 or more items, the first item's id is never
+ * `avoidFirstId`, so a fresh cycle can't repeat the exercise that was just shown.
+ */
+export function reshuffle<T extends { id: string }>(list: T[], avoidFirstId?: string): T[] {
+  const result = shuffle(list);
+  if (result.length >= 2 && result[0].id === avoidFirstId) {
+    const swap = 1 + Math.floor(Math.random() * (result.length - 1));
+    [result[0], result[swap]] = [result[swap], result[0]];
+  }
+  return result;
 }
